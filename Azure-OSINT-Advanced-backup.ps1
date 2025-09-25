@@ -258,25 +258,39 @@ function Write-OSINTBanner {
     param([string]$Title, [string]$Subtitle = "")
     
     Write-Host ""
-    Write-Host "╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮" -ForegroundColor Cyan
-    Write-Host "┃ 🔍 Azure OSINT 🛡️ Advanced Reconnaissance Engine 🌐                            ┃" -ForegroundColor Cyan
-    Write-Host "┃                                                                             ┃" -ForegroundColor Cyan
-    Write-Host "┃ ⚡ ENHANCED SECURITY ANALYSIS ⚡ AADInternals + ROADtools + mjendza.net        ┃" -ForegroundColor Yellow
+    Write-Host "╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮" -ForegroundColor DarkCyan
+    Write-Host "┃" -ForegroundColor DarkCyan -NoNewline
+    Write-Host " 🔍 Azure OSINT 🛡️ Advanced Reconnaissance Engine 🌐 ".PadLeft(46).PadRight(86) -ForegroundColor White -NoNewline
+    Write-Host "┃" -ForegroundColor DarkCyan
+    Write-Host "┃" -ForegroundColor DarkCyan -NoNewline
+    Write-Host "".PadRight(86) -ForegroundColor White -NoNewline
+    Write-Host "┃" -ForegroundColor DarkCyan
+    Write-Host "┃" -ForegroundColor DarkCyan -NoNewline
+    Write-Host " ⚡ ENHANCED SECURITY ANALYSIS ⚡ AADInternals + ROADtools + mjendza.net ".PadLeft(51).PadRight(86) -ForegroundColor Yellow -NoNewline
+    Write-Host "┃" -ForegroundColor DarkCyan
     if ($Title) {
-        Write-Host "┃                                                                             ┃" -ForegroundColor Cyan
-        Write-Host "┃                  🎯 $Title" -ForegroundColor Cyan -NoNewline
-        $padding = 86 - 22 - $Title.Length
-        Write-Host "".PadLeft($padding) + "┃" -ForegroundColor Cyan
+        Write-Host "┃" -ForegroundColor DarkCyan -NoNewline
+        Write-Host "".PadRight(86) -ForegroundColor White -NoNewline
+        Write-Host "┃" -ForegroundColor DarkCyan
+        Write-Host "┃" -ForegroundColor DarkCyan -NoNewline
+        Write-Host " 🎯 $Title ".PadLeft((86 + $Title.Length + 4) / 2).PadRight(86) -ForegroundColor Cyan -NoNewline
+        Write-Host "┃" -ForegroundColor DarkCyan
     }
     if ($Subtitle) {
-        Write-Host "┃                      $Subtitle" -ForegroundColor Gray -NoNewline
-        $padding = 86 - 22 - $Subtitle.Length
-        Write-Host "".PadLeft($padding) + "┃" -ForegroundColor Cyan
+        Write-Host "┃" -ForegroundColor DarkCyan -NoNewline
+        Write-Host " $Subtitle ".PadLeft((86 + $Subtitle.Length + 2) / 2).PadRight(86) -ForegroundColor Gray -NoNewline
+        Write-Host "┃" -ForegroundColor DarkCyan
     }
-    Write-Host "┃                                                                             ┃" -ForegroundColor Cyan
-    Write-Host "┃ 🔐 Tenant Discovery • Service Analysis • Security Posture • External ID     ┃" -ForegroundColor Magenta
-    Write-Host "┃ 🎨 Power BI/Fabric • Cross-Tenant • Guest Access • Threat Protection        ┃" -ForegroundColor Green
-    Write-Host "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯" -ForegroundColor Cyan
+    Write-Host "┃" -ForegroundColor DarkCyan -NoNewline
+    Write-Host "".PadRight(86) -ForegroundColor White -NoNewline
+    Write-Host "┃" -ForegroundColor DarkCyan
+    Write-Host "┃" -ForegroundColor DarkCyan -NoNewline
+    Write-Host " 🔐 Tenant Discovery • Service Analysis • Security Posture • External ID ".PadLeft(51).PadRight(86) -ForegroundColor Magenta -NoNewline
+    Write-Host "┃" -ForegroundColor DarkCyan
+    Write-Host "┃" -ForegroundColor DarkCyan -NoNewline
+    Write-Host " 🎨 Power BI/Fabric • Cross-Tenant • Guest Access • Threat Protection ".PadLeft(50).PadRight(86) -ForegroundColor Green -NoNewline
+    Write-Host "┃" -ForegroundColor DarkCyan
+    Write-Host "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯" -ForegroundColor DarkCyan
     Write-Host ""
 }
 
@@ -3494,982 +3508,830 @@ function Export-HTMLReport {
     
     $html = @"
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <title>⚡ CYBEROSINT - Azure AD Recon Terminal ⚡</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; }
         
         body { 
             font-family: 'JetBrains Mono', 'Consolas', monospace; 
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #00ff9f;
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-            padding: 20px;
+            margin: 0; 
+            background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+            color: #00ff88;
+            overflow-x: auto;
         }
         
-        .container { max-width: 1200px; margin: 0 auto; }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
         
-        .cyber-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 30px;
-            border: 2px solid #00ff9f;
-            border-radius: 15px;
-            background: rgba(0, 255, 159, 0.1);
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        
+        @keyframes neonPulse {
+            0%, 100% { text-shadow: 0 0 5px #00ff88, 0 0 10px #00ff88, 0 0 15px #00ff88; }
+            50% { text-shadow: 0 0 2px #00ff88, 0 0 5px #00ff88, 0 0 8px #00ff88; }
+        }
+        
+        .cyber-header { 
+            background: linear-gradient(135deg, #000814, #001d3d, #003566);
+            color: #00ff88; 
+            padding: 30px; 
+            text-align: center; 
             position: relative;
-            overflow: hidden;
+            border-bottom: 3px solid #00ff88;
+            box-shadow: 0 0 30px #00ff88;
         }
         
         .cyber-header::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: repeating-linear-gradient(
-                0deg,
+                90deg,
                 transparent,
-                transparent 2px,
-                rgba(0, 255, 159, 0.03) 2px,
-                rgba(0, 255, 159, 0.03) 4px
+                transparent 98px,
+                #00ff88 100px
             );
-            animation: matrix 20s linear infinite;
-            pointer-events: none;
+            opacity: 0.1;
+            animation: scanlines 2s linear infinite;
         }
         
-        @keyframes matrix {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(50px); }
+        @keyframes scanlines {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
         }
         
         .cyber-title {
             font-family: 'Orbitron', monospace;
             font-size: 2.5em;
-            color: #00ff9f;
-            text-shadow: 0 0 20px #00ff9f, 0 0 40px #00ff9f;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
+            font-weight: 900;
+            margin: 0;
+            animation: neonPulse 2s ease-in-out infinite;
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
         
         .cyber-subtitle {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 1.2em;
-            color: #00ffff;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
+            margin: 10px 0;
+            color: #ff006e;
+            animation: glitch 3s infinite;
         }
         
-        .scan-info {
+        .cyber-metadata {
+            font-size: 0.9em;
+            color: #8ecae6;
+            margin-top: 15px;
+        }
+        
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        
+        .terminal-section { 
+            background: rgba(0, 20, 40, 0.9);
+            margin: 20px 0; 
+            padding: 25px; 
+            border-radius: 10px; 
+            border: 2px solid #00ff88;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 136, 0.3),
+                inset 0 0 20px rgba(0, 255, 136, 0.1);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        .terminal-section::before {
+            content: attr(data-section);
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: linear-gradient(45deg, #000814, #001d3d);
+            color: #00ff88;
+            padding: 5px 15px;
+            border-radius: 15px;
+            border: 2px solid #00ff88;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section-title { 
+            color: #ff006e; 
+            margin: 0 0 20px 0; 
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #ff006e;
+            border-bottom: 2px solid #ff006e; 
+            padding-bottom: 10px; 
+        }
+        
+        .data-grid { 
+            display: grid; 
+            grid-template-columns: 300px 1fr; 
+            gap: 15px; 
+            padding: 10px 0; 
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2); 
+            align-items: center;
+        }
+        
+        .data-label { 
+            font-weight: bold; 
+            color: #8ecae6; 
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+        
+        .data-value { 
+            color: #00ff88; 
+            font-family: 'JetBrains Mono', monospace;
+            word-break: break-all;
+        }
+        
+        .status-active { color: #00ff88; text-shadow: 0 0 5px #00ff88; }
+        .status-warning { color: #ffb703; text-shadow: 0 0 5px #ffb703; }
+        .status-error { color: #ff006e; text-shadow: 0 0 5px #ff006e; }
+        .status-info { color: #8ecae6; text-shadow: 0 0 5px #8ecae6; }
+        
+        .cyber-table { 
+            width: 100%; 
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 15px; 
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .cyber-table th { 
+            background: linear-gradient(45deg, #003566, #0077b6); 
+            color: #00ff88; 
+            padding: 15px; 
+            text-align: left; 
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #00ff88;
+        }
+        
+        .cyber-table td { 
+            padding: 12px 15px; 
+            background: rgba(0, 20, 40, 0.6);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2); 
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .cyber-table tr:hover td {
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.2);
+        }
+        
+        .cyber-badge { 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-size: 0.8em; 
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin: 2px;
+        }
+        
+        .badge-success { background: rgba(0, 255, 136, 0.2); color: #00ff88; border: 2px solid #00ff88; }
+        .badge-warning { background: rgba(255, 183, 3, 0.2); color: #ffb703; border: 2px solid #ffb703; }
+        .badge-info { background: rgba(142, 202, 230, 0.2); color: #8ecae6; border: 2px solid #8ecae6; }
+        .badge-error { background: rgba(255, 0, 110, 0.2); color: #ff006e; border: 2px solid #ff006e; }
+        
+        .cyber-link { 
+            color: #8ecae6; 
+            text-decoration: none; 
+            padding: 8px 15px;
+            border: 2px solid #8ecae6;
+            border-radius: 25px;
+            display: inline-block;
+            margin: 5px;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .cyber-link:hover { 
+            background: #8ecae6;
+            color: #000814;
+            box-shadow: 0 0 15px #8ecae6;
+            transform: scale(1.05);
+        }
+        
+        .terminal-prompt {
+            color: #00ff88;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 15px 0 10px 0;
+        }
+        
+        .terminal-prompt::before {
+            content: '[CYBEROSINT@azure-recon]$ ';
+            color: #ff006e;
+        }
+        
+        .copy-btn { 
+            background: linear-gradient(45deg, #ff006e, #8338ec); 
+            color: white; 
+            border: none; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            font-size: 0.8em; 
+            font-weight: bold;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .copy-btn:hover { 
+            background: linear-gradient(45deg, #8338ec, #ff006e);
+            box-shadow: 0 0 15px rgba(255, 0, 110, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .terminal-output {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #00ff88;
+            margin: 15px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        
+        .glitch-text {
+            animation: glitch 2s infinite;
+        }
+        
+        .security-matrix {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
-            margin-top: 20px;
-            position: relative;
-            z-index: 1;
+            margin: 20px 0;
         }
         
-        .scan-info-item {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #00ff9f;
-        }
-        
-        .section {
-            margin: 30px 0;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid #00ff9f;
+        .matrix-cell {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
             border-radius: 10px;
-            overflow: hidden;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
         }
         
-        .section-header {
-            background: linear-gradient(45deg, rgba(0, 255, 159, 0.2), rgba(0, 255, 255, 0.1));
-            padding: 15px 20px;
-            border-bottom: 1px solid #00ff9f;
+        .matrix-cell:hover {
+            background: rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            transform: scale(1.05);
         }
         
-        .section-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.4em;
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff;
-        }
-        
-        .section-content { padding: 20px; }
-        
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-        
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(0, 255, 159, 0.2);
-        }
-        
-        .data-row:last-child { border-bottom: none; }
-        
-        .data-label {
-            color: #cccccc;
-            font-weight: 500;
-            flex: 1;
-        }
-        
-        .data-value {
-            flex: 1;
-            text-align: right;
+        .matrix-value {
+            font-size: 1.8em;
             font-weight: bold;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
         }
         
-        .status-success { color: #00ff9f; }
-        .status-warning { color: #ffaa00; }
-        .status-error { color: #ff4444; }
-        .status-info { color: #00ffff; }
-        .status-neutral { color: #cccccc; }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            background: rgba(0, 0, 0, 0.3);
-        }
-        
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid rgba(0, 255, 159, 0.3);
-        }
-        
-        th {
-            background: rgba(0, 255, 159, 0.2);
-            color: #00ffff;
-            font-weight: bold;
+        .matrix-label {
+            color: #8ecae6;
             text-transform: uppercase;
-            font-size: 0.9em;
+            font-size: 0.8em;
+            margin-top: 5px;
             letter-spacing: 1px;
         }
         
-        tr:nth-child(even) { background: rgba(0, 255, 159, 0.05); }
-        tr:hover { background: rgba(0, 255, 159, 0.1); }
-        
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        .cyber-btn {
-            background: linear-gradient(45deg, #00ff9f, #00ffff);
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
+        .ascii-art {
             font-family: 'JetBrains Mono', monospace;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .cyber-btn:hover {
-            background: linear-gradient(45deg, #00ffff, #00ff9f);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 159, 0.3);
-        }
-        
-        .interactive-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            color: #00ff88;
+            text-align: center;
+            white-space: pre;
             margin: 20px 0;
+            font-size: 0.8em;
+            animation: neonPulse 3s ease-in-out infinite;
         }
-        
-        .interactive-stat-card {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #00ff9f;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .interactive-stat-card:hover {
-            border-color: #00ffff;
-            box-shadow: 0 5px 20px rgba(0, 255, 159, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .stat-main {
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-        }
-        
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #00ff9f;
-            text-shadow: 0 0 10px #00ff9f;
-        }
-        
-        .stat-label {
-            color: #cccccc;
-            font-size: 1.1em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            flex-grow: 1;
-            margin-left: 15px;
-        }
-        
-        .expand-icon {
-            color: #00ffff;
-            font-size: 1.2em;
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease, padding 0.4s ease;
-            background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(0, 255, 159, 0.3);
-        }
-        
-        .stat-details.active {
-            max-height: 600px;
-            padding: 20px;
-        }
-        
-        .interactive-stat-card.active .expand-icon {
-            transform: rotate(180deg);
-        }
-        
-        .detail-header {
-            color: #00ffff;
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .detail-content {
-            color: #cccccc;
-            line-height: 1.6;
-        }
-        
-        .detail-list, .auth-list, .resource-list, .social-list {
-            list-style: none;
-            padding: 0;
-            margin: 10px 0;
-        }
-        
-        .detail-list li, .auth-list li, .resource-list li, .social-list li {
-            padding: 5px 0;
-            border-bottom: 1px solid rgba(0, 255, 159, 0.1);
-        }
-        
-        .detail-list li:last-child, .auth-list li:last-child, 
-        .resource-list li:last-child, .social-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .mini-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 10px 0;
-            font-size: 0.9em;
-        }
-        
-        .mini-table th, .mini-table td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid rgba(0, 255, 159, 0.2);
-        }
-        
-        .mini-table th {
-            background: rgba(0, 255, 159, 0.1);
-            color: #00ffff;
-            font-weight: bold;
-        }
-        
-        .resource-breakdown, .auth-breakdown, .social-breakdown {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .resource-type, .auth-section, .social-section {
-            background: rgba(0, 255, 159, 0.05);
-            padding: 10px;
-            border-radius: 6px;
-            border-left: 3px solid #00ff9f;
-        }
-        
-        .resource-list, .auth-list, .social-list {
-            margin-top: 8px;
-        }
-        
-        .social-list a {
-            color: #00ffff;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .social-list a:hover {
-            color: #00ff9f;
-            text-decoration: underline;
-        }
-        
-        .collapsible {
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.3s ease;
-        }
-        
-        .collapsible:hover { color: #00ffff; }
-        
-        .collapsible-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        
-        .collapsible-content.active { max-height: 1000px; }
-        
-        .highlight { background: rgba(255, 255, 0, 0.2); padding: 2px 4px; border-radius: 3px; }
         
         @media (max-width: 768px) {
-            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .data-grid { grid-template-columns: 1fr; gap: 5px; }
             .cyber-title { font-size: 1.8em; }
-            .section-content { padding: 15px; }
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            border-top: 1px solid rgba(0, 255, 159, 0.3);
-            color: #666;
+            .security-matrix { grid-template-columns: 1fr; }
         }
     </style>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Copied to clipboard: ' + text);
+            });
+        }
+        
+        function toggleSection(id) {
+            const element = document.getElementById(id);
+            element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Matrix digital rain effect
+        function initMatrixRain() {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '-1';
+            canvas.style.opacity = '0.1';
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const chars = '01アカサタナハマヤラワガザダバパイキシチニヒミリヰギジヂビピウクスツヌフムユルグズヅブプエケセテネヘメレヱゲゼデベペオコソトノホモヨロヲゴゾドボポヴッン';
+            const matrix = chars.split('');
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            for (let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00ff88';
+                ctx.font = fontSize + 'px JetBrains Mono';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrix[Math.floor(Math.random() * matrix.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 35);
+        }
+        
+        document.addEventListener('DOMContentLoaded', initMatrixRain);
+    </script>
 </head>
 <body>
-    <div class="container">
-        <div class="cyber-header">
-            <h1 class="cyber-title">⚡ CYBEROSINT RECON ENGINE ⚡</h1>
-            <div class="cyber-subtitle">Advanced Azure & Entra ID OSINT Analysis</div>
-            <div class="scan-info">
-                <div class="scan-info-item">
-                    <strong>TARGET:</strong> $($Results.Domain)
-                </div>
-                <div class="scan-info-item">
-                    <strong>SCAN TIME:</strong> $($Results.Timestamp)
-                </div>
-                <div class="scan-info-item">
-                    <strong>DURATION:</strong> $($Results.ScanDuration)
-                </div>
-                <div class="scan-info-item">
-                    <strong>STATUS:</strong> <span class="status-success">COMPLETE</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-header">
-                <div class="section-title">🎯 Executive Summary</div>
-            </div>
-            <div class="section-content">
-                <div class="grid-2">
-                    <div>
-                        <div class="data-row">
-                            <div class="data-label">Target Domain:</div>
-                            <div class="data-value status-info">$($Results.Domain)</div>
-                        </div>
-                        <div class="data-row">
-                            <div class="data-label">Tenant Status:</div>
-                            <div class="data-value $(if($Results.TenantInfo.TenantId){'status-success'}else{'status-error'})">
-                                $(if($Results.TenantInfo.TenantId){'✓ IDENTIFIED'}else{'✗ NOT FOUND'})
-                            </div>
-                        </div>
-                        <div class="data-row">
-                            <div class="data-label">Namespace Type:</div>
-                            <div class="data-value status-info">$($Results.TenantInfo.NameSpaceType ?? 'Unknown')</div>
-                        </div>
-                        <div class="data-row">
-                            <div class="data-label">Cloud Instance:</div>
-                            <div class="data-value status-warning">$($Results.TenantInfo.CloudInstance ?? 'Undetected')</div>
-                        </div>
-                    </div>
-                    <div>
-                        $(if($Results.TenantInfo.TenantId) {
-                            "<div class='data-row'>
-                                <div class='data-label'>Tenant ID:</div>
-                                <div class='data-value status-success'>$($Results.TenantInfo.TenantId)</div>
-                            </div>"
-                        })
-                        $(if($Results.TenantInfo.TenantBrand) {
-                            "<div class='data-row'>
-                                <div class='data-label'>Organization:</div>
-                                <div class='data-value status-success'>$($Results.TenantInfo.TenantBrand)</div>
-                            </div>"
-                        })
-                        $(if($Results.TenantInfo.TenantRegion) {
-                            "<div class='data-row'>
-                                <div class='data-label'>Region:</div>
-                                <div class='data-value status-info'>$($Results.TenantInfo.TenantRegion)</div>
-                            </div>"
-                        })
-                        $(if($Results.TenantInfo.STSServer) {
-                            "<div class='data-row'>
-                                <div class='data-label'>STS Server:</div>
-                                <div class='data-value status-warning'>$($Results.TenantInfo.STSServer)</div>
-                            </div>"
-                        })
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-header">
-                <div class="section-title">📊 Interactive Reconnaissance Dashboard</div>
-            </div>
-            <div class="section-content">
-                <div class="interactive-stats">
-                    <div class="interactive-stat-card" onclick="toggleDetails('users-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.UserEnumeration.ValidUsers.Count)</span>
-                            <span class="stat-label">👥 Valid Users</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="users-details">
-                            <div class="detail-header">User Enumeration Methods:</div>
-                            <ul class="detail-list">
-                                <li>🔍 GetCredentialType API validation</li>
-                                <li>☁️ OneDrive for Business discovery</li>
-                                <li>📊 Microsoft Graph API probing</li>
-                                <li>🔐 Device code flow analysis</li>
-                            </ul>
-                            $(if($Results.UserEnumeration.ValidUsers.Count -gt 0) {
-                                "<div class='detail-content'>
-                                    <table class='mini-table'>
-                                        <tr><th>Username</th><th>Method</th><th>Confidence</th></tr>"
-                                foreach($user in $Results.UserEnumeration.ValidUsers | Select-Object -First 5) {
-                                    "<tr><td class='status-success'>$($user.Username)</td><td>$($user.Method)</td><td class='$(if($user.Confidence -eq 'High'){'status-success'}else{'status-warning'})'>$($user.Confidence)</td></tr>"
-                                }
-                                "</table>
-                                </div>"
-                            } else {
-                                "<div class='detail-content'><em>No valid users discovered through enumeration</em></div>"
-                            })
-                        </div>
-                    </div>
-
-                    <div class="interactive-stat-card" onclick="toggleDetails('subdomains-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.NetworkIntelligence.Subdomains.Count)</span>
-                            <span class="stat-label">🌐 Subdomains</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="subdomains-details">
-                            <div class="detail-header">Subdomain Discovery:</div>
-                            $(if($Results.NetworkIntelligence.Subdomains.Count -gt 0) {
-                                "<div class='detail-content'>
-                                    <table class='mini-table'>
-                                        <tr><th>Subdomain</th><th>IP Addresses</th><th>Status</th></tr>"
-                                foreach($subdomain in $Results.NetworkIntelligence.Subdomains | Select-Object -First 10) {
-                                    "<tr><td class='status-info'>$($subdomain.Subdomain)</td><td class='status-success'>$($subdomain.IPAddresses -join ', ')</td><td class='status-success'>✓ Active</td></tr>"
-                                }
-                                if($Results.NetworkIntelligence.Subdomains.Count -gt 10) {
-                                    "<tr><td colspan='3' class='status-neutral'><em>... and $(($Results.NetworkIntelligence.Subdomains.Count - 10)) more subdomains</em></td></tr>"
-                                }
-                                "</table>
-                                </div>"
-                            } else {
-                                "<div class='detail-content'><em>No subdomains discovered</em></div>"
-                            })
-                        </div>
-                    </div>
-
-                    <div class="interactive-stat-card" onclick="toggleDetails('azure-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$(($Results.ExtendedAzureResources.StorageAccounts.Count + $Results.ExtendedAzureResources.FunctionApps.Count + $Results.ExtendedAzureResources.APIManagement.Count))</span>
-                            <span class="stat-label">☁️ Azure Resources</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="azure-details">
-                            <div class="detail-header">Azure Resource Discovery:</div>
-                            <div class="detail-content">
-                                <div class="resource-breakdown">
-                                    <div class="resource-type">
-                                        <strong>🗄️ Storage Accounts:</strong> $($Results.ExtendedAzureResources.StorageAccounts.Count)
-                                        $(if($Results.ExtendedAzureResources.StorageAccounts.Count -gt 0) {
-                                            "<ul class='resource-list'>"
-                                            foreach($storage in $Results.ExtendedAzureResources.StorageAccounts | Select-Object -First 5) {
-                                                "<li class='status-success'>$($storage.Name)</li>"
-                                            }
-                                            "</ul>"
-                                        })
-                                    </div>
-                                    <div class="resource-type">
-                                        <strong>⚡ Function Apps:</strong> $($Results.ExtendedAzureResources.FunctionApps.Count)
-                                        $(if($Results.ExtendedAzureResources.FunctionApps.Count -gt 0) {
-                                            "<ul class='resource-list'>"
-                                            foreach($func in $Results.ExtendedAzureResources.FunctionApps | Select-Object -First 5) {
-                                                "<li class='status-success'>$($func.Name)</li>"
-                                            }
-                                            "</ul>"
-                                        })
-                                    </div>
-                                    <div class="resource-type">
-                                        <strong>🔌 API Management:</strong> $($Results.ExtendedAzureResources.APIManagement.Count)
-                                        $(if($Results.ExtendedAzureResources.APIManagement.Count -gt 0) {
-                                            "<ul class='resource-list'>"
-                                            foreach($api in $Results.ExtendedAzureResources.APIManagement | Select-Object -First 5) {
-                                                "<li class='status-success'>$($api.Name)</li>"
-                                            }
-                                            "</ul>"
-                                        })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="interactive-stat-card" onclick="toggleDetails('auth-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.AuthenticationAnalysis.AuthMethods.Count + $Results.AuthenticationAnalysis.SupportedFlows.Count)</span>
-                            <span class="stat-label">🔐 Auth Methods</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="auth-details">
-                            <div class="detail-header">Authentication Analysis:</div>
-                            <div class="detail-content">
-                                <div class="auth-breakdown">
-                                    <div class="auth-section">
-                                        <strong>🔑 Authentication Methods:</strong>
-                                        <ul class="auth-list">
-                                            $(if($Results.AuthenticationAnalysis.AuthMethods) {
-                                                foreach($method in $Results.AuthenticationAnalysis.AuthMethods) {
-                                                    "<li class='status-success'>$method</li>"
-                                                }
-                                            } else {
-                                                "<li class='status-info'>Password Authentication</li>"
-                                                "<li class='status-$(if($Results.TenantInfo.DesktopSSOEnabled){'success'}else{'warning'})'>Desktop SSO: $(if($Results.TenantInfo.DesktopSSOEnabled){'Enabled'}else{'Disabled'})</li>"
-                                            })
-                                        </ul>
-                                    </div>
-                                    <div class="auth-section">
-                                        <strong>🔄 OAuth Flows:</strong>
-                                        <ul class="auth-list">
-                                            $(if($Results.AuthenticationAnalysis.SupportedFlows) {
-                                                foreach($flow in $Results.AuthenticationAnalysis.SupportedFlows) {
-                                                    "<li class='status-success'>$flow</li>"
-                                                }
-                                            } else {
-                                                "<li class='status-success'>Authorization Code Flow</li>"
-                                                "<li class='status-success'>Device Code Flow</li>"
-                                            })
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="interactive-stat-card" onclick="toggleDetails('certs-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.Certificates.Count)</span>
-                            <span class="stat-label">📜 Certificates</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="certs-details">
-                            <div class="detail-header">Certificate Transparency Analysis:</div>
-                            $(if($Results.Certificates.Count -gt 0) {
-                                "<div class='detail-content'>
-                                    <table class='mini-table'>
-                                        <tr><th>Certificate</th><th>Issuer</th><th>Valid From</th><th>Valid To</th></tr>"
-                                foreach($cert in $Results.Certificates | Select-Object -First 8) {
-                                    "<tr><td class='status-info'>$($cert.CommonName)</td><td class='status-neutral'>$($cert.Issuer)</td><td class='status-success'>$($cert.ValidFrom)</td><td class='status-warning'>$($cert.ValidTo)</td></tr>"
-                                }
-                                if($Results.Certificates.Count -gt 8) {
-                                    "<tr><td colspan='4' class='status-neutral'><em>... and $(($Results.Certificates.Count - 8)) more certificates</em></td></tr>"
-                                }
-                                "</table>
-                                </div>"
-                            } else {
-                                "<div class='detail-content'><em>No certificates found in transparency logs</em></div>"
-                            })
-                        </div>
-                    </div>
-
-                    <div class="interactive-stat-card" onclick="toggleDetails('social-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.SocialMedia.GitHub.Count + $Results.SocialMedia.LinkedIn.Count)</span>
-                            <span class="stat-label">📱 Social Media</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="social-details">
-                            <div class="detail-header">Digital Footprint Analysis:</div>
-                            <div class="detail-content">
-                                <div class="social-breakdown">
-                                    <div class="social-section">
-                                        <strong>🐙 GitHub Repositories:</strong> $($Results.SocialMedia.GitHub.Count)
-                                        $(if($Results.SocialMedia.GitHub.Count -gt 0) {
-                                            "<ul class='social-list'>"
-                                            foreach($repo in $Results.SocialMedia.GitHub | Select-Object -First 5) {
-                                                "<li class='status-success'><a href='https://github.com/$repo' target='_blank'>$repo</a></li>"
-                                            }
-                                            "</ul>"
-                                        })
-                                    </div>
-                                    <div class="social-section">
-                                        <strong>💼 LinkedIn Profiles:</strong> $($Results.SocialMedia.LinkedIn.Count)
-                                        $(if($Results.SocialMedia.LinkedIn.Count -gt 0) {
-                                            "<ul class='social-list'>"
-                                            foreach($profile in $Results.SocialMedia.LinkedIn | Select-Object -First 5) {
-                                                "<li class='status-info'>$profile</li>"
-                                            }
-                                            "</ul>"
-                                        })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        $(if($Results.ServiceDiscovery.EntraID -or $Results.ServiceDiscovery.Exchange -or $Results.ServiceDiscovery.SharePoint -or $Results.ServiceDiscovery.Teams -or $Results.ServiceDiscovery.OneDrive) {
-            "<div class='section'>
-                <div class='section-header'>
-                    <div class='section-title'>☁️ Microsoft 365 Services</div>
-                </div>
-                <div class='section-content'>
-                    <div class='grid-2'>"
-                    
-            if($Results.ServiceDiscovery.EntraID) {
-                "<div class='data-row'>
-                    <div class='data-label'>🔐 Entra ID / Azure AD:</div>
-                    <div class='data-value status-success'>✓ Active</div>
-                </div>"
-            }
-            
-            if($Results.ServiceDiscovery.Exchange) {
-                "<div class='data-row'>
-                    <div class='data-label'>📧 Exchange Online:</div>
-                    <div class='data-value status-success'>✓ Active</div>
-                </div>"
-            }
-            
-            if($Results.ServiceDiscovery.SharePoint) {
-                "<div class='data-row'>
-                    <div class='data-label'>📁 SharePoint Online:</div>
-                    <div class='data-value status-success'>✓ Active</div>
-                </div>"
-            }
-            
-            if($Results.ServiceDiscovery.Teams) {
-                "<div class='data-row'>
-                    <div class='data-label'>💬 Microsoft Teams:</div>
-                    <div class='data-value status-success'>✓ Active</div>
-                </div>"
-            }
-            
-            if($Results.ServiceDiscovery.OneDrive) {
-                "<div class='data-row'>
-                    <div class='data-label'>☁️ OneDrive for Business:</div>
-                    <div class='data-value status-success'>✓ Active</div>
-                </div>"
-            }
-            
-            "</div>
-                </div>
-            </div>"
-        })
-
-        $(if($Results.UserEnumeration.ValidUsers.Count -gt 0) {
-            "<div class='section'>
-                <div class='section-header'>
-                    <div class='section-title'>👥 Valid Users Discovered</div>
-                </div>
-                <div class='section-content'>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Discovery Method</th>
-                                <th>Confidence</th>
-                                <th>Evidence</th>
-                            </tr>
-                        </thead>
-                        <tbody>"
-                        
-            foreach($user in $Results.UserEnumeration.ValidUsers) {
-                "<tr>
-                    <td class='status-success'>$($user.Username)</td>
-                    <td class='status-info'>$($user.Method)</td>
-                    <td class='$(if($user.Confidence -eq 'High'){'status-success'}elseif($user.Confidence -eq 'Medium'){'status-warning'}else{'status-error'})'>$($user.Confidence)</td>
-                    <td>$($user.Evidence)</td>
-                </tr>"
-            }
-            
-            "</tbody>
-                    </table>
-                </div>
-            </div>"
-        })
-
-        $(if($Results.NetworkIntelligence.Subdomains.Count -gt 0) {
-            "<div class='section'>
-                <div class='section-header'>
-                    <div class='section-title'>🌐 Network Intelligence</div>
-                </div>
-                <div class='section-content'>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Subdomain</th>
-                                <th>IP Addresses</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>"
-                        
-            foreach($subdomain in $Results.NetworkIntelligence.Subdomains) {
-                "<tr>
-                    <td class='status-info'>$($subdomain.Subdomain)</td>
-                    <td class='status-success'>$($subdomain.IPAddresses -join ', ')</td>
-                    <td class='status-success'>✓ Resolved</td>
-                </tr>"
-            }
-            
-            "</tbody>
-                    </table>
-                </div>
-            </div>"
-        })
-
-        $(if($Results.SecurityPosture) {
-            "<div class='section'>
-                <div class='section-header'>
-                    <div class='section-title'>🛡️ Security Posture Analysis</div>
-                </div>
-                <div class='section-content'>
-                    <div class='grid-2'>"
-                    
-            if($Results.SecurityPosture.SecurityDefaults) {
-                "<div>
-                    <h4 style='color: #00ffff; margin-bottom: 10px;'>🔒 Security Defaults</h4>"
-                if($Results.SecurityPosture.SecurityDefaults.MFARequired) {
-                    "<div class='data-row'>
-                        <div class='data-label'>MFA Required:</div>
-                        <div class='data-value status-success'>✓ Enabled</div>
-                    </div>"
-                }
-                if($Results.SecurityPosture.SecurityDefaults.BlockLegacyAuth) {
-                    "<div class='data-row'>
-                        <div class='data-label'>Legacy Auth Blocked:</div>
-                        <div class='data-value status-success'>✓ Enabled</div>
-                    </div>"
-                }
-                "</div>"
-            }
-            
-            if($Results.SecurityPosture.GuestAccess) {
-                "<div>
-                    <h4 style='color: #00ffff; margin-bottom: 10px;'>👥 Guest Access</h4>"
-                if($Results.SecurityPosture.GuestAccess.ExternalCollaboration) {
-                    "<div class='data-row'>
-                        <div class='data-label'>External Collaboration:</div>
-                        <div class='data-value status-warning'>⚠ Enabled</div>
-                    </div>"
-                }
-                if($Results.SecurityPosture.GuestAccess.GuestInviteRestrictions) {
-                    "<div class='data-row'>
-                        <div class='data-label'>Invite Restrictions:</div>
-                        <div class='data-value status-info'>ℹ Configured</div>
-                    </div>"
-                }
-                "</div>"
-            }
-            
-            "</div>
-                </div>
-            </div>"
-        })
-
-        $(if($Results.PowerBIFabric) {
-            "<div class='section'>
-                <div class='section-header'>
-                    <div class='section-title'>⚡ Power BI & Microsoft Fabric</div>
-                </div>
-                <div class='section-content'>
-                    <div class='grid-3'>"
-                    
-            if($Results.PowerBIFabric.PowerBIService) {
-                "<div class='data-row'>
-                    <div class='data-label'>Power BI Service:</div>
-                    <div class='data-value status-success'>✓ Available</div>
-                </div>"
-            }
-            
-            if($Results.PowerBIFabric.FabricPlatform) {
-                "<div class='data-row'>
-                    <div class='data-label'>Fabric Platform:</div>
-                    <div class='data-value status-success'>✓ Available</div>
-                </div>"
-            }
-            
-            if($Results.PowerBIFabric.CrossTenantSharing) {
-                "<div class='data-row'>
-                    <div class='data-label'>Cross-Tenant Sharing:</div>
-                    <div class='data-value status-warning'>⚠ Enabled</div>
-                </div>"
-            }
-            
-            "</div>
-                </div>
-            </div>"
-        })
-
-        $(if($Results.TenantInfo.TenantId) {
-            "<div class='section'>
-                <div class='section-header'>
-                    <div class='section-title'>🔗 Quick Actions</div>
-                </div>
-                <div class='section-content'>
-                    <div class='action-buttons'>
-                        <a href='https://portal.azure.com/#@$($Results.TenantInfo.TenantId)' target='_blank' class='cyber-btn'>🌐 Azure Portal</a>
-                        <a href='https://login.microsoftonline.com/$($Results.TenantInfo.TenantId)/.well-known/openid_configuration' target='_blank' class='cyber-btn'>🔍 OIDC Config</a>
-                        <a href='https://admin.microsoft.com/' target='_blank' class='cyber-btn'>⚙️ M365 Admin</a>
-                        <a href='https://security.microsoft.com/' target='_blank' class='cyber-btn'>🛡️ Security Center</a>
-                    </div>
-                </div>
-            </div>"
-        })
-
-        <div class="footer">
-            <p>Generated by Advanced Azure OSINT Tool | $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') UTC</p>
-            <p>🔐 Responsible Disclosure | 🛡️ Authorized Testing Only | ⚡ Enhanced Security Analysis</p>
+    <div class="ascii-art">
+╔══════════════════════════════════════════════════════════════════╗
+║  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ║
+║ ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌ ║
+║ ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌ ║
+║ ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌ ║
+║ ▐░▌          ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌ ║
+║ ▐░▌          ▐░░░░░░░░░░░▌▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌ ║
+║ ▐░▌          ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀█░█▀▀  ║
+║ ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌     ▐░▌   ║
+║ ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌      ▐░▌  ║
+║ ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌ ║
+║  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ║
+╚══════════════════════════════════════════════════════════════════╝
+    ⚡ AZURE AD RECONNAISSANCE TERMINAL ⚡
+    </div>
+    
+    <div class="cyber-header">
+        <h1 class="cyber-title">⚡ CYBEROSINT RECON ENGINE ⚡</h1>
+        <div class="cyber-subtitle glitch-text">TARGET: $($Results.Domain)</div>
+        <div class="cyber-metadata">
+            🕐 SCAN TIME: $($Results.Timestamp) | ⏱️ DURATION: $($Results.ScanDuration) | 🎯 STATUS: ANALYSIS COMPLETE
         </div>
     </div>
-
+    
+    <div class="container">
+        <div class="terminal-section" data-section="EXEC-SUMMARY">
+            <h2 class="section-title">🎯 Executive Summary</h2>
+            
+            <div class="security-matrix">
+                <div class="matrix-cell">
+                    <div class="matrix-value">$($Results.Domain)</div>
+                    <div class="matrix-label">Target Domain</div>
+                </div>
+                <div class="matrix-cell">
+                    <div class="matrix-value $(if($Results.TenantInfo.TenantId){'status-active'}else{'status-error'})">
+                        $(if($Results.TenantInfo.TenantId){'IDENTIFIED'}else{'NOT FOUND'})
+                    </div>
+                    <div class="matrix-label">Tenant Status</div>
+                </div>
+                <div class="matrix-cell">
+                    <div class="matrix-value status-info">$($Results.TenantInfo.NameSpaceType ?? 'UNKNOWN')</div>
+                    <div class="matrix-label">Namespace Type</div>
+                </div>
+                <div class="matrix-cell">
+                    <div class="matrix-value status-warning">$($Results.TenantInfo.CloudInstance ?? 'UNDETECTED')</div>
+                    <div class="matrix-label">Cloud Instance</div>
+                </div>
+            </div>
+            
+            $(if($Results.TenantInfo.TenantId) {
+                "<div class='data-grid'>
+                    <div class='data-label'>🆔 TENANT IDENTIFIER:</div>
+                    <div class='data-value'>
+                        $($Results.TenantInfo.TenantId)
+                        <button class='copy-btn'>COPY ID</button>
+                    </div>
+                </div>"
+            })
+            
+            <div class="terminal-prompt">Quick Access Portals:</div>
+            <div>
+                $(if($Results.TenantInfo.TenantId) {
+                    "<a href='https://portal.azure.com/#@$($Results.TenantInfo.TenantId)' target='_blank' class='cyber-link'>🌐 AZURE PORTAL</a>
+                    <a href='https://admin.microsoft.com' target='_blank' class='cyber-link'>⚙️ M365 ADMIN</a>
+                    <a href='https://login.microsoftonline.com/$($Results.TenantInfo.TenantId)/.well-known/openid_configuration' target='_blank' class='cyber-link'>🔍 OIDC CONFIG</a>
+                    <a href='https://graph.microsoft.com/v1.0/organization' target='_blank' class='cyber-link'>📊 GRAPH API</a>"
+                } else {
+                    "<span class='status-error'>⚠️ NO TENANT ID - LIMITED ACCESS</span>"
+                })
+            </div>
+        </div>
+        
+        <div class="terminal-section" data-section="TENANT-INTEL">
+            <h2 class="section-title">🏢 Tenant Intelligence</h2>
+            <div class="data-grid">
+                <div class="data-label">🔐 FEDERATION PROTOCOL:</div>
+                <div class="data-value">$($Results.TenantInfo.Federation ?? 'N/A')</div>
+            </div>
+            <div class="data-grid">
+                <div class="data-label">🌐 AUTH ENDPOINT:</div>
+                <div class="data-value">$($Results.TenantInfo.AuthenticationUrl ?? 'N/A')</div>
+            </div>
+            <div class="data-grid">
+                <div class="data-label">📋 ISSUER:</div>
+                <div class="data-value">$($Results.TenantInfo.Endpoints.Issuer ?? 'N/A')</div>
+            </div>
+            $(if($Results.TenantInfo.TenantRegion) {
+                "<div class='data-grid'>
+                    <div class='data-label'>🌍 REGION:</div>
+                    <div class='data-value'>$($Results.TenantInfo.TenantRegion)</div>
+                </div>"
+            })
+        </div>
+        
+        <div class="terminal-section" data-section="SECURITY-POSTURE">
+            <h2 class="section-title">🛡️ Security Posture Analysis</h2>
+            $(if($Results.SecurityPosture) {
+                $securityHtml = ""
+                if($Results.SecurityPosture.SecurityDefaults.MFARequired) {
+                    $securityHtml += "<div class='cyber-badge badge-success'>MFA ENFORCED</div>"
+                }
+                if($Results.SecurityPosture.ConditionalAccess.Present) {
+                    $securityHtml += "<div class='cyber-badge badge-success'>CONDITIONAL ACCESS</div>"
+                }
+                if($Results.SecurityPosture.ThreatProtection.DefenderForO365) {
+                    $securityHtml += "<div class='cyber-badge badge-success'>DEFENDER O365</div>"
+                }
+                if($Results.SecurityPosture.ThreatProtection.DefenderForIdentity) {
+                    $securityHtml += "<div class='cyber-badge badge-success'>DEFENDER IDENTITY</div>"
+                }
+                if($Results.SecurityPosture.PrivilegedAccess.PIM) {
+                    $securityHtml += "<div class='cyber-badge badge-success'>PIM ENABLED</div>"
+                }
+                if($Results.SecurityPosture.DataLossProtection.SensitivityLabels) {
+                    $securityHtml += "<div class='cyber-badge badge-success'>SENSITIVITY LABELS</div>"
+                }
+                if($Results.SecurityPosture.IdentityProtection.RiskPolicies) {
+                    $securityHtml += "<div class='cyber-badge badge-success'>RISK POLICIES</div>"
+                }
+                $securityHtml
+            })
+        </div>
+        
+        <div class="terminal-section" data-section="EXTERNAL-ID">
+            <h2 class="section-title">🌍 External Identity Analysis</h2>
+            $(if($Results.ExternalIdentities) {
+                $extIdHtml = ""
+                foreach($userType in $Results.ExternalIdentities.ExternalUserTypes) {
+                    $extIdHtml += "<div class='cyber-badge badge-info'>$userType</div>"
+                }
+                if($Results.ExternalIdentities.B2BCollaboration.RedemptionFlow) {
+                    $extIdHtml += "<div class='cyber-badge badge-success'>B2B COLLABORATION</div>"
+                }
+                if($Results.ExternalIdentities.B2BDirectConnect.PolicyEndpoint) {
+                    $extIdHtml += "<div class='cyber-badge badge-warning'>B2B DIRECT CONNECT</div>"
+                }
+                if($Results.ExternalIdentities.B2CIdentities.TenantUrl) {
+                    $extIdHtml += "<div class='cyber-badge badge-info'>B2C TENANT: $($Results.ExternalIdentities.B2CIdentities.TenantUrl)</div>"
+                }
+                $extIdHtml
+            })
+        </div>
+        
+        <div class="terminal-section" data-section="POWERBI-FABRIC">
+            <h2 class="section-title">📊 Power BI & Fabric Analysis</h2>
+            $(if($Results.PowerBIFabric) {
+                $fabricHtml = ""
+                foreach($service in $Results.PowerBIFabric.PowerBIService.Keys) {
+                    $fabricHtml += "<div class='cyber-badge badge-success'>POWER BI $service</div>"
+                }
+                foreach($workspace in $Results.PowerBIFabric.FabricWorkspaces.Keys) {
+                    $fabricHtml += "<div class='cyber-badge badge-info'>FABRIC $workspace</div>"
+                }
+                if($Results.PowerBIFabric.DataGateways.Infrastructure) {
+                    $fabricHtml += "<div class='cyber-badge badge-warning'>DATA GATEWAYS</div>"
+                }
+                if($Results.PowerBIFabric.CrossTenantAccess.B2BAccess) {
+                    $fabricHtml += "<div class='cyber-badge badge-warning'>CROSS-TENANT BI</div>"
+                }
+                $fabricHtml
+            })
+        </div>
+        
+        <div class="terminal-section" data-section="USER-ENUM">
+            <h2 class="section-title">👥 User Enumeration Results</h2>
+            <table class="cyber-table">
+                <thead>
+                    <tr>
+                        <th>🎭 USERNAME</th>
+                        <th>🔍 METHOD</th>
+                        <th>📊 CONFIDENCE</th>
+                        <th>🔗 EVIDENCE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $(if($Results.UserEnumeration.ValidUsers.Count -gt 0) {
+                        $userRows = ""
+                        foreach($user in $Results.UserEnumeration.ValidUsers) {
+                            $userRows += "<tr>
+                                <td class='status-active'>$($user.Username)</td>
+                                <td class='status-info'>$($user.Method)</td>
+                                <td class='$(if($user.Confidence -eq 'High'){'status-active'}elseif($user.Confidence -eq 'Medium'){'status-warning'}else{'status-error'})'>$($user.Confidence)</td>
+                                <td>$($user.Evidence)</td>
+                            </tr>"
+                        }
+                        $userRows
+                    } else {
+                        "<tr><td colspan='4' class='status-warning'>🚫 NO VALID USERS DISCOVERED</td></tr>"
+                    })
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="terminal-section" data-section="AZURE-SERVICES">
+            <h2 class="section-title">☁️ Azure Service Discovery</h2>
+            <div class="security-matrix">
+                $(if($Results.ServiceDiscovery.EntraID) {
+                    "<div class='matrix-cell'>
+                        <div class='matrix-value status-active'>✅ ACTIVE</div>
+                        <div class='matrix-label'>Entra ID</div>
+                    </div>"
+                })
+                $(if($Results.ServiceDiscovery.Exchange) {
+                    "<div class='matrix-cell'>
+                        <div class='matrix-value status-active'>✅ DETECTED</div>
+                        <div class='matrix-label'>Exchange Online</div>
+                    </div>"
+                })
+                $(if($Results.ServiceDiscovery.SharePoint) {
+                    "<div class='matrix-cell'>
+                        <div class='matrix-value status-active'>✅ ONLINE</div>
+                        <div class='matrix-label'>SharePoint</div>
+                    </div>"
+                })
+                $(if($Results.ServiceDiscovery.Teams) {
+                    "<div class='matrix-cell'>
+                        <div class='matrix-value status-active'>✅ ENABLED</div>
+                        <div class='matrix-label'>Microsoft Teams</div>
+                    </div>"
+                })
+                $(if($Results.ServiceDiscovery.OneDrive) {
+                    "<div class='matrix-cell'>
+                        <div class='matrix-value status-active'>✅ ACTIVE</div>
+                        <div class='matrix-label'>OneDrive</div>
+                    </div>"
+                })
+            </div>
+        </div>
+        
+        <div class="terminal-section" data-section="NETWORK-INTEL">
+            <h2 class="section-title">🌐 Network Intelligence</h2>
+            <div class="terminal-prompt">Discovered Subdomains:</div>
+            <div class="terminal-output">
+                $(if($Results.NetworkIntelligence.Subdomains.Count -gt 0) {
+                    $subdomainList = ""
+                    foreach($subdomain in $Results.NetworkIntelligence.Subdomains) {
+                        $subdomainList += "🎯 $($subdomain.Subdomain) → $($subdomain.IPAddresses -join ', ')" + "`n"
+                    }
+                    $subdomainList
+                } else {
+                    "⚠️ NO SUBDOMAINS DISCOVERED"
+                })
+            </div>
+        </div>
+        
+        <div class="terminal-section" data-section="CERT-INTEL">
+            <h2 class="section-title">🔐 Certificate Intelligence</h2>
+            <div class="terminal-output">
+                $(if($Results.Certificates.Count -gt 0) {
+                    $certList = ""
+                    foreach($cert in $Results.Certificates) {
+                        $certList += "📜 $($cert.CommonName) | Issuer: $($cert.Issuer) | Valid: $($cert.ValidFrom) - $($cert.ValidTo)" + "`n"
+                    }
+                    $certList
+                } else {
+                    "⚠️ NO CERTIFICATE TRANSPARENCY LOGS FOUND"
+                })
+            </div>
+        </div>
+        
+        <div class="terminal-section" data-section="DIGITAL-FOOTPRINT">
+            <h2 class="section-title">📱 Digital Footprint</h2>
+            <div class="security-matrix">
+                $(if($Results.SocialMedia.GitHub.Count -gt 0) {
+                    "<div class='matrix-cell'>
+                        <div class='matrix-value status-active'>$($Results.SocialMedia.GitHub.Count)</div>
+                        <div class='matrix-label'>GitHub Repos</div>
+                    </div>"
+                })
+                $(if($Results.SocialMedia.LinkedIn.Count -gt 0) {
+                    "<div class='matrix-cell'>
+                        <div class='matrix-value status-info'>$($Results.SocialMedia.LinkedIn.Count)</div>
+                        <div class='matrix-label'>LinkedIn Profiles</div>
+                    </div>"
+                })
+                $(if($Results.Documents.Count -gt 0) {
+                    "<div class='matrix-cell'>
+                        <div class='matrix-value status-warning'>$($Results.Documents.Count)</div>
+                        <div class='matrix-label'>Public Documents</div>
+                    </div>"
+                })
+            </div>
+        </div>
+        
+        <div class="terminal-section" data-section="RAW-DATA">
+            <h2 class="section-title">📊 Raw Reconnaissance Data</h2>
+            <div class="terminal-prompt">Complete JSON Output:</div>
+            <div class="terminal-output">
+                <button class='copy-btn' onclick='copyToClipboard("JSON_DATA_PLACEHOLDER")'>COPY JSON DATA</button>
+                <pre style="max-height: 400px; overflow-y: auto; color: #8ecae6; font-size: 0.8em;">JSON_OUTPUT_PLACEHOLDER</pre>
+            </div>
+        </div>
+        
+        <div class="ascii-art">
+╔══════════════════════════════════════════════════════════════════╗
+║                    🛡️ RECONNAISSANCE COMPLETE 🛡️                     ║
+║                                                                  ║
+║   ⚡ POWERED BY CYBEROSINT ENGINE ⚡                              ║
+║   🎯 TARGET ANALYSIS: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") UTC                     ║
+║   📊 TOTAL DISCOVERIES: $(($Results.UserEnumeration.ValidUsers.Count + $Results.NetworkIntelligence.Subdomains.Count + $Results.Certificates.Count))                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+        </div>
+    </div>
+    
+    <script>
+        // Enhanced terminal interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add typing effect to terminal outputs
+            const terminalOutputs = document.querySelectorAll('.terminal-output');
+            terminalOutputs.forEach(output => {
+                const text = output.textContent;
+                output.textContent = '';
+                let i = 0;
+                const typeWriter = () => {
+                    if (i < text.length) {
+                        output.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 20);
+                    }
+                };
+                // Start typing effect after a delay
+                setTimeout(typeWriter, Math.random() * 2000);
+            });
+            
+            // Add hover effects to matrix cells
+            const matrixCells = document.querySelectorAll('.matrix-cell');
+            matrixCells.forEach(cell => {
+                cell.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.1) rotateY(10deg)';
+                    this.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.6)';
+                });
+                cell.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) rotateY(0deg)';
+                    this.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.4)';
+                });
+            });
+        });
+"@
+    
+    $html | Out-File -FilePath $OutputPath -Encoding UTF8
+}
+    
+$html += @"
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>� Authentication & Security Analysis</h2>
+            <div class="grid">
+                <div class="property"><div class="property-name">Supported OAuth Flows:</div><div class="property-value success">$($Results.AuthenticationAnalysis.SupportedFlows.Count)</div></div>
+                <div class="property"><div class="property-name">Authentication Methods:</div><div class="property-value success">$($Results.AuthenticationAnalysis.AuthMethods.Count)</div></div>
+                <div class="property"><div class="property-name">Federation Type:</div><div class="property-value info">$(if($Results.AuthenticationAnalysis.FederationConfig.SupportsSAML){'ADFS/SAML'}else{'Cloud-only'})</div></div>
+                <div class="property"><div class="property-name">MFA Required:</div><div class="property-value $(if($Results.SecurityPosture.SecurityDefaults.MFARequired){'success'}else{'warning'})">$(if($Results.SecurityPosture.SecurityDefaults.MFARequired){'Yes'}else{'Not detected in test'})</div></div>
+            </div>
+            
+            <h3>Authentication Methods Detected</h3>
+            <ul>
+$(foreach($method in $Results.AuthenticationAnalysis.AuthMethods) {
+    "<li class='success'>$method</li>"
+})
+            </ul>
+            
+            <h3>OAuth 2.0 Flows Supported</h3>
+            <ul>
+$(foreach($flow in $Results.AuthenticationAnalysis.SupportedFlows) {
+    "<li class='info'>$flow</li>"
+})
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>�📊 Statistics Summary</h2>
+            <div class="grid">
+                <div class="property"><div class="property-name">Total Scan Time:</div><div class="property-value info">$($Results.ScanDuration)</div></div>
+                <div class="property"><div class="property-name">Valid Users Found:</div><div class="property-value success">$($Results.UserEnumeration.ValidUsers.Count)</div></div>
+                <div class="property"><div class="property-name">Related Domains:</div><div class="property-value success">$($Results.DomainInfo.RelatedDomains.Count)</div></div>
+                <div class="property"><div class="property-name">Subdomains Found:</div><div class="property-value success">$($Results.NetworkIntelligence.Subdomains.Count)</div></div>
+                <div class="property"><div class="property-name">Azure Resources:</div><div class="property-value success">$($Results.ExtendedAzureResources.StorageAccounts.Count + $Results.ExtendedAzureResources.FunctionApps.Count + $Results.ExtendedAzureResources.CosmosDB.Count)</div></div>
+                <div class="property"><div class="property-name">Authentication Methods:</div><div class="property-value success">$($Results.AuthenticationAnalysis.AuthMethods.Count)</div></div>
+                <div class="property"><div class="property-name">Certificates:</div><div class="property-value success">$($Results.Certificates.Count)</div></div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="text-align: center; padding: 20px; color: #666; font-size: 12px;">
+        Generated by Advanced Azure OSINT Tool | $(Get-Date)
+    </div>
+    
     <script>
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(function() {
-                console.log('Copied to clipboard: ' + text);
-                showNotification('Copied to clipboard!');
+                alert('Tenant ID copied to clipboard: ' + text);
             }, function(err) {
                 console.error('Could not copy text: ', err);
-                showNotification('Copy failed', 'error');
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Tenant ID copied to clipboard: ' + text);
             });
         }
-
-        function toggleDetails(detailsId) {
-            const details = document.getElementById(detailsId);
-            const card = details.closest('.interactive-stat-card');
-            
-            // Close all other details first
-            document.querySelectorAll('.stat-details').forEach(function(detail) {
-                if (detail.id !== detailsId) {
-                    detail.classList.remove('active');
-                    detail.closest('.interactive-stat-card').classList.remove('active');
-                }
-            });
-            
-            // Toggle current details
-            details.classList.toggle('active');
-            card.classList.toggle('active');
+        
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
         }
-
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = 'notification ' + type;
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 20px;
-                border-radius: 8px;
-                color: #000;
-                font-weight: bold;
-                z-index: 10000;
-                transition: all 0.3s ease;
-                background: ${type === 'error' ? '#ff4444' : '#00ff9f'};
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-
-        // Add collapsible functionality for other sections
-        document.querySelectorAll('.collapsible').forEach(function(element) {
-            element.addEventListener('click', function() {
-                const content = this.nextElementSibling;
-                content.classList.toggle('active');
-                this.classList.toggle('active');
-            });
-        });
-
-        // Enhanced interactive effects
+        
+        // Add click-to-copy functionality to all tenant IDs and sensitive data
         document.addEventListener('DOMContentLoaded', function() {
-            // Highlight tenant IDs for easy copying
-            document.querySelectorAll('.status-success').forEach(function(element) {
+            const tenantIds = document.querySelectorAll('.success');
+            tenantIds.forEach(function(element) {
                 if (element.textContent.length === 36 && element.textContent.includes('-')) {
                     element.style.cursor = 'pointer';
-                    element.title = 'Click to copy Tenant ID';
+                    element.title = 'Click to copy';
                     element.addEventListener('click', function() {
                         copyToClipboard(element.textContent);
-                    });
-                }
-            });
-
-            // Add hover effects to interactive cards
-            document.querySelectorAll('.interactive-stat-card').forEach(function(card) {
-                card.addEventListener('mouseenter', function() {
-                    this.style.borderColor = '#00ffff';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    if (!this.classList.contains('active')) {
-                        this.style.borderColor = '#00ff9f';
-                    }
-                });
-            });
-
-            // Add keyboard navigation
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    // Close all open details
-                    document.querySelectorAll('.stat-details.active').forEach(function(detail) {
-                        detail.classList.remove('active');
-                        detail.closest('.interactive-stat-card').classList.remove('active');
                     });
                 }
             });
@@ -4481,6 +4343,7 @@ function Export-HTMLReport {
     
     $html | Out-File -FilePath $OutputPath -Encoding UTF8
 }
+
 function Export-CSVReport {
     param([hashtable]$Results, [string]$OutputPath)
     
