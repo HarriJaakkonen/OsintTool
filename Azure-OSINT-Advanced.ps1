@@ -167,12 +167,13 @@ function Invoke-WebRequestSafe {
     )
     
     try {
+        # Prepare default headers and merge with any caller-supplied headers
         $defaultHeaders = @{
             "User-Agent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
-        
+
         $allHeaders = $defaultHeaders + $Headers
-        
+
         $requestParams = @{
             Uri         = $Uri
             Headers     = $allHeaders
@@ -180,11 +181,11 @@ function Invoke-WebRequestSafe {
             TimeoutSec  = $TimeoutSec
             ErrorAction = 'Stop'
         }
-        
+
         if ($Body) {
             $requestParams.Body = $Body
         }
-        
+
         $response = Invoke-WebRequest @requestParams
         return $response
     }
@@ -258,25 +259,18 @@ function Write-OSINTBanner {
     param([string]$Title, [string]$Subtitle = "")
     
     Write-Host ""
-    Write-Host "╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮" -ForegroundColor Cyan
-    Write-Host "┃ 🔍 Azure OSINT 🛡️ Advanced Reconnaissance Engine 🌐                            ┃" -ForegroundColor Cyan
-    Write-Host "┃                                                                             ┃" -ForegroundColor Cyan
-    Write-Host "┃ ⚡ ENHANCED SECURITY ANALYSIS ⚡ AADInternals + ROADtools + mjendza.net        ┃" -ForegroundColor Yellow
+    Write-Host "🔍 " -NoNewline -ForegroundColor Cyan
+    Write-Host "Azure OSINT Advanced Reconnaissance Engine" -ForegroundColor White
+    Write-Host "🛡️  " -NoNewline -ForegroundColor Yellow
+    Write-Host "Enhanced Security Analysis & Threat Intelligence" -ForegroundColor Gray
     if ($Title) {
-        Write-Host "┃                                                                             ┃" -ForegroundColor Cyan
-        Write-Host "┃                  🎯 $Title" -ForegroundColor Cyan -NoNewline
-        $padding = 86 - 22 - $Title.Length
-        Write-Host "".PadLeft($padding) + "┃" -ForegroundColor Cyan
+        Write-Host "🎯 " -NoNewline -ForegroundColor Green
+        Write-Host $Title -ForegroundColor Cyan
     }
     if ($Subtitle) {
-        Write-Host "┃                      $Subtitle" -ForegroundColor Gray -NoNewline
-        $padding = 86 - 22 - $Subtitle.Length
-        Write-Host "".PadLeft($padding) + "┃" -ForegroundColor Cyan
+        Write-Host "   " -NoNewline
+        Write-Host $Subtitle -ForegroundColor DarkGray
     }
-    Write-Host "┃                                                                             ┃" -ForegroundColor Cyan
-    Write-Host "┃ 🔐 Tenant Discovery • Service Analysis • Security Posture • External ID     ┃" -ForegroundColor Magenta
-    Write-Host "┃ 🎨 Power BI/Fabric • Cross-Tenant • Guest Access • Threat Protection        ┃" -ForegroundColor Green
-    Write-Host "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯" -ForegroundColor Cyan
     Write-Host ""
 }
 
@@ -2131,6 +2125,7 @@ function Get-ExtendedAzureResources {
         PublicIPs         = @()
         CDNEndpoints      = @()
         TrafficManager    = @()
+        FrontDoor         = @()
     }
     
     $baseName = $Domain.Split('.')[0]
@@ -3123,6 +3118,424 @@ function Get-ExternalIdentityAnalysis {
 }
 
 # Power BI & Microsoft Fabric Reconnaissance  
+# Enhanced Microsoft Purview API Reconnaissance
+function Get-MicrosoftPurviewRecon {
+    param([string]$Domain, [string]$TenantId)
+    
+    Write-OSINTSection "🛡️ Microsoft Purview API Reconnaissance" "🔍"
+    
+    $purviewRecon = @{
+        PurviewAccounts  = @{}
+        DataPlaneAPIs    = @{}
+        ControlPlaneAPIs = @{}
+        Cataloging       = @{}
+        DataGovernance   = @{}
+        ComplianceAPIs   = @{}
+        Authentication   = @{}
+        Collections      = @{}
+        Glossary         = @{}
+        Assets           = @{}
+        Security         = @{}
+        Integration      = @{}
+    }
+    
+    Write-OSINTProgress "🔍 Purview Account Discovery"
+    try {
+        $baseName = $Domain.Split('.')[0]
+        
+        # Test for Purview account patterns
+        $purviewAccountPatterns = @(
+            "$baseName-purview",
+            "$baseName-catalog", 
+            "$baseName-governance",
+            "$baseName-compliance"
+        )
+        
+        foreach ($pattern in $purviewAccountPatterns) {
+            # Test Purview account existence
+            $purviewUrl = "https://$pattern.purview.azure.com"
+            $response = Invoke-WebRequestSafe -Uri $purviewUrl -SuppressErrors
+            if ($response -or ($response -and $response.StatusCode -eq 401)) {
+                Write-OSINTProperty "Purview Account" "✅ $pattern.purview.azure.com - Account exists" Green
+                $purviewRecon.PurviewAccounts[$pattern] = "Active"
+            }
+            
+            # Test Purview catalog endpoint
+            $catalogUrl = "https://$pattern.catalog.purview.azure.com"
+            $catalogResponse = Invoke-WebRequestSafe -Uri $catalogUrl -SuppressErrors
+            if ($catalogResponse) {
+                Write-OSINTProperty "Catalog Endpoint" "✅ $pattern.catalog.purview.azure.com - Catalog API available" Green
+                $purviewRecon.Cataloging[$pattern] = "Available"
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "📋 Data Plane API Discovery"
+    try {
+        # Test core Data Plane APIs
+        $dataPlaneAPIs = @{
+            "Collections"     = "/collections"
+            "Glossary Terms"  = "/glossary/terms" 
+            "Atlas Entities"  = "/catalog/api/atlas/v2/entities"
+            "Types"           = "/catalog/api/atlas/v2/types"
+            "Discovery"       = "/catalog/api/browse"
+            "Search"          = "/catalog/api/search/query"
+            "Lineage"         = "/catalog/api/atlas/v2/lineage"
+            "Classifications" = "/catalog/api/atlas/v2/entity/guid/{guid}/classifications"
+        }
+        
+        foreach ($api in $dataPlaneAPIs.GetEnumerator()) {
+            # Test against discovered Purview accounts
+            foreach ($accountName in $purviewRecon.PurviewAccounts.Keys) {
+                $testUrl = "https://$accountName.catalog.purview.azure.com$($api.Value)"
+                $apiResponse = Invoke-WebRequestSafe -Uri $testUrl -SuppressErrors
+                if ($apiResponse -and ($apiResponse.StatusCode -eq 401 -or $apiResponse.StatusCode -eq 403)) {
+                    Write-OSINTProperty "$($api.Key) API" "✅ $testUrl - Authentication required (API exists)" Yellow
+                    $purviewRecon.DataPlaneAPIs[$api.Key] = "RequiresAuth"
+                }
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "⚙️ Control Plane API Discovery"  
+    try {
+        # Test Control Plane APIs for account management
+        $controlPlaneAPIs = @{
+            "Accounts"         = "https://management.azure.com/subscriptions/{subscriptionId}/providers/Microsoft.Purview/accounts"
+            "Account Status"   = "https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{accountName}"
+            "Private Links"    = "https://management.azure.com/subscriptions/{subscriptionId}/providers/Microsoft.Purview/accounts/{accountName}/privateEndpointConnections"
+            "Managed Identity" = "https://management.azure.com/subscriptions/{subscriptionId}/providers/Microsoft.Purview/accounts/{accountName}/managedIdentity"
+        }
+        
+        foreach ($api in $controlPlaneAPIs.GetEnumerator()) {
+            $response = Invoke-WebRequestSafe -Uri $api.Value -SuppressErrors
+            if ($response -and $response.StatusCode -eq 401) {
+                Write-OSINTProperty "$($api.Key) Control API" "✅ Management endpoint accessible - $($api.Value)" Yellow  
+                $purviewRecon.ControlPlaneAPIs[$api.Key] = "RequiresAuth"
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "🔐 Authentication & Security Analysis"
+    try {
+        # Check for service principal registration endpoints
+        $authUrls = @(
+            "https://login.microsoftonline.com/$TenantId/oauth2/v2.0/token",
+            "https://login.microsoftonline.com/$TenantId/.well-known/openid_configuration"
+        )
+        
+        foreach ($authUrl in $authUrls) {
+            $authResponse = Invoke-WebRequestSafe -Uri $authUrl -SuppressErrors
+            if ($authResponse) {
+                Write-OSINTProperty "OAuth2 Endpoints" "✅ Entra ID authentication available for Purview" Green
+                $purviewRecon.Authentication.OAuth2 = "Available"
+                break
+            }
+        }
+        
+        # Test for Azure Key Vault integration patterns
+        $keyVaultPattern = "https://$($Domain.Split('.')[0])-purview-kv.vault.azure.net"
+        $kvResponse = Invoke-WebRequestSafe -Uri $keyVaultPattern -SuppressErrors
+        if ($kvResponse -and $kvResponse.StatusCode -eq 401) {
+            Write-OSINTProperty "Key Vault Integration" "✅ Purview Key Vault detected - $keyVaultPattern" Green
+            $purviewRecon.Security.KeyVault = "Integrated"
+        }
+    }
+    catch { }
+    
+    return $purviewRecon
+}
+
+# Enhanced Microsoft Fabric API Reconnaissance  
+function Get-MicrosoftFabricRecon {
+    param([string]$Domain, [string]$TenantId)
+    
+    Write-OSINTSection "🏭 Microsoft Fabric API Reconnaissance" "⚡"
+    
+    $fabricRecon = @{
+        CoreAPIs          = @{}
+        WorkloadAPIs      = @{}
+        Workspaces        = @{}
+        Items             = @{}
+        Capacities        = @{}
+        OneLake           = @{}
+        DataEngineering   = @{}
+        DataWarehouse     = @{}
+        RealTimeAnalytics = @{}
+        DataScience       = @{}
+        PowerBI           = @{}
+        Authentication    = @{}
+        Security          = @{}
+    }
+    
+    Write-OSINTProgress "🏗️ Core Fabric API Discovery"
+    try {
+        # Test Core Fabric APIs
+        $coreAPIs = @{
+            "Workspaces" = "https://api.fabric.microsoft.com/v1/workspaces"
+            "Items"      = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/items"
+            "Capacities" = "https://api.fabric.microsoft.com/v1/capacities" 
+            "Admin"      = "https://api.fabric.microsoft.com/v1/admin"
+            "Users"      = "https://api.fabric.microsoft.com/v1/me"
+        }
+        
+        foreach ($api in $coreAPIs.GetEnumerator()) {
+            $response = Invoke-WebRequestSafe -Uri $api.Value -SuppressErrors
+            if ($response -and ($response.StatusCode -eq 401 -or $response.StatusCode -eq 403)) {
+                Write-OSINTProperty "$($api.Key) Core API" "✅ $($api.Value) - Authentication required" Yellow
+                $fabricRecon.CoreAPIs[$api.Key] = "RequiresAuth"
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "🔧 Workload-Specific API Discovery"
+    try {
+        # Test Workload APIs for each Fabric capability
+        $workloadAPIs = @{
+            "Lakehouse"     = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/lakehouses"
+            "Notebook"      = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/notebooks" 
+            "Data Pipeline" = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/dataPipelines"
+            "Spark Job"     = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/sparkJobDefinitions"
+            "SQL Endpoint"  = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/sqlEndpoints"
+            "Warehouse"     = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/warehouses"
+            "KQL Database"  = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/kqlDatabases"
+            "ML Model"      = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/mlModels"
+            "Experiment"    = "https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/experiments"
+        }
+        
+        foreach ($api in $workloadAPIs.GetEnumerator()) {
+            $response = Invoke-WebRequestSafe -Uri $api.Value -SuppressErrors
+            if ($response -and ($response.StatusCode -eq 401 -or $response.StatusCode -eq 403)) {
+                Write-OSINTProperty "$($api.Key) Workload API" "✅ Workload API available - requires auth" Yellow
+                $fabricRecon.WorkloadAPIs[$api.Key] = "RequiresAuth" 
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "🏞️ OneLake Storage Analysis"
+    try {
+        $baseName = $Domain.Split('.')[0]
+        
+        # Test OneLake endpoint patterns
+        $oneLakePatterns = @(
+            "https://onelake.dfs.fabric.microsoft.com/$baseName",
+            "https://$baseName.dfs.fabric.microsoft.com",
+            "https://fabric.microsoft.com/onelake/$baseName"
+        )
+        
+        foreach ($pattern in $oneLakePatterns) {
+            $oneLakeResponse = Invoke-WebRequestSafe -Uri $pattern -SuppressErrors
+            if ($oneLakeResponse -and ($oneLakeResponse.StatusCode -eq 401 -or $oneLakeResponse.StatusCode -eq 403)) {
+                Write-OSINTProperty "OneLake Storage" "✅ $pattern - OneLake endpoint detected" Yellow
+                $fabricRecon.OneLake.Endpoint = $pattern
+            }
+        }
+        
+        # Test Data Lake Gen2 API patterns for Fabric
+        $dfsAPIs = @(
+            "/webhdfs/v1/?op=LISTSTATUS",
+            "/dfs/v1/filesystems",
+            "/?comp=list&include=metadata"
+        )
+        
+        foreach ($dfsAPI in $dfsAPIs) {
+            if ($fabricRecon.OneLake.Endpoint) {
+                $testUrl = "$($fabricRecon.OneLake.Endpoint)$dfsAPI"
+                $dfsResponse = Invoke-WebRequestSafe -Uri $testUrl -SuppressErrors
+                if ($dfsResponse) {
+                    Write-OSINTProperty "OneLake DFS API" "✅ Data Lake Storage API accessible" Green
+                    $fabricRecon.OneLake.DFSAPIs = "Available"
+                    break
+                }
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "🔐 Fabric Authentication Analysis"
+    try {
+        # Test OAuth 2.0 scopes for Fabric
+        $fabricScopes = @(
+            "https://api.fabric.microsoft.com/Workspace.ReadWrite.All",
+            "https://api.fabric.microsoft.com/Item.ReadWrite.All",
+            "https://api.fabric.microsoft.com/Capacity.ReadWrite.All"
+        )
+        
+        foreach ($scope in $fabricScopes) {
+            Write-OSINTProperty "OAuth Scope" "📋 Required scope: $scope" Cyan
+            $fabricRecon.Authentication.Scopes += $scope
+        }
+        
+        # Test for service principal registration
+        if ($TenantId) {
+            $spUrl = "https://login.microsoftonline.com/$TenantId/oauth2/v2.0/token"
+            $spResponse = Invoke-WebRequestSafe -Uri $spUrl -SuppressErrors
+            if ($spResponse) {
+                Write-OSINTProperty "Service Principal Auth" "✅ Entra ID token endpoint available" Green
+                $fabricRecon.Authentication.ServicePrincipal = "Available"
+            }
+        }
+    }
+    catch { }
+    
+    return $fabricRecon
+}
+
+# Enhanced Power BI API Reconnaissance
+function Get-PowerBIAPIRecon {
+    param([string]$Domain, [string]$TenantId)
+    
+    Write-OSINTSection "📊 Power BI API Reconnaissance" "⚡"
+    
+    $powerBIRecon = @{
+        RestAPIs         = @{}
+        AdminAPIs        = @{}
+        EmbedAPIs        = @{}
+        Workspaces       = @{}
+        Reports          = @{}
+        Datasets         = @{}
+        Dashboards       = @{}
+        Authentication   = @{}
+        ServicePrincipal = @{}
+        BatchOperations  = @{}
+        PublicContent    = @{}
+        Security         = @{}
+    }
+    
+    Write-OSINTProgress "📊 Core Power BI REST API Discovery"
+    try {
+        # Test Core Power BI REST APIs
+        $powerBIAPIs = @{
+            "Workspaces" = "https://api.powerbi.com/v1.0/myorg/groups"
+            "Reports"    = "https://api.powerbi.com/v1.0/myorg/reports" 
+            "Datasets"   = "https://api.powerbi.com/v1.0/myorg/datasets"
+            "Dashboards" = "https://api.powerbi.com/v1.0/myorg/dashboards"
+            "Apps"       = "https://api.powerbi.com/v1.0/myorg/apps"
+            "Dataflows"  = "https://api.powerbi.com/v1.0/myorg/dataflows"
+            "Gateways"   = "https://api.powerbi.com/v1.0/myorg/gateways"
+            "Capacities" = "https://api.powerbi.com/v1.0/myorg/capacities"
+        }
+        
+        foreach ($api in $powerBIAPIs.GetEnumerator()) {
+            $response = Invoke-WebRequestSafe -Uri $api.Value -SuppressErrors
+            if ($response -and ($response.StatusCode -eq 401 -or $response.StatusCode -eq 403)) {
+                Write-OSINTProperty "$($api.Key) REST API" "✅ $($api.Value) - Authentication required" Yellow
+                $powerBIRecon.RestAPIs[$api.Key] = "RequiresAuth"
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "🔧 Power BI Admin API Discovery"
+    try {
+        # Test Admin APIs (require admin permissions)
+        $adminAPIs = @{
+            "Tenant Settings"  = "https://api.powerbi.com/v1.0/myorg/admin/tenantsettings"
+            "Usage Metrics"    = "https://api.powerbi.com/v1.0/myorg/admin/usagemetrics" 
+            "Audit Logs"       = "https://api.powerbi.com/v1.0/myorg/admin/activityevents"
+            "Workspaces Admin" = "https://api.powerbi.com/v1.0/myorg/admin/groups"
+            "Users"            = "https://api.powerbi.com/v1.0/myorg/admin/users"
+            "Capacities Admin" = "https://api.powerbi.com/v1.0/myorg/admin/capacities"
+            "Pipelines"        = "https://api.powerbi.com/v1.0/myorg/admin/pipelines"
+            "Encryption Keys"  = "https://api.powerbi.com/v1.0/myorg/admin/tenantKeys"
+        }
+        
+        foreach ($api in $adminAPIs.GetEnumerator()) {
+            $response = Invoke-WebRequestSafe -Uri $api.Value -SuppressErrors
+            if ($response -and ($response.StatusCode -eq 401 -or $response.StatusCode -eq 403)) {
+                Write-OSINTProperty "$($api.Key) Admin API" "✅ Admin API available - requires elevated auth" Yellow
+                $powerBIRecon.AdminAPIs[$api.Key] = "RequiresAdminAuth"
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "🎨 Embedding & Integration API Discovery"  
+    try {
+        # Test Embedding APIs
+        $embedAPIs = @{
+            "Embed Token"      = "https://api.powerbi.com/v1.0/myorg/GenerateToken"
+            "Embed Reports"    = "https://app.powerbi.com/reportEmbed"
+            "Embed Dashboards" = "https://app.powerbi.com/dashboardEmbed"  
+            "Embed Q&A"        = "https://app.powerbi.com/qnaEmbed"
+            "JavaScript SDK"   = "https://powerbi.microsoft.com/javascript/powerbi.js"
+        }
+        
+        foreach ($api in $embedAPIs.GetEnumerator()) {
+            $response = Invoke-WebRequestSafe -Uri $api.Value -SuppressErrors
+            if ($response) {
+                Write-OSINTProperty "$($api.Key) Embed API" "✅ Embedding infrastructure available" Green
+                $powerBIRecon.EmbedAPIs[$api.Key] = "Available"
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "🔐 Power BI Authentication Analysis"
+    try {
+        # Test OAuth 2.0 for Power BI
+        $powerBIScopes = @(
+            "https://analysis.windows.net/powerbi/api/.default",
+            "https://analysis.windows.net/powerbi/api/Dataset.ReadWrite.All",
+            "https://analysis.windows.net/powerbi/api/Report.ReadWrite.All",
+            "https://analysis.windows.net/powerbi/api/Workspace.ReadWrite.All"
+        )
+        
+        foreach ($scope in $powerBIScopes) {
+            Write-OSINTProperty "OAuth Scope" "📋 Power BI scope: $scope" Cyan
+            $powerBIRecon.Authentication.Scopes += $scope
+        }
+        
+        # Test service principal support
+        if ($TenantId) {
+            $tokenUrl = "https://login.microsoftonline.com/$TenantId/oauth2/v2.0/token"
+            $tokenResponse = Invoke-WebRequestSafe -Uri $tokenUrl -SuppressErrors
+            if ($tokenResponse) {
+                Write-OSINTProperty "Service Principal" "✅ Service principal authentication supported" Green
+                $powerBIRecon.ServicePrincipal.Supported = $true
+            }
+        }
+    }
+    catch { }
+    
+    Write-OSINTProgress "🌐 Public Content Discovery"
+    try {
+        $baseName = $Domain.Split('.')[0]
+        
+        # Search for public Power BI content
+        $searchTerms = @($Domain, $baseName, ($Domain.Split('.')[0] + " " + $Domain.Split('.')[1]))
+        
+        foreach ($term in $searchTerms) {
+            # Check Power BI community for public reports
+            $communityUrl = "https://community.powerbi.com/t5/forums/searchpage/tab/message?filter=location&q=$term"
+            $communityResponse = Invoke-WebRequestSafe -Uri $communityUrl -SuppressErrors
+            if ($communityResponse -and $communityResponse.Content -match $term) {
+                Write-OSINTProperty "Community Content" "✅ Organization mentioned in Power BI community" Yellow
+                $powerBIRecon.PublicContent.Community = "Found"
+            }
+            
+            # Check for public embed codes (example patterns)
+            $embedPatterns = @(
+                "app.powerbi.com/view?r=",
+                "app.powerbi.com/reportEmbed?reportId="
+            )
+            
+            foreach ($pattern in $embedPatterns) {
+                Write-OSINTProperty "Embed Pattern" "📋 Search pattern: $pattern + org identifiers" Cyan
+                $powerBIRecon.PublicContent.EmbedPatterns += $pattern
+            }
+        }
+    }
+    catch { }
+    
+    return $powerBIRecon
+}
+
 function Get-PowerBIFabricAnalysis {
     param([string]$Domain, [string]$TenantId)
     
@@ -3401,6 +3814,18 @@ function Start-AdvancedReconnaissance {
         # Phase 11: Power BI & Microsoft Fabric Analysis
         $advancedResults.PowerBIFabric = Get-PowerBIFabricAnalysis -Domain $Domain -TenantId $TenantId
         
+        # Phase 11.1: Microsoft Purview API Reconnaissance
+        Write-OSINTSection "Microsoft Purview API Reconnaissance" "🛡️"
+        $advancedResults.PurviewRecon = Get-MicrosoftPurviewRecon -Domain $Domain -TenantId $TenantId
+        
+        # Phase 11.2: Microsoft Fabric API Reconnaissance  
+        Write-OSINTSection "Microsoft Fabric API Reconnaissance" "🏭"
+        $advancedResults.FabricRecon = Get-MicrosoftFabricRecon -Domain $Domain -TenantId $TenantId
+        
+        # Phase 11.3: Power BI API Reconnaissance
+        Write-OSINTSection "Power BI API Reconnaissance" "📊"
+        $advancedResults.PowerBIRecon = Get-PowerBIAPIRecon -Domain $Domain -TenantId $TenantId
+        
         # Phase 12: Certificate Transparency
         Write-OSINTSection "Certificate Transparency Analysis" "🔐"
         $advancedResults.Certificates = Get-CertificateTransparency -Domain $Domain
@@ -3441,11 +3866,10 @@ function Start-AdvancedReconnaissance {
         Write-OSINTProperty "GitHub Repositories" $advancedResults.SocialMedia.GitHub.Count Green
         
         Write-Host ""
-        Write-Host "╔══════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Green
-        Write-Host "║" -ForegroundColor Green -NoNewline
-        Write-Host " Advanced OSINT Reconnaissance Completed Successfully!".PadRight(76) -ForegroundColor White -NoNewline  
-        Write-Host "║" -ForegroundColor Green
-        Write-Host "╚══════════════════════════════════════════════════════════════════════════════╝" -ForegroundColor Green
+        Write-Host "✅ " -NoNewline -ForegroundColor Green
+        Write-Host "Advanced OSINT Reconnaissance Completed Successfully!" -ForegroundColor White
+        Write-Host "📊 " -NoNewline -ForegroundColor Cyan
+        Write-Host "Report generated and saved" -ForegroundColor Gray
         
     }
     catch {
@@ -3492,126 +3916,134 @@ function Export-AdvancedResults {
 function Export-HTMLReport {
     param([hashtable]$Results, [string]$OutputPath)
     
+    # Calculate API endpoint counts to avoid complex PowerShell conditionals in HTML
+    $purviewAPICount = if ($Results.PurviewRecon -and $Results.PurviewRecon.DataPlaneAPIs) { 
+        $Results.PurviewRecon.DataPlaneAPIs.Keys.Count 
+    }
+    else { 0 }
+    
+    $fabricAPICount = if ($Results.FabricRecon -and $Results.FabricRecon.CoreAPIs) { 
+        $Results.FabricRecon.CoreAPIs.Keys.Count 
+    }
+    else { 0 }
+    
+    $powerBIAPICount = if ($Results.PowerBIRecon -and $Results.PowerBIRecon.RestAPIs) { 
+        $Results.PowerBIRecon.RestAPIs.Keys.Count 
+    }
+    else { 0 }
+    
+    $totalAPIEndpoints = $purviewAPICount + $fabricAPICount + $powerBIAPICount
+    
+    # Helper: build simple MITRE-like matrix cell (tactic -> techniques)
+    $buildMatrixSection = {
+        param($title, $items, $icon)
+        $cells = ""
+        if ($items -and $items.Count -gt 0) {
+            foreach ($i in $items) {
+                $cells += "<div class='tech-item'><span class='tech-dot'></span>$i</div>"
+            }
+        }
+        else {
+            $cells = "<div class='tech-item empty'>No data</div>"
+        }
+        return "<div class='matrix-col'><div class='matrix-col-header'>$icon $title</div><div class='matrix-body'>$cells</div></div>"
+    }
+
+    # Collect matrix columns (example mapping of gathered data -> tactics like style)
+    $matrixCols = @()
+    $matrixCols += & $buildMatrixSection 'Tenant Discovery' @($Results.TenantInfo.TenantId, $Results.TenantInfo.CloudInstance, $Results.TenantInfo.NameSpaceType) '🛰️'
+    $matrixCols += & $buildMatrixSection 'User Enumeration' ($Results.UserEnumeration.ValidUsers | ForEach-Object { $_.Username } | Select-Object -First 6) '👥'
+    $matrixCols += & $buildMatrixSection 'Network Surface' ($Results.NetworkIntelligence.Subdomains | ForEach-Object { $_.Subdomain } | Select-Object -First 6) '🌐'
+    $matrixCols += & $buildMatrixSection 'Auth & Flows' @($Results.AuthenticationAnalysis.AuthMethods + $Results.AuthenticationAnalysis.SupportedFlows) '🔐'
+    $matrixCols += & $buildMatrixSection 'APIs' @("Purview:$purviewAPICount", "Fabric:$fabricAPICount", "PowerBI:$powerBIAPICount") '⚙️'
+    $matrixCols += & $buildMatrixSection 'Azure Resources' (@($Results.ExtendedAzureResources.StorageAccounts | ForEach-Object Name | Select-Object -First 2) + (@($Results.ExtendedAzureResources.FunctionApps | ForEach-Object Name | Select-Object -First 2)) + (@($Results.ExtendedAzureResources.APIManagement | ForEach-Object Name | Select-Object -First 2))) '☁️'
+    $matrixCols += & $buildMatrixSection 'Certificates' ($Results.Certificates | ForEach-Object { $_.CommonName } | Select-Object -First 6) '📜'
+    # Ensure we pass primitive strings (names or urls) to the matrix builder to avoid System.Collections.Hashtable output
+    $socialItems = @()
+    if ($Results.SocialMedia.GitHub) {
+        $Results.SocialMedia.GitHub | Select-Object -First 4 | ForEach-Object {
+            $socialItems += ($_.Name ?? $_.full_name ?? $_.Url ?? $_.html_url) -as [string]
+        }
+    }
+    if ($Results.SocialMedia.LinkedIn) {
+        $Results.SocialMedia.LinkedIn | Select-Object -First 2 | ForEach-Object {
+            $socialItems += ($_.Url ?? $_.ProfileUrl) -as [string]
+        }
+    }
+    $matrixCols += & $buildMatrixSection 'Social / Repos' $socialItems '📱'
+
+    $matrixHTML = "<div class='matrix-wrapper'>" + ($matrixCols -join '') + "</div>"
+
+    
+
     $html = @"
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>⚡ CYBEROSINT - Azure AD Recon Terminal ⚡</title>
+    <title>⚡ CYBEROSINT - Azure Recon Terminal ⚡</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        body { 
-            font-family: 'JetBrains Mono', 'Consolas', monospace; 
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #00ff9f;
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-            padding: 20px;
-        }
+    body { font-family: 'JetBrains Mono','Consolas',monospace; background:#0b0e17; color:#d6e7ff; line-height:1.45; margin:0; font-size:15px; }
+    h1,h2,h3 { font-family:'Orbitron',monospace; font-weight:700; letter-spacing:.5px; }
+    h1 { font-size:1.8rem; }
+    h2 { font-size:1.05rem; }
+    h3 { font-size:.9rem; }
+        a { color:#59d6ff; }
+        .container { max-width:1600px; margin:0 auto; padding:25px 30px 60px 30px; }
+        .top-bar { display:flex; flex-wrap:wrap; gap:25px; align-items:flex-end; margin-bottom:25px; }
+        .report-title { font-size:2.2rem; margin:0; color:#66f7d9; text-shadow:0 0 8px #1ef2b3; }
+        .meta { display:flex; flex-wrap:wrap; gap:18px; font-size:.75rem; text-transform:uppercase; letter-spacing:1px; }
+        .meta-item { background:#131b29; padding:6px 10px; border:1px solid #223248; border-radius:4px; color:#9ab3c9; }
+        .status-chip { padding:4px 10px; border-radius:12px; font-weight:600; background:#143723; color:#52f6b5; }
+        /* MITRE-like matrix */
+        .matrix-section-title { margin:10px 0 12px 0; font-size:1.1rem; color:#8cc7ff; text-transform:uppercase; letter-spacing:2px; }
+    /* Stack matrix columns vertically to fit narrow pages better */
+    .matrix-wrapper { display:grid; grid-auto-flow:row; grid-template-columns: 1fr; gap:10px; padding:12px; background:#0f1622; border:1px solid #1f2c3a; border-radius:6px; }
+    .matrix-col { background:#121c29; border:1px solid #243345; border-radius:4px; display:flex; flex-direction:column; min-height:120px; width:100%; }
+        .matrix-col-header { font-size:.70rem; font-weight:700; padding:6px 8px; background:#1b2836; color:#73e0ff; text-transform:uppercase; border-bottom:1px solid #243345; letter-spacing:1px; }
+        .matrix-body { padding:6px 6px 10px 6px; display:flex; flex-direction:column; gap:4px; }
+        .tech-item { position:relative; font-size:.68rem; line-height:1.1rem; padding:4px 6px 4px 16px; background:#182535; border:1px solid #223347; border-radius:3px; color:#b8d5ef; }
+        .tech-item:hover { background:#1f3145; }
+        .tech-item.empty { color:#546575; font-style:italic; }
+        .tech-dot { position:absolute; left:6px; top:8px; width:6px; height:6px; border-radius:50%; background:#35cfa4; box-shadow:0 0 4px #35cfa4; }
+        /* Stat tiles row */
+        .stats-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin:30px 0 10px 0; }
+        .tile { background:#121c29; border:1px solid #243345; border-radius:6px; padding:10px 12px; text-align:center; }
+        .tile h4 { margin:4px 0 2px 0; font-size:.65rem; font-weight:600; letter-spacing:1px; color:#7fa8c7; text-transform:uppercase; }
+        .tile .val { font-size:1.35rem; font-weight:700; color:#6cf7d7; }
+        .sections { margin-top:25px; display:flex; flex-direction:column; gap:26px; }
+        .section { background:#0f1622; border:1px solid #1f2c3a; border-radius:6px; }
+        .section-header { padding:10px 14px; border-bottom:1px solid #1f2c3a; display:flex; align-items:center; gap:10px; }
+        .section-header h2 { margin:0; font-size:1rem; color:#8cc7ff; text-transform:uppercase; letter-spacing:2px; }
+        .section-content { padding:14px 18px 20px 18px; }
+        table { width:100%; border-collapse:collapse; font-size:.7rem; }
+        th,td { padding:6px 8px; border:1px solid #223445; }
+        th { background:#152231; color:#82d9ff; font-weight:600; letter-spacing:1px; }
+        tbody tr:nth-child(even){ background:#13202e; }
+        tbody tr:hover { background:#1b2c3c; }
+        .status-success { color:#4be7b1; }
+        .status-warning { color:#ffcc66; }
+        .status-error { color:#ff667d; }
+        .status-info { color:#59d6ff; }
+        .status-neutral { color:#9ab3c9; }
+        .subgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; }
+        .panel { background:#121c29; border:1px solid #243345; border-radius:4px; padding:10px 12px; }
+        .panel h3 { margin:0 0 6px 0; font-size:.75rem; color:#73e0ff; text-transform:uppercase; letter-spacing:1px; }
+        .list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px; }
+        .list li { font-size:.65rem; background:#182535; border:1px solid #223347; padding:4px 6px; border-radius:3px; overflow:hidden; text-overflow:ellipsis; }
+        .list li:hover { background:#203246; }
+        .note { font-size:.62rem; color:#6f8599; margin-top:4px; }
+        .footer { margin-top:50px; text-align:center; font-size:.6rem; color:#4e6479; padding:25px 0 10px 0; border-top:1px solid #1f2c3a; }
+    @media (max-width:1100px){ .matrix-wrapper { grid-template-columns: 1fr; } }
+        @media (max-width:700px){ .report-title{font-size:1.6rem;} .matrix-col{min-height:200px;} }
         
-        .container { max-width: 1200px; margin: 0 auto; }
-        
-        .cyber-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 30px;
-            border: 2px solid #00ff9f;
-            border-radius: 15px;
-            background: rgba(0, 255, 159, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .cyber-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 255, 159, 0.03) 2px,
-                rgba(0, 255, 159, 0.03) 4px
-            );
-            animation: matrix 20s linear infinite;
-            pointer-events: none;
-        }
-        
-        @keyframes matrix {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(50px); }
-        }
-        
-        .cyber-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5em;
-            color: #00ff9f;
-            text-shadow: 0 0 20px #00ff9f, 0 0 40px #00ff9f;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .cyber-subtitle {
-            font-size: 1.2em;
-            color: #00ffff;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .scan-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .scan-info-item {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #00ff9f;
-        }
-        
-        .section {
-            margin: 30px 0;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid #00ff9f;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .section-header {
-            background: linear-gradient(45deg, rgba(0, 255, 159, 0.2), rgba(0, 255, 255, 0.1));
-            padding: 15px 20px;
-            border-bottom: 1px solid #00ff9f;
-        }
-        
-        .section-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.4em;
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff;
-        }
-        
-        .section-content { padding: 20px; }
-        
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-        
-        .data-row {
-            display: flex;
-            justify-content: space-between;
+        .data-row { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:6px; }
+        .data-label { font-size:.62rem; letter-spacing:.5px; text-transform:uppercase; color:#7fa8c7; min-width:120px; }
+        .data-value { font-size:.7rem; font-weight:600; }
             align-items: center;
             padding: 8px 0;
             border-bottom: 1px solid rgba(0, 255, 159, 0.2);
@@ -3691,34 +4123,187 @@ function Export-HTMLReport {
             box-shadow: 0 5px 15px rgba(0, 255, 159, 0.3);
         }
         
-        .interactive-stats {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin: 20px 0;
         }
         
-        .interactive-stat-card {
-            background: rgba(0, 0, 0, 0.6);
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 255, 159, 0.1));
             border: 2px solid #00ff9f;
             border-radius: 12px;
-            overflow: hidden;
+            padding: 25px;
+            text-align: center;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
         
-        .interactive-stat-card:hover {
+        .stat-card:hover {
             border-color: #00ffff;
-            box-shadow: 0 5px 20px rgba(0, 255, 159, 0.3);
-            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 159, 0.3);
+            transform: translateY(-3px);
         }
         
-        .stat-main {
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .stat-number {
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #00ff9f;
+            text-shadow: 0 0 15px #00ff9f;
+            display: block;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #cccccc;
+            font-size: 1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .detail-section {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 159, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .detail-header {
+            background: linear-gradient(90deg, rgba(0, 255, 159, 0.2), rgba(0, 255, 255, 0.1));
             padding: 20px;
+            border-bottom: 1px solid rgba(0, 255, 159, 0.3);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            position: relative;
+            gap: 15px;
+        }
+        
+        .detail-icon {
+            font-size: 1.5em;
+        }
+        
+        .detail-header h3 {
+            margin: 0;
+            color: #00ff9f;
+            font-size: 1.3em;
+        }
+        
+        .detail-content {
+            padding: 25px;
+        }
+        
+        .method-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .method-item {
+            background: rgba(0, 255, 159, 0.1);
+            padding: 10px 15px;
+            border-radius: 5px;
+            border-left: 3px solid #00ff9f;
+        }
+        
+        .data-table {
+            overflow-x: auto;
+        }
+        
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .info-table th {
+            background: rgba(0, 255, 159, 0.2);
+            color: #00ff9f;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #00ff9f;
+        }
+        
+        .info-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0, 255, 159, 0.1);
+        }
+        
+        .info-table tr:hover {
+            background: rgba(0, 255, 159, 0.05);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        .empty-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .empty-text {
+            font-style: italic;
+            font-size: 1.1em;
+        }
+        
+        .resource-grid, .auth-grid, .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .resource-category, .auth-category, .social-category {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid rgba(0, 255, 159, 0.2);
+        }
+        
+        .resource-title, .auth-title, .social-title {
+            color: #00ffff;
+            margin: 0 0 15px 0;
+            font-size: 1.1em;
+        }
+        
+        .resource-list, .auth-list, .social-list, .api-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .resource-item, .auth-item, .social-item {
+            padding: 8px 12px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #00ff9f;
+        }
+        
+        .social-name {
+            font-weight: bold;
+            color: #00ff9f;
+        }
+        
+        .social-desc {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-top: 4px;
         }
         
         .stat-number {
@@ -3744,22 +4329,95 @@ function Export-HTMLReport {
             transition: transform 0.3s ease;
         }
         
-        .stat-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease, padding 0.4s ease;
-            background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(0, 255, 159, 0.3);
+        .stat-card .stat-icon {
+            font-size: 1.8em;
+            margin-bottom: 5px;
         }
         
-        .stat-details.active {
-            max-height: 600px;
-            padding: 20px;
+        .stat-card .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #00ff9f;
+            text-shadow: 0 0 8px #00ff9f;
         }
         
-        .interactive-stat-card.active .expand-icon {
-            transform: rotate(180deg);
+        .stat-card .stat-label {
+            color: #cccccc;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+        
+        .detail-section {
+            background: rgba(15, 25, 35, 0.9);
+            border: 1px solid rgba(0, 255, 159, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-header {
+            font-size: 0.95em;
+            font-weight: bold;
+            color: #00ff9f;
+            margin-bottom: 8px;
+            text-shadow: 0 0 5px #00ff9f;
+        }
+        
+        .detail-content {
+            font-size: 0.8em;
+            line-height: 1.4;
+        }
+        
+        .method-item {
+            font-size: 0.75em;
+            padding: 2px 0;
+            color: #cccccc;
+        }
+        
+        .data-table {
+            font-size: 0.75em;
+        }
+        
+        .info-table th {
+            font-size: 0.7em;
+            padding: 4px 8px;
+        }
+        
+        .info-table td {
+            font-size: 0.7em;
+            padding: 3px 8px;
+        }
+        
+        .empty-text {
+            font-size: 0.75em;
+        }
+        
+        .info-card {
+            background: rgba(15, 25, 35, 0.9);
+            border: 1px solid rgba(0, 255, 159, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .info-header {
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #00ff9f;
+            margin-bottom: 5px;
+        }
+        
+        .info-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff;
+        }
+        
+
         
         .detail-header {
             color: #00ffff;
@@ -3775,19 +4433,19 @@ function Export-HTMLReport {
             line-height: 1.6;
         }
         
-        .detail-list, .auth-list, .resource-list, .social-list {
+        .detail-list, .auth-list, .resource-list, .social-list, .api-list {
             list-style: none;
             padding: 0;
             margin: 10px 0;
         }
         
-        .detail-list li, .auth-list li, .resource-list li, .social-list li {
+        .detail-list li, .auth-list li, .resource-list li, .social-list li, .api-list li {
             padding: 5px 0;
             border-bottom: 1px solid rgba(0, 255, 159, 0.1);
         }
         
         .detail-list li:last-child, .auth-list li:last-child, 
-        .resource-list li:last-child, .social-list li:last-child {
+        .resource-list li:last-child, .social-list li:last-child, .api-list li:last-child {
             border-bottom: none;
         }
         
@@ -3823,7 +4481,7 @@ function Export-HTMLReport {
             border-left: 3px solid #00ff9f;
         }
         
-        .resource-list, .auth-list, .social-list {
+        .resource-list, .auth-list, .social-list, .api-list {
             margin-top: 8px;
         }
         
@@ -3854,7 +4512,7 @@ function Export-HTMLReport {
         
         .collapsible-content.active { max-height: 1000px; }
         
-        .highlight { background: rgba(255, 255, 0, 0.2); padding: 2px 4px; border-radius: 3px; }
+    .highlight { background:#1d2c3b; padding:2px 4px; border-radius:3px; }
         
         @media (max-width: 768px) {
             .grid-2, .grid-3 { grid-template-columns: 1fr; }
@@ -3862,34 +4520,36 @@ function Export-HTMLReport {
             .section-content { padding: 15px; }
         }
         
-        .footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            border-top: 1px solid rgba(0, 255, 159, 0.3);
-            color: #666;
-        }
+        .resource-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+        .res-block { background:#121c29; border:1px solid #243345; border-radius:4px; padding:8px 10px; }
+        .res-block h4 { margin:0 0 6px 0; font-size:.65rem; text-transform:uppercase; letter-spacing:1px; color:#73e0ff; }
+        .res-count { font-size:.95rem; font-weight:700; color:#6cf7d7; }
+        .res-items { list-style:none; margin:6px 0 0 0; padding:0; display:flex; flex-direction:column; gap:3px; max-height:130px; overflow:auto; }
+        .res-items li { font-size:.6rem; background:#182535; border:1px solid #223347; padding:3px 5px; border-radius:3px; word-break:break-all; }
+        .res-items li:hover { background:#203246; }
+    .mapping-comment { display:block; margin:12px 0; padding:12px; background:rgba(0,0,0,0.45); border:1px solid rgba(0,255,159,0.12); border-radius:6px; }
+    .footer { text-align:center; padding:30px; margin-top:50px; border-top:1px solid #1f2c3a; color:#4e6479; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="cyber-header">
-            <h1 class="cyber-title">⚡ CYBEROSINT RECON ENGINE ⚡</h1>
-            <div class="cyber-subtitle">Advanced Azure & Entra ID OSINT Analysis</div>
-            <div class="scan-info">
-                <div class="scan-info-item">
-                    <strong>TARGET:</strong> $($Results.Domain)
-                </div>
-                <div class="scan-info-item">
-                    <strong>SCAN TIME:</strong> $($Results.Timestamp)
-                </div>
-                <div class="scan-info-item">
-                    <strong>DURATION:</strong> $($Results.ScanDuration)
-                </div>
-                <div class="scan-info-item">
-                    <strong>STATUS:</strong> <span class="status-success">COMPLETE</span>
+        <div class="top-bar">
+            <div style="flex:1 1 auto;min-width:260px;">
+                <h1 class="report-title">Azure / Entra OSINT Recon Matrix</h1>
+                <div class="meta">
+                    <div class="meta-item">Target: $($Results.Domain)</div>
+                    <div class="meta-item">Scan: $($Results.Timestamp)</div>
+                    <div class="meta-item">Duration: $($Results.ScanDuration)</div>
+                    <div class="meta-item">Tenant: $(if($Results.TenantInfo.TenantId){"<span class='status-success'>Identified</span>"}else{"<span class='status-error'>Not Found</span>"})</div>
+                    <div class="meta-item">Status: <span class="status-chip">Complete</span></div>
                 </div>
             </div>
+        </div>
+
+        <!-- Export Mapping removed as per user request -->
+        <div>
+            <div class="matrix-section-title">Recon Matrix Overview</div>
+            $matrixHTML
         </div>
 
         <div class="section">
@@ -3949,73 +4609,85 @@ function Export-HTMLReport {
         </div>
 
         <div class="section">
-            <div class="section-header">
-                <div class="section-title">📊 Interactive Reconnaissance Dashboard</div>
-            </div>
+            <div class="section-header"><h2>📊 Key Statistics</h2></div>
             <div class="section-content">
-                <div class="interactive-stats">
-                    <div class="interactive-stat-card" onclick="toggleDetails('users-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.UserEnumeration.ValidUsers.Count)</span>
-                            <span class="stat-label">👥 Valid Users</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="users-details">
-                            <div class="detail-header">User Enumeration Methods:</div>
-                            <ul class="detail-list">
-                                <li>🔍 GetCredentialType API validation</li>
-                                <li>☁️ OneDrive for Business discovery</li>
-                                <li>📊 Microsoft Graph API probing</li>
-                                <li>🔐 Device code flow analysis</li>
-                            </ul>
+                <div class="stats-row">
+                    <div class="tile"><h4>Users</h4><div class="val">$($Results.UserEnumeration.ValidUsers.Count)</div></div>
+                    <div class="tile"><h4>Subdomains</h4><div class="val">$($Results.NetworkIntelligence.Subdomains.Count)</div></div>
+                    <div class="tile"><h4>Azure Res</h4><div class="val">$(($Results.ExtendedAzureResources.StorageAccounts.Count + $Results.ExtendedAzureResources.FunctionApps.Count + $Results.ExtendedAzureResources.APIManagement.Count))</div></div>
+                    <div class="tile"><h4>Auth Methods</h4><div class="val">$($Results.AuthenticationAnalysis.AuthMethods.Count)</div></div>
+                    <div class="tile"><h4>OAuth Flows</h4><div class="val">$($Results.AuthenticationAnalysis.SupportedFlows.Count)</div></div>
+                    <div class="tile"><h4>API Endpoints</h4><div class="val">$totalAPIEndpoints</div></div>
+                    <div class="tile"><h4>Certificates</h4><div class="val">$($Results.Certificates.Count)</div></div>
+                    <div class="tile"><h4>GitHub Repos</h4><div class="val">$($Results.SocialMedia.GitHub.Count)</div></div>
+                    <div class="tile"><h4>LinkedIn</h4><div class="val">$($Results.SocialMedia.LinkedIn.Count)</div></div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-section">
+                        <div class="detail-header">👥 User Enumeration Results</div>
+                        <div class="detail-content">
+                            <div class="method-list">
+                                <div class="method-item">🔍 GetCredentialType API validation</div>
+                                <div class="method-item">☁️ OneDrive for Business discovery</div>
+                                <div class="method-item">📊 Microsoft Graph API probing</div>
+                                <div class="method-item">🔐 Device code flow analysis</div>
+                            </div>
                             $(if($Results.UserEnumeration.ValidUsers.Count -gt 0) {
-                                "<div class='detail-content'>
-                                    <table class='mini-table'>
-                                        <tr><th>Username</th><th>Method</th><th>Confidence</th></tr>"
-                                foreach($user in $Results.UserEnumeration.ValidUsers | Select-Object -First 5) {
+                                "<div class='data-table'>
+                                    <table class='info-table'>
+                                        <thead>
+                                            <tr><th>Username</th><th>Discovery Method</th><th>Confidence Level</th></tr>
+                                        </thead>
+                                        <tbody>"
+                                foreach($user in $Results.UserEnumeration.ValidUsers | Select-Object -First 10) {
                                     "<tr><td class='status-success'>$($user.Username)</td><td>$($user.Method)</td><td class='$(if($user.Confidence -eq 'High'){'status-success'}else{'status-warning'})'>$($user.Confidence)</td></tr>"
                                 }
-                                "</table>
+                                if($Results.UserEnumeration.ValidUsers.Count -gt 10) {
+                                    "<tr><td colspan='3' class='status-neutral'><em>... and $(($Results.UserEnumeration.ValidUsers.Count - 10)) more users discovered</em></td></tr>"
+                                }
+                                "</tbody></table>
                                 </div>"
                             } else {
-                                "<div class='detail-content'><em>No valid users discovered through enumeration</em></div>"
+                                "<div class='empty-state'>
+                                    <div class='empty-icon'>👥</div>
+                                    <div class='empty-text'>No valid users discovered through enumeration techniques</div>
+                                </div>"
                             })
                         </div>
                     </div>
 
-                    <div class="interactive-stat-card" onclick="toggleDetails('subdomains-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.NetworkIntelligence.Subdomains.Count)</span>
-                            <span class="stat-label">🌐 Subdomains</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="subdomains-details">
-                            <div class="detail-header">Subdomain Discovery:</div>
+                    <div class="detail-section">
+                        <div class="detail-header">🌐 Subdomain Discovery</div>
+                        <div class="detail-content">
                             $(if($Results.NetworkIntelligence.Subdomains.Count -gt 0) {
-                                "<div class='detail-content'>
-                                    <table class='mini-table'>
-                                        <tr><th>Subdomain</th><th>IP Addresses</th><th>Status</th></tr>"
-                                foreach($subdomain in $Results.NetworkIntelligence.Subdomains | Select-Object -First 10) {
+                                "<div class='data-table'>
+                                    <table class='info-table'>
+                                        <thead>
+                                            <tr><th>Subdomain</th><th>IP Addresses</th><th>Status</th></tr>
+                                        </thead>
+                                        <tbody>"
+                                foreach($subdomain in $Results.NetworkIntelligence.Subdomains | Select-Object -First 15) {
                                     "<tr><td class='status-info'>$($subdomain.Subdomain)</td><td class='status-success'>$($subdomain.IPAddresses -join ', ')</td><td class='status-success'>✓ Active</td></tr>"
                                 }
-                                if($Results.NetworkIntelligence.Subdomains.Count -gt 10) {
-                                    "<tr><td colspan='3' class='status-neutral'><em>... and $(($Results.NetworkIntelligence.Subdomains.Count - 10)) more subdomains</em></td></tr>"
+                                if($Results.NetworkIntelligence.Subdomains.Count -gt 15) {
+                                    "<tr><td colspan='3' class='status-neutral'><em>... and $(($Results.NetworkIntelligence.Subdomains.Count - 15)) more subdomains</em></td></tr>"
                                 }
-                                "</table>
+                                "</tbody></table>
                                 </div>"
                             } else {
-                                "<div class='detail-content'><em>No subdomains discovered</em></div>"
+                                "<div class='empty-state'>
+                                    <div class='empty-icon'>🌐</div>
+                                    <div class='empty-text'>No subdomains discovered through DNS enumeration</div>
+                                </div>"
                             })
                         </div>
                     </div>
 
-                    <div class="interactive-stat-card" onclick="toggleDetails('azure-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$(($Results.ExtendedAzureResources.StorageAccounts.Count + $Results.ExtendedAzureResources.FunctionApps.Count + $Results.ExtendedAzureResources.APIManagement.Count))</span>
-                            <span class="stat-label">☁️ Azure Resources</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="azure-details">
+                    <div class="panel">
+                        <div class="info-header">☁️ Azure Resources</div>
+                        <div class="note">Total: $(($Results.ExtendedAzureResources.StorageAccounts.Count + $Results.ExtendedAzureResources.FunctionApps.Count + $Results.ExtendedAzureResources.APIManagement.Count))</div>
+                        <div class="detail-section">
                             <div class="detail-header">Azure Resource Discovery:</div>
                             <div class="detail-content">
                                 <div class="resource-breakdown">
@@ -4054,13 +4726,57 @@ function Export-HTMLReport {
                         </div>
                     </div>
 
-                    <div class="interactive-stat-card" onclick="toggleDetails('auth-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.AuthenticationAnalysis.AuthMethods.Count + $Results.AuthenticationAnalysis.SupportedFlows.Count)</span>
-                            <span class="stat-label">🔐 Auth Methods</span>
-                            <span class="expand-icon">▼</span>
+                    <div class="panel">
+                        <div class="info-header">⚡ API Endpoints</div>
+                        <div class="note">Total: $totalAPIEndpoints</div>
+                        <div class="detail-section">
+                            <div class="detail-header">API Reconnaissance Summary:</div>
+                            <div class="detail-content">
+                                        <div class="api-breakdown">
+                                            <div class="api-section">
+                                                <strong>🛡️ Microsoft Purview</strong>
+                                                $(if($Results.PurviewRecon) {
+                                                    $dpCount = if($Results.PurviewRecon.DataPlaneAPIs){ $Results.PurviewRecon.DataPlaneAPIs.Keys.Count } else { 0 }
+                                                    $cpCount = if($Results.PurviewRecon.ControlPlaneAPIs){ $Results.PurviewRecon.ControlPlaneAPIs.Keys.Count } else { 0 }
+                                                    "<div class='note'>Data-plane: $dpCount &middot; Control-plane: $cpCount</div>" +
+                                                    $(if($dpCount -gt 0){
+                                                        "<ul class='api-list'>" + ($Results.PurviewRecon.DataPlaneAPIs.Keys | Select-Object -First 6 | ForEach-Object { "<li class='status-warning'>" + [System.Web.HttpUtility]::HtmlEncode($_) + "</li>" }) -join '' + "</ul>"
+                                                    } else { "<p class='status-info'>No data-plane endpoints discovered</p>" })
+                                                } else {
+                                                    "<p class='status-info'>No Purview presence detected</p>"
+                                                })
+                                            </div>
+                                            <div class="api-section">
+                                                <strong>🏭 Microsoft Fabric</strong>
+                                                $(if($Results.FabricRecon) {
+                                                    $core = if($Results.FabricRecon.CoreAPIs){ $Results.FabricRecon.CoreAPIs.Keys.Count } else {0}
+                                                    $work = if($Results.FabricRecon.WorkloadAPIs){ $Results.FabricRecon.WorkloadAPIs.Keys.Count } else {0}
+                                                    "<div class='note'>Core APIs: $core &middot; Workload APIs: $work</div>" +
+                                                    $(if($core -gt 0){ "<ul class='api-list'>" + ($Results.FabricRecon.CoreAPIs.Keys | Select-Object -First 6 | ForEach-Object { "<li class='status-warning'>" + [System.Web.HttpUtility]::HtmlEncode($_) + "</li>" }) -join '' + "</ul>" } else { "<p class='status-info'>No Fabric core APIs discovered</p>" })
+                                                } else {
+                                                    "<p class='status-info'>No Fabric presence detected</p>"
+                                                })
+                                            </div>
+                                            <div class="api-section">
+                                                <strong>📊 Power BI</strong>
+                                                $(if($Results.PowerBIRecon) {
+                                                    $rest = if($Results.PowerBIRecon.RestAPIs){ $Results.PowerBIRecon.RestAPIs.Keys.Count } else {0}
+                                                    $adm = if($Results.PowerBIRecon.AdminAPIs){ $Results.PowerBIRecon.AdminAPIs.Keys.Count } else {0}
+                                                    "<div class='note'>REST: $rest &middot; Admin: $adm</div>" +
+                                                    $(if($rest -gt 0){ "<ul class='api-list'>" + ($Results.PowerBIRecon.RestAPIs.Keys | Select-Object -First 6 | ForEach-Object { "<li class='status-warning'>" + [System.Web.HttpUtility]::HtmlEncode($_) + "</li>" }) -join '' + "</ul>" } else { "<p class='status-info'>No Power BI REST endpoints discovered</p>" })
+                                                } else {
+                                                    "<p class='status-info'>No Power BI presence detected</p>"
+                                                })
+                                            </div>
+                                        </div>
+                            </div>
                         </div>
-                        <div class="stat-details" id="auth-details">
+                    </div>
+
+                    <div class="panel">
+                        <div class="info-header">🔐 Auth Methods</div>
+                        <div class="note">Methods: $($Results.AuthenticationAnalysis.AuthMethods.Count) | Flows: $($Results.AuthenticationAnalysis.SupportedFlows.Count)</div>
+                        <div class="detail-section">
                             <div class="detail-header">Authentication Analysis:</div>
                             <div class="detail-content">
                                 <div class="auth-breakdown">
@@ -4095,13 +4811,10 @@ function Export-HTMLReport {
                         </div>
                     </div>
 
-                    <div class="interactive-stat-card" onclick="toggleDetails('certs-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.Certificates.Count)</span>
-                            <span class="stat-label">📜 Certificates</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="certs-details">
+                    <div class="panel">
+                        <div class="info-header">📜 Certificates</div>
+                        <div class="note">Total: $($Results.Certificates.Count)</div>
+                        <div class="detail-section">
                             <div class="detail-header">Certificate Transparency Analysis:</div>
                             $(if($Results.Certificates.Count -gt 0) {
                                 "<div class='detail-content'>
@@ -4121,34 +4834,32 @@ function Export-HTMLReport {
                         </div>
                     </div>
 
-                    <div class="interactive-stat-card" onclick="toggleDetails('social-details')">
-                        <div class="stat-main">
-                            <span class="stat-number">$($Results.SocialMedia.GitHub.Count + $Results.SocialMedia.LinkedIn.Count)</span>
-                            <span class="stat-label">📱 Social Media</span>
-                            <span class="expand-icon">▼</span>
-                        </div>
-                        <div class="stat-details" id="social-details">
+                    <div class="panel">
+                        <div class="info-header">📱 Social Media</div>
+                        <div class="note">GitHub: $($Results.SocialMedia.GitHub.Count) | LinkedIn: $($Results.SocialMedia.LinkedIn.Count)</div>
+                        <div class="detail-section">
                             <div class="detail-header">Digital Footprint Analysis:</div>
                             <div class="detail-content">
                                 <div class="social-breakdown">
                                     <div class="social-section">
                                         <strong>🐙 GitHub Repositories:</strong> $($Results.SocialMedia.GitHub.Count)
                                         $(if($Results.SocialMedia.GitHub.Count -gt 0) {
-                                            "<ul class='social-list'>"
-                                            foreach($repo in $Results.SocialMedia.GitHub | Select-Object -First 5) {
-                                                "<li class='status-success'><a href='https://github.com/$repo' target='_blank'>$repo</a></li>"
-                                            }
+                                            "<ul class='social-list'>" +
+                                            ($Results.SocialMedia.GitHub | Select-Object -First 10 | ForEach-Object {
+                                                $name = $_.Name
+                                                $url  = $_.Url
+                                                "<li class='status-success'><a href='" + $url + "' target='_blank'>" + [System.Web.HttpUtility]::HtmlEncode($name) + "</a> <span class='note' style='margin-left:8px;'>⭐ " + ($_.Stars -as [string]) + "</span></li>"
+                                            }) -join '' +
                                             "</ul>"
                                         })
                                     </div>
                                     <div class="social-section">
                                         <strong>💼 LinkedIn Profiles:</strong> $($Results.SocialMedia.LinkedIn.Count)
                                         $(if($Results.SocialMedia.LinkedIn.Count -gt 0) {
-                                            "<ul class='social-list'>"
-                                            foreach($profile in $Results.SocialMedia.LinkedIn | Select-Object -First 5) {
-                                                "<li class='status-info'>$profile</li>"
-                                            }
-                                            "</ul>"
+                                            "<ul class='social-list'>" + ($Results.SocialMedia.LinkedIn | Select-Object -First 10 | ForEach-Object {
+                                                $url = $_.Url
+                                                "<li class='status-info'><a href='" + $url + "' target='_blank'>" + [System.Web.HttpUtility]::HtmlEncode($url) + "</a></li>"
+                                            }) -join '' + "</ul>"
                                         })
                                     </div>
                                 </div>
@@ -4269,7 +4980,7 @@ function Export-HTMLReport {
             </div>"
         })
 
-        $(if($Results.SecurityPosture) {
+    $(if($Results.SecurityPosture) {
             "<div class='section'>
                 <div class='section-header'>
                     <div class='section-title'>🛡️ Security Posture Analysis</div>
@@ -4318,7 +5029,7 @@ function Export-HTMLReport {
             </div>"
         })
 
-        $(if($Results.PowerBIFabric) {
+    $(if($Results.PowerBIFabric) {
             "<div class='section'>
                 <div class='section-header'>
                     <div class='section-title'>⚡ Power BI & Microsoft Fabric</div>
@@ -4351,6 +5062,299 @@ function Export-HTMLReport {
                 </div>
             </div>"
         })
+
+    $(if($Results.PurviewRecon) {
+            "<div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>🛡️ Microsoft Purview API Reconnaissance</div>
+                </div>
+                <div class='section-content'>"
+                    "<h4 style='color: #00ffff; margin-bottom: 15px;'>📋 Data Governance & Compliance APIs</h4>"
+                    "<div class='grid-2'>"
+                    
+            if($Results.PurviewRecon.PurviewAccounts -and $Results.PurviewRecon.PurviewAccounts.Keys.Count -gt 0) {
+                foreach($account in $Results.PurviewRecon.PurviewAccounts.Keys) {
+                    "<div class='data-row'>
+                        <div class='data-label'>Purview Account:</div>
+                        <div class='data-value status-success'>✅ $account.purview.azure.com</div>
+                    </div>"
+                }
+            }
+            
+            if($Results.PurviewRecon.DataPlaneAPIs -and $Results.PurviewRecon.DataPlaneAPIs.Keys.Count -gt 0) {
+                "<div class='data-row'>
+                    <div class='data-label'>Data Plane APIs:</div>
+                    <div class='data-value status-warning'>🔐 $($Results.PurviewRecon.DataPlaneAPIs.Keys.Count) endpoints (auth required)</div>
+                </div>"
+            }
+            
+            if($Results.PurviewRecon.ControlPlaneAPIs -and $Results.PurviewRecon.ControlPlaneAPIs.Keys.Count -gt 0) {
+                "<div class='data-row'>
+                    <div class='data-label'>Control Plane APIs:</div>
+                    <div class='data-value status-warning'>⚙️ $($Results.PurviewRecon.ControlPlaneAPIs.Keys.Count) management endpoints</div>
+                </div>"
+            }
+            
+            if($Results.PurviewRecon.Authentication.OAuth2) {
+                "<div class='data-row'>
+                    <div class='data-label'>OAuth2 Authentication:</div>
+                    <div class='data-value status-success'>✅ Entra ID integration available</div>
+                </div>"
+            }
+            
+            if($Results.PurviewRecon.Security.KeyVault) {
+                "<div class='data-row'>
+                    <div class='data-label'>Key Vault Integration:</div>
+                    <div class='data-value status-success'>🔑 Detected</div>
+                </div>"
+            }
+            
+            "</div>
+                </div>
+            </div>"
+        })
+
+    $(if($Results.FabricRecon) {
+            "<div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>🏭 Microsoft Fabric API Reconnaissance</div>
+                </div>
+                <div class='section-content'>"
+                    "<h4 style='color: #00ffff; margin-bottom: 15px;'>⚡ Data Platform & Workload APIs</h4>"
+                    "<div class='grid-2'>"
+                    
+            if($Results.FabricRecon.CoreAPIs -and $Results.FabricRecon.CoreAPIs.Keys.Count -gt 0) {
+                "<div class='data-row'>
+                    <div class='data-label'>Core Fabric APIs:</div>
+                    <div class='data-value status-warning'>🔐 $($Results.FabricRecon.CoreAPIs.Keys.Count) endpoints (auth required)</div>
+                </div>"
+            }
+            
+            if($Results.FabricRecon.WorkloadAPIs -and $Results.FabricRecon.WorkloadAPIs.Keys.Count -gt 0) {
+                "<div class='data-row'>
+                    <div class='data-label'>Workload APIs:</div>
+                    <div class='data-value status-info'>🏗️ $($Results.FabricRecon.WorkloadAPIs.Keys.Count) workload types available</div>
+                </div>"
+            }
+            
+            if($Results.FabricRecon.OneLake.Endpoint) {
+                "<div class='data-row'>
+                    <div class='data-label'>OneLake Storage:</div>
+                    <div class='data-value status-success'>🏞️ Data lake endpoints detected</div>
+                </div>"
+            }
+            
+            if($Results.FabricRecon.Authentication.ServicePrincipal) {
+                "<div class='data-row'>
+                    <div class='data-label'>Service Principal Auth:</div>
+                    <div class='data-value status-success'>✅ Available for automation</div>
+                </div>"
+            }
+            
+            "</div>
+                </div>
+            </div>"
+        })
+
+        $(if($Results.PowerBIRecon) {
+        
+        $(if($Results.BreachData) {
+            "<div class='section'>
+                <div class='section-header'><h2>🛡️ Breach Intelligence</h2></div>
+                <div class='section-content'>"
+                    if($Results.BreachData.ReferenceBreaches){
+                        "<div class='panel'><h3>Reference Breaches</h3><ul class='list'>" + ($Results.BreachData.ReferenceBreaches | ForEach-Object { 
+                            $n = $_.Name; $d = $_.Date; $r = $_.Records; $t = $_.Type
+                            "<li><strong>" + [System.Web.HttpUtility]::HtmlEncode($n) + "</strong> — " + [System.Web.HttpUtility]::HtmlEncode($d) + " — " + [System.Web.HttpUtility]::HtmlEncode($r) + " (" + [System.Web.HttpUtility]::HtmlEncode($t) + ")</li>"
+                        }) -join '' + "</ul></div>"
+                    }
+                    if($Results.BreachData.DomainBreaches -and $Results.BreachData.DomainBreaches.Count -gt 0){
+                        "<div class='panel'><h3>Domain Breaches</h3><ul class='list'>" + ($Results.BreachData.DomainBreaches | ForEach-Object { "<li>$_</li>" }) -join '' + "</ul></div>"
+                    } else { "<div class='note'>No domain-specific breaches recorded (placeholder).</div>" }
+                    "<div class='note'>${($Results.BreachData.Note)}</div>"
+                "</div>
+            </div>"
+        })
+        
+        $(if($Results.EmailPatterns) {
+            "<div class='section'>
+                <div class='section-header'><h2>📧 Email Pattern Analysis</h2></div>
+                <div class='section-content'>"
+                    if($Results.EmailPatterns.Patterns -and $Results.EmailPatterns.Patterns.Count -gt 0){
+                        "<div class='panel'><h3>Patterns Detected</h3><ul class='list'>" + ($Results.EmailPatterns.Patterns | ForEach-Object { "<li>$_</li>" }) -join '' + "</ul></div>"
+                    }
+                    if($Results.EmailPatterns.PreviewAddresses){
+                        "<div class='panel'><h3>Address Examples</h3><ul class='list'>" + ($Results.EmailPatterns.PreviewAddresses | ForEach-Object { "<li>$_</li>" }) -join '' + "</ul></div>"
+                    }
+                "</div>
+            </div>"
+        })
+            "<div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>📊 Power BI API Reconnaissance</div>
+                </div>
+                <div class='section-content'>"
+                    "<h4 style='color: #00ffff; margin-bottom: 15px;'>📈 Business Intelligence & Analytics APIs</h4>"
+                    "<div class='grid-2'>"
+                    
+            if($Results.PowerBIRecon.RestAPIs -and $Results.PowerBIRecon.RestAPIs.Keys.Count -gt 0) {
+                "<div class='data-row'>
+                    <div class='data-label'>REST APIs:</div>
+                    <div class='data-value status-warning'>📊 $($Results.PowerBIRecon.RestAPIs.Keys.Count) core endpoints (auth required)</div>
+                </div>"
+            }
+            
+            if($Results.PowerBIRecon.AdminAPIs -and $Results.PowerBIRecon.AdminAPIs.Keys.Count -gt 0) {
+                "<div class='data-row'>
+                    <div class='data-label'>Admin APIs:</div>
+                    <div class='data-value status-warning'>⚙️ $($Results.PowerBIRecon.AdminAPIs.Keys.Count) admin endpoints (elevated auth)</div>
+                </div>"
+            }
+            
+            if($Results.PowerBIRecon.EmbedAPIs -and $Results.PowerBIRecon.EmbedAPIs.Keys.Count -gt 0) {
+                "<div class='data-row'>
+                    <div class='data-label'>Embedding APIs:</div>
+                    <div class='data-value status-success'>🎨 $($Results.PowerBIRecon.EmbedAPIs.Keys.Count) embedding endpoints available</div>
+                </div>"
+            }
+            
+            if($Results.PowerBIRecon.ServicePrincipal.Supported) {
+                "<div class='data-row'>
+                    <div class='data-label'>Service Principal Support:</div>
+                    <div class='data-value status-success'>🤖 Automation ready</div>
+                </div>"
+            }
+            
+            if($Results.PowerBIRecon.PublicContent.Community) {
+                "<div class='data-row'>
+                    <div class='data-label'>Public Content:</div>
+                    <div class='data-value status-info'>🌐 Organization mentioned in community</div>
+                </div>"
+            }
+            
+            "</div>
+                </div>
+            </div>"
+        })
+
+        $(if($Results.TenantInfo.TenantId) {
+            # Insert DNS & Mail posture, Azure Resource Surface, External Identity sections before Quick Actions
+        })
+
+        $(if($Results.TenantInfo.DNSAnalysis) {
+            "<div class='section'>
+                <div class='section-header'><h2>🧬 DNS & Mail Posture</h2></div>
+                <div class='section-content'>
+                    <div class='grid-2'>
+                        <div>
+                            <div class='data-row'><div class='data-label'>DNS A Record</div><div class='data-value $(if($Results.TenantInfo.DNSAnalysis.DNS){'status-success'}else{'status-error'})'>$(if($Results.TenantInfo.DNSAnalysis.DNS){'Present'}else{'Missing'})</div></div>
+                            <div class='data-row'><div class='data-label'>MX (O365)</div><div class='data-value $(if($Results.TenantInfo.DNSAnalysis.MX){'status-success'}else{'status-warning'})'>$(if($Results.TenantInfo.DNSAnalysis.MX){'Configured'}else{'No O365 MX'})</div></div>
+                            <div class='data-row'><div class='data-label'>SPF Record</div><div class='data-value $(if($Results.TenantInfo.DNSAnalysis.SPF){'status-success'}else{'status-warning'})'>$(if($Results.TenantInfo.DNSAnalysis.SPF){'Exchange Online'}else{'Not Include:spf.protection'})</div></div>
+                            <div class='data-row'><div class='data-label'>DMARC</div><div class='data-value $(if($Results.TenantInfo.DNSAnalysis.DMARC){'status-success'}else{'status-warning'})'>$(if($Results.TenantInfo.DNSAnalysis.DMARC){'Configured'}else{'Missing'})</div></div>
+                            <div class='data-row'><div class='data-label'>DKIM</div><div class='data-value $(if($Results.TenantInfo.DNSAnalysis.DKIM){'status-success'}else{'status-warning'})'>$(if($Results.TenantInfo.DNSAnalysis.DKIM){'Selectors Found'}else{'Not Detected'})</div></div>
+                            <div class='data-row'><div class='data-label'>MTA-STS</div><div class='data-value $(if($Results.TenantInfo.DNSAnalysis.MTASTS){'status-success'}else{'status-warning'})'>$(if($Results.TenantInfo.DNSAnalysis.MTASTS){'Policy Present'}else{'None'})</div></div>
+                        </div>
+                        <div>
+                            $(if ($Results.TenantInfo.DNSAnalysis.SPFRecord) { "<div class='panel'><h3>SPF Record</h3><div class='note'>" + [System.Web.HttpUtility]::HtmlEncode($Results.TenantInfo.DNSAnalysis.SPFRecord) + "</div></div>" })
+                            $(if ($Results.TenantInfo.DNSAnalysis.DMARCRecord) { "<div class='panel'><h3>DMARC Record</h3><div class='note'>" + [System.Web.HttpUtility]::HtmlEncode($Results.TenantInfo.DNSAnalysis.DMARCRecord) + "</div></div>" })
+                            $(if ($Results.TenantInfo.DNSAnalysis.DKIMRecords) { "<div class='panel'><h3>DKIM Records</h3><ul class='list'>" + ($Results.TenantInfo.DNSAnalysis.DKIMRecords | ForEach-Object { "<li>" + [System.Web.HttpUtility]::HtmlEncode($_) + "</li>" }) -join '' + "</ul></div>" })
+                        </div>
+                    </div>
+                </div>
+            </div>"
+        })
+
+        $(if($Results.ExtendedAzureResources) {
+            # Build resource category blocks dynamically
+            $resMap = @(
+                @{ Key='StorageAccounts'; Label='Storage'; Icon='🗄️'; Prop='Name' }
+                @{ Key='FunctionApps'; Label='Function Apps'; Icon='⚡'; Prop='Url' }
+                @{ Key='APIManagement'; Label='API Mgmt'; Icon='🔌'; Prop='Url' }
+                @{ Key='CosmosDB'; Label='Cosmos DB'; Icon='☄️'; Prop='Url' }
+                @{ Key='ContainerRegistry'; Label='ACR'; Icon='📦'; Prop='Url' }
+                @{ Key='CDNEndpoints'; Label='CDN'; Icon='🚀'; Prop='Endpoint' }
+                @{ Key='TrafficManager'; Label='Traffic Manager'; Icon='🧭'; Prop='Url' }
+                @{ Key='FrontDoor'; Label='Front Door'; Icon='🚪'; Prop='Url' }
+                @{ Key='ServiceBus'; Label='Service Bus'; Icon='🚌'; Prop='Url' }
+                @{ Key='EventHubs'; Label='Event Hubs'; Icon='🎯'; Prop='Url' }
+                @{ Key='LogicApps'; Label='Logic Apps'; Icon='🧩'; Prop='Url' }
+                @{ Key='ARMTemplates'; Label='ARM Templates'; Icon='📐'; Prop='Url' }
+            )
+            $blocks = @()
+            foreach($entry in $resMap){
+                $collection = $Results.ExtendedAzureResources[$entry.Key]
+                if($collection){
+                    $count = $collection.Count
+                    $sampleItems = @()
+                    $prop = $entry.Prop
+                    $collection | Select-Object -First 6 | ForEach-Object { $sampleItems += (($_.$prop) -as [string]) }
+                    $li = if($sampleItems.Count -gt 0){ '<ul class="res-items">' + ($sampleItems | ForEach-Object { '<li>' + [System.Web.HttpUtility]::HtmlEncode($_) + '</li>' }) -join '' + '</ul>' } else { '<div class="note">No examples</div>' }
+                    $blocks += "<div class='res-block'><h4>$($entry.Icon) $($entry.Label)</h4><div class='res-count'>$count</div>$li</div>"
+                }
+            }
+            "<div class='section'><div class='section-header'><h2>☁️ Azure Resource Surface</h2></div><div class='section-content'><div class='resource-grid'>" + ($blocks -join '') + "</div></div></div>"
+        })
+
+        $(if($Results.UserEnumeration.EntraExternalID -or $Results.UserEnumeration.DeviceCodeResults) {
+            "<div class='section'><div class='section-header'><h2>🌍 External Identity & Cross-Tenant</h2></div><div class='section-content'>" +
+            $(if($Results.UserEnumeration.EntraExternalID){
+                $ext = $Results.UserEnumeration.EntraExternalID
+                $rows = @()
+                foreach($k in $ext.Keys){ $val = $ext[$k]; $rows += "<div class='data-row'><div class='data-label'>$k</div><div class='data-value status-info'>" + [System.Web.HttpUtility]::HtmlEncode(($val -join ', ')) + "</div></div>" }
+                "<div class='panel'><h3>Entra External ID Signals</h3>$($rows -join '')</div>"
+            }) +
+            $(if($Results.UserEnumeration.DeviceCodeResults){
+                $dcr = $Results.UserEnumeration.DeviceCodeResults
+                $dcRows = @()
+                foreach($k in $dcr.Keys){ $val = $dcr[$k]; $dcRows += "<div class='data-row'><div class='data-label'>$k</div><div class='data-value status-warning'>" + [System.Web.HttpUtility]::HtmlEncode(($val -join ', ')) + "</div></div>" }
+                "<div class='panel'><h3>Device Code Flow</h3>$($dcRows -join '')</div>"
+            }) +
+            "</div></div>"
+        })
+
+        # Append defensive guidance when TenantId known (inline to avoid here-string mismatches)
+        $(if($Results.TenantInfo.TenantId) {
+            "<div class='section'>
+                <div class='section-header'><h2>🧭 Defensive OSINT — External Identity Guidance</h2></div>
+                <div class='section-content'>
+                    <button class='collapsible' aria-expanded='false'>Show defensive OSINT guidance</button>
+                    <div class='collapsible-content'>
+                        <div class='panel'>
+                            <h3>Defensive OSINT — Summary</h3>
+                            <p>This section provides safe, defensive guidance for external identity and cross-tenant signals discovered during reconnaissance. It is intended for defenders and authorized testers only.</p>
+                            <ul class='list'>
+                                <li><strong>Limit data exposure:</strong> Audit and reduce publicly-listed identities, application registrations, and API endpoints where possible.</li>
+                                <li><strong>Harden mail posture:</strong> Verify SPF/DMARC/DKIM records and consider stricter DMARC policies to reduce impersonation risk.</li>
+                                <li><strong>Lock down sign-in:</strong> Enforce MFA, block legacy auth, and review Conditional Access policies for external collaboration.</li>
+                                <li><strong>Review external identities:</strong> Investigate B2B relationships and guest user patterns; remove stale or unused external IDs.</li>
+                                <li><strong>Protect secrets & certs:</strong> Rotate certificates and review Key Vault access policies.</li>
+                            </ul>
+                            <p class='note'>To include a longer, project-specific defensive guidance block, replace the contents of this collapsible with your full guidance text. Keep the HTML attributes single-quoted to avoid breaking the template.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>"
+        })
+
+        <!-- COMPLETENESS MAPPING
+        ResultKey -> HTML Section
+        TenantInfo -> Matrix, Executive Summary, DNS & Mail Posture
+        UserEnumeration.ValidUsers -> Valid Users table (existing earlier in report)
+        NetworkIntelligence.Subdomains -> Subdomain table section
+        ExtendedAzureResources.* -> Azure Resource Surface (new)
+        AuthenticationAnalysis -> Auth Methods / OAuth flows section
+        SecurityPosture -> Security Posture Analysis section
+        PowerBIFabric -> Power BI & Fabric Analysis section
+        PurviewRecon -> Purview API Recon section
+        FabricRecon -> Fabric API Recon section
+        PowerBIRecon -> Power BI API Recon section
+        Certificates -> Certificates section (earlier)
+        SocialMedia -> Social Media panel & matrix column
+        BreachData -> Breach Intelligence section
+        EmailPatterns -> Email Pattern Analysis section
+        UserEnumeration.EntraExternalID -> External Identity section
+        UserEnumeration.DeviceCodeResults -> External Identity section
+        -->
 
         $(if($Results.TenantInfo.TenantId) {
             "<div class='section'>
@@ -4385,21 +5389,10 @@ function Export-HTMLReport {
             });
         }
 
-        function toggleDetails(detailsId) {
-            const details = document.getElementById(detailsId);
-            const card = details.closest('.interactive-stat-card');
-            
-            // Close all other details first
-            document.querySelectorAll('.stat-details').forEach(function(detail) {
-                if (detail.id !== detailsId) {
-                    detail.classList.remove('active');
-                    detail.closest('.interactive-stat-card').classList.remove('active');
-                }
-            });
-            
-            // Toggle current details
-            details.classList.toggle('active');
-            card.classList.toggle('active');
+        // Interactive statistics cards functionality
+        function initializeReport() {
+            console.log('OSINT Report loaded successfully');
+            document.title = 'Azure OSINT Report - ' + new Date().toLocaleDateString();
         }
 
         function showNotification(message, type = 'success') {
@@ -4450,29 +5443,9 @@ function Export-HTMLReport {
                 }
             });
 
-            // Add hover effects to interactive cards
-            document.querySelectorAll('.interactive-stat-card').forEach(function(card) {
-                card.addEventListener('mouseenter', function() {
-                    this.style.borderColor = '#00ffff';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    if (!this.classList.contains('active')) {
-                        this.style.borderColor = '#00ff9f';
-                    }
-                });
-            });
 
-            // Add keyboard navigation
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    // Close all open details
-                    document.querySelectorAll('.stat-details.active').forEach(function(detail) {
-                        detail.classList.remove('active');
-                        detail.closest('.interactive-stat-card').classList.remove('active');
-                    });
-                }
-            });
+
+
         });
     </script>
 </body>
