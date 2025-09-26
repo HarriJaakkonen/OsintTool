@@ -6,6 +6,16 @@
 
 The legacy baseline scripts have been retired; this repository now focuses exclusively on the advanced workflow. The entry script is now a thin wrapper that imports the reusable module in `module/AzureOsintAdvanced.psm1`, making it easy to automate or embed specific functions in your own tooling.
 
+## Look and feel
+
+Running the script.
+
+![alt text](image-1.png)
+
+Finished HTML report.
+
+![alt text](image.png)
+
 ## Requirements
 
 - PowerShell 7.0 or newer (`pwsh` on Windows, macOS, or Linux)
