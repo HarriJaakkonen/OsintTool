@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>⚡ CYBEROSINT - Azure Recon Terminal ⚡</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 18px; }
+        
+    body { font-family: 'JetBrains Mono','Consolas',monospace; background:#0b0e17; color:#d6e7ff; line-height:1.5; margin:0; font-size:1rem; }
+    h1,h2,h3 { font-family:'Orbitron',monospace; font-weight:700; letter-spacing:.5px; }
+    h1 { font-size:1.8rem; }
+    h2 { font-size:1.05rem; }
+    h3 { font-size:.9rem; }
+        a { color:#59d6ff; }
+        .container { max-width:1600px; margin:0 auto; padding:25px 30px 60px 30px; }
+        .top-bar { display:flex; flex-wrap:wrap; gap:25px; align-items:flex-end; margin-bottom:25px; }
+        .report-title { font-size:2.2rem; margin:0; color:#66f7d9; text-shadow:0 0 8px #1ef2b3; }
+    .meta { display:flex; flex-wrap:wrap; gap:18px; font-size:.85rem; text-transform:uppercase; letter-spacing:1px; }
+        .meta-item { background:#131b29; padding:6px 10px; border:1px solid #223248; border-radius:4px; color:#9ab3c9; }
+        .status-chip { padding:4px 10px; border-radius:12px; font-weight:600; background:#143723; color:#52f6b5; }
+        /* MITRE-like matrix */
+        .matrix-section-title { margin:10px 0 12px 0; font-size:1.1rem; color:#8cc7ff; text-transform:uppercase; letter-spacing:2px; }
+    /* Stack matrix columns vertically to fit narrow pages better */
+    .matrix-wrapper { display:grid; grid-auto-flow:row; grid-template-columns: 1fr; gap:10px; padding:12px; background:#0f1622; border:1px solid #1f2c3a; border-radius:6px; }
+    .matrix-col { background:#121c29; border:1px solid #243345; border-radius:4px; display:flex; flex-direction:column; min-height:120px; width:100%; }
+    .matrix-col-header { font-size:.82rem; font-weight:700; padding:6px 8px; background:#1b2836; color:#73e0ff; text-transform:uppercase; border-bottom:1px solid #243345; letter-spacing:1px; }
+    .matrix-body { padding:6px 6px 10px 6px; display:flex; flex-direction:column; gap:6px; }
+    .tech-item { position:relative; font-size:.82rem; line-height:1.3rem; padding:6px 8px 6px 18px; background:#182535; border:1px solid #223347; border-radius:3px; color:#b8d5ef; }
+        .tech-item:hover { background:#1f3145; }
+        .tech-item.empty { color:#546575; font-style:italic; }
+        .tech-dot { position:absolute; left:6px; top:8px; width:6px; height:6px; border-radius:50%; background:#35cfa4; box-shadow:0 0 4px #35cfa4; }
+        /* Stat tiles row */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; margin:30px 0 10px 0; }
+    .tile { background:#121c29; border:1px solid #243345; border-radius:6px; padding:14px 16px; text-align:center; }
+    .tile h4 { margin:6px 0 4px 0; font-size:.82rem; font-weight:600; letter-spacing:1px; color:#7fa8c7; text-transform:uppercase; }
+    .tile .val { font-size:1.55rem; font-weight:700; color:#6cf7d7; }
+        .sections { margin-top:25px; display:flex; flex-direction:column; gap:26px; }
+        .section { background:#0f1622; border:1px solid #1f2c3a; border-radius:6px; }
+        .section-header { padding:10px 14px; border-bottom:1px solid #1f2c3a; display:flex; align-items:center; gap:10px; }
+    .section-header h2 { margin:0; font-size:1.15rem; color:#8cc7ff; text-transform:uppercase; letter-spacing:2px; }
+    .section-content { padding:18px 22px 24px 22px; }
+    table { width:100%; border-collapse:collapse; font-size:.85rem; }
+        th,td { padding:6px 8px; border:1px solid #223445; }
+        th { background:#152231; color:#82d9ff; font-weight:600; letter-spacing:1px; }
+        tbody tr:nth-child(even){ background:#13202e; }
+        tbody tr:hover { background:#1b2c3c; }
+        .status-success { color:#4be7b1; }
+        .status-warning { color:#ffcc66; }
+        .status-error { color:#ff667d; }
+        .status-info { color:#59d6ff; }
+        .status-neutral { color:#9ab3c9; }
+    .subgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+    .panel { background:#121c29; border:1px solid #243345; border-radius:4px; padding:14px 16px; }
+    .panel h3 { margin:0 0 8px 0; font-size:.92rem; color:#73e0ff; text-transform:uppercase; letter-spacing:1px; }
+    .list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+    .list li { font-size:.82rem; background:#182535; border:1px solid #223347; padding:6px 8px; border-radius:3px; overflow:hidden; text-overflow:ellipsis; }
+        .list li:hover { background:#203246; }
+    .note { font-size:.78rem; color:#6f8599; margin-top:6px; }
+    .footer { margin-top:50px; text-align:center; font-size:.78rem; color:#4e6479; padding:30px 0 14px 0; border-top:1px solid #1f2c3a; }
+    @media (max-width:1100px){ .matrix-wrapper { grid-template-columns: 1fr; } }
+        @media (max-width:700px){ .report-title{font-size:1.6rem;} .matrix-col{min-height:200px;} }
+        
+        .data-row { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:6px; }
+    .data-label { font-size:.78rem; letter-spacing:.5px; text-transform:uppercase; color:#7fa8c7; min-width:140px; }
+    .data-value { font-size:.88rem; font-weight:600; }
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 255, 159, 0.2);
+        }
+        
+        .data-row:last-child { border-bottom: none; }
+        
+        .data-label {
+            color: #cccccc;
+            font-weight: 500;
+            flex: 1;
+        }
+        
+        .data-value {
+            flex: 1;
+            text-align: right;
+            font-weight: bold;
+        }
+
+    .data-row.stacked { flex-direction: column; align-items: flex-start; gap:4px; }
+    .data-row.stacked .data-label { min-width: 0; width: 100%; }
+    .data-row.stacked .data-value { text-align: left; width: 100%; word-break: break-all; }
+    .data-value.data-mono { font-family: 'JetBrains Mono','Consolas',monospace; }
+    .data-value.data-wrap { word-break: break-all; overflow-wrap: anywhere; white-space: normal; }
+        
+        .status-success { color: #00ff9f; }
+        .status-warning { color: #ffaa00; }
+        .status-error { color: #ff4444; }
+        .status-info { color: #00ffff; }
+        .status-neutral { color: #cccccc; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid rgba(0, 255, 159, 0.3);
+        }
+        
+        th {
+            background: rgba(0, 255, 159, 0.2);
+            color: #00ffff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+        
+        tr:nth-child(even) { background: rgba(0, 255, 159, 0.05); }
+        tr:hover { background: rgba(0, 255, 159, 0.1); }
+        
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .cyber-btn {
+            background: linear-gradient(45deg, #00ff9f, #00ffff);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .cyber-btn:hover {
+            background: linear-gradient(45deg, #00ffff, #00ff9f);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 159, 0.3);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 255, 159, 0.1));
+            border: 2px solid #00ff9f;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: #00ffff;
+            box-shadow: 0 8px 25px rgba(0, 255, 159, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .stat-number {
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #00ff9f;
+            text-shadow: 0 0 15px #00ff9f;
+            display: block;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #cccccc;
+            font-size: 1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .detail-section {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 159, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .detail-header {
+            background: linear-gradient(90deg, rgba(0, 255, 159, 0.2), rgba(0, 255, 255, 0.1));
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 255, 159, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .detail-icon {
+            font-size: 1.5em;
+        }
+        
+        .detail-header h3 {
+            margin: 0;
+            color: #00ff9f;
+            font-size: 1.3em;
+        }
+        
+        .detail-content {
+            padding: 25px;
+        }
+        
+        .method-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .method-item {
+            background: rgba(0, 255, 159, 0.1);
+            padding: 10px 15px;
+            border-radius: 5px;
+            border-left: 3px solid #00ff9f;
+        }
+        
+        .data-table {
+            overflow-x: auto;
+        }
+        
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .info-table th {
+            background: rgba(0, 255, 159, 0.2);
+            color: #00ff9f;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #00ff9f;
+        }
+        
+        .info-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0, 255, 159, 0.1);
+        }
+        
+        .info-table tr:hover {
+            background: rgba(0, 255, 159, 0.05);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        .empty-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .empty-text {
+            font-style: italic;
+            font-size: 1.1em;
+        }
+        
+        .resource-grid, .auth-grid, .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .resource-category, .auth-category, .social-category {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid rgba(0, 255, 159, 0.2);
+        }
+        
+        .resource-title, .auth-title, .social-title {
+            color: #00ffff;
+            margin: 0 0 15px 0;
+            font-size: 1.1em;
+        }
+        
+        .resource-list, .auth-list, .social-list, .api-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .resource-item, .auth-item, .social-item {
+            padding: 8px 12px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #00ff9f;
+        }
+        
+        .social-name {
+            font-weight: bold;
+            color: #00ff9f;
+        }
+        
+        .social-desc {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-top: 4px;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #00ff9f;
+            text-shadow: 0 0 10px #00ff9f;
+        }
+        
+        .stat-label {
+            color: #cccccc;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            flex-grow: 1;
+            margin-left: 15px;
+        }
+        
+        .expand-icon {
+            color: #00ffff;
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card .stat-icon {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #00ff9f;
+            text-shadow: 0 0 8px #00ff9f;
+        }
+        
+        .stat-card .stat-label {
+            color: #cccccc;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .detail-section {
+            background: rgba(15, 25, 35, 0.9);
+            border: 1px solid rgba(0, 255, 159, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-header {
+            font-size: 0.95em;
+            font-weight: bold;
+            color: #00ff9f;
+            margin-bottom: 8px;
+            text-shadow: 0 0 5px #00ff9f;
+        }
+        
+        .detail-content {
+            font-size: 0.8em;
+            line-height: 1.4;
+        }
+        
+        .method-item {
+            font-size: 0.75em;
+            padding: 2px 0;
+            color: #cccccc;
+        }
+        
+        .data-table {
+            font-size: 0.75em;
+        }
+        
+        .info-table th {
+            font-size: 0.7em;
+            padding: 4px 8px;
+        }
+        
+        .info-table td {
+            font-size: 0.7em;
+            padding: 3px 8px;
+        }
+        
+        .empty-text {
+            font-size: 0.75em;
+        }
+        
+        .info-card {
+            background: rgba(15, 25, 35, 0.9);
+            border: 1px solid rgba(0, 255, 159, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .info-header {
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #00ff9f;
+            margin-bottom: 5px;
+        }
+        
+        .info-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff;
+        }
+        
+
+        
+        .detail-header {
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .detail-content {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        .detail-list, .auth-list, .resource-list, .social-list, .api-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        
+        .detail-list li, .auth-list li, .resource-list li, .social-list li, .api-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(0, 255, 159, 0.1);
+        }
+        
+        .detail-list li:last-child, .auth-list li:last-child, 
+        .resource-list li:last-child, .social-list li:last-child, .api-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        
+        .mini-table th, .mini-table td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid rgba(0, 255, 159, 0.2);
+        }
+        
+        .mini-table th {
+            background: rgba(0, 255, 159, 0.1);
+            color: #00ffff;
+            font-weight: bold;
+        }
+        
+        .resource-breakdown, .auth-breakdown, .social-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .resource-type, .auth-section, .social-section {
+            background: rgba(0, 255, 159, 0.05);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #00ff9f;
+        }
+        
+        .resource-list, .auth-list, .social-list, .api-list {
+            margin-top: 8px;
+        }
+        
+        .social-list a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .social-list a:hover {
+            color: #00ff9f;
+            text-decoration: underline;
+        }
+        
+        .collapsible {
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+        
+        .collapsible:hover { color: #00ffff; }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .collapsible-content.active { max-height: 1000px; }
+        
+    .highlight { background:#1d2c3b; padding:2px 4px; border-radius:3px; }
+        
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .cyber-title { font-size: 1.8em; }
+            .section-content { padding: 15px; }
+        }
+        
+        .resource-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+        .res-block { background:#121c29; border:1px solid #243345; border-radius:4px; padding:8px 10px; }
+        .res-block h4 { margin:0 0 6px 0; font-size:.65rem; text-transform:uppercase; letter-spacing:1px; color:#73e0ff; }
+        .res-count { font-size:.95rem; font-weight:700; color:#6cf7d7; }
+        .res-items { list-style:none; margin:6px 0 0 0; padding:0; display:flex; flex-direction:column; gap:3px; max-height:130px; overflow:auto; }
+        .res-items li { font-size:.6rem; background:#182535; border:1px solid #223347; padding:3px 5px; border-radius:3px; word-break:break-all; }
+        .res-items li:hover { background:#203246; }
+    .mapping-comment { display:block; margin:12px 0; padding:12px; background:rgba(0,0,0,0.45); border:1px solid rgba(0,255,159,0.12); border-radius:6px; }
+    .footer { text-align:center; padding:30px; margin-top:50px; border-top:1px solid #1f2c3a; color:#4e6479; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <div style="flex:1 1 auto;min-width:260px;">
+                <h1 class="report-title">Azure / Entra OSINT Recon Matrix</h1>
+                <div class="meta">
+                    <div class="meta-item">Target: contoso.com</div>
+                    <div class="meta-item">Scan: 2025-09-26 20.00.51 UTC</div>
+                    <div class="meta-item">Duration: 00:03:00</div>
+                    <div class="meta-item">Tenant: <span class='status-success'>Identified</span></div>
+                    <div class="meta-item">Recon: <span class='status-warning'>Outsider</span></div>
+                    <div class="meta-item">Status: <span class="status-chip">Complete</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Executive Summary moved above matrix per request -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">🎯 Executive Summary</div>
+            </div>
+            <div class="section-content">
+                <div class="grid-2">
+                    <div>
+                        <div class="data-row">
+                            <div class="data-label">Target Domain:</div>
+                            <div class="data-value status-info">contoso.com</div>
+                        </div>
+                        <div class="data-row">
+                            <div class="data-label">Tenant Status:</div>
+                            <div class="data-value status-success">
+                                ✓ IDENTIFIED
+                            </div>
+                        </div>
+                        
+                        <div class="data-row">
+                            <div class="data-label">Namespace Type:</div>
+                            <div class="data-value status-info">Managed</div>
+                        </div>
+                        <div class="data-row">
+                            <div class="data-label">Cloud Environment:</div>
+                            <div class="data-value status-warning">Azure Cloud (microsoftonline.com)</div>
+                        </div>
+                        <div class='data-row'><div class='data-label'>Cloud Instance:</div><div class='data-value status-info'>microsoftonline.com</div></div>
+                        <div class="data-row">
+                            <div class="data-label">Tenant Type:</div>
+                            <div class="data-value status-info">Entra ID (Workforce)</div>
+                        </div>
+                        <div class='data-row'><div class='data-label'>Type Confidence:</div><div class='data-value status-info'>High</div></div>
+                        <div class="data-row">
+                            <div class="data-label">Recon Mode:</div>
+                            <div class="data-value status-warning">OUTSIDER</div>
+                        </div>
+                        
+                    </div>
+                    <div>
+                        <div class='data-row'>
+                                <div class='data-label'>Tenant ID:</div>
+                                <div class='data-value status-success'>6babcaad-604b-40ac-a9d7-9fd97c0b779f</div>
+                            </div>
+                        
+                        <div class='data-row'>
+                                <div class='data-label'>Organization:</div>
+                                <div class='data-value status-success'>Contoso, Ltd</div>
+                            </div>
+                        
+                        
+                        <div class='data-row'>
+                                <div class='data-label'>Type Signals:</div>
+                                <div class='data-value status-info'>Entra ID public endpoints; Exchange Online; Office 365 MX records; SPF includes spf.protection.outlook.com</div>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recon Matrix now follows Executive Summary -->
+        <div>
+            <div class="matrix-section-title">Recon Matrix Overview</div>
+            <div class='matrix-wrapper'><div class='matrix-col'><div class='matrix-col-header'>👥 User Enumeration</div><div class='matrix-body'><div class='tech-item empty'>No data</div></div></div><div class='matrix-col'><div class='matrix-col-header'>🌐 Network Surface</div><div class='matrix-body'><div class='tech-item'><span class='tech-dot'></span>www.contoso.com</div><div class='tech-item'><span class='tech-dot'></span>mail.contoso.com</div><div class='tech-item'><span class='tech-dot'></span>test.contoso.com</div><div class='tech-item'><span class='tech-dot'></span>login.contoso.com</div><div class='tech-item'><span class='tech-dot'></span>owa.contoso.com</div><div class='tech-item'><span class='tech-dot'></span>autodiscover.contoso.com</div></div></div><div class='matrix-col'><div class='matrix-col-header'>🔐 Auth & Flows</div><div class='matrix-body'><div class='tech-item'><span class='tech-dot'></span>PasswordAuthorization Code Flow Device Code Flow</div></div></div><div class='matrix-col'><div class='matrix-col-header'>⚙️ APIs</div><div class='matrix-body'><div class='tech-item'><span class='tech-dot'></span>Purview:0</div><div class='tech-item'><span class='tech-dot'></span>Fabric:0</div><div class='tech-item'><span class='tech-dot'></span>PowerBI:0</div></div></div><div class='matrix-col'><div class='matrix-col-header'>☁️ Azure Resources</div><div class='matrix-body'><div class='tech-item'><span class='tech-dot'></span>contoso-app.azurewebsites.net</div></div></div><div class='matrix-col'><div class='matrix-col-header'>📜 Certificates</div><div class='matrix-body'><div class='tech-item empty'>No data</div></div></div><div class='matrix-col'><div class='matrix-col-header'>📱 Social / Repos</div><div class='matrix-body'><div class='tech-item'><span class='tech-dot'></span>byt3bl33d3r/SprayingToolkit</div><div class='tech-item'><span class='tech-dot'></span>61106960/adPEAS</div><div class='tech-item'><span class='tech-dot'></span>Azure-Samples/contoso-real-estate</div><div class='tech-item'><span class='tech-dot'></span>the-useless-one/pywerview</div></div></div></div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>📊 Key Statistics</h2></div>
+            <div class="section-content">
+                <div class="stats-row">
+                    <div class="tile"><h4>Users</h4><div class="val">0</div></div>
+                    <div class="tile"><h4>Subdomains</h4><div class="val">8</div></div>
+                    <div class="tile"><h4>Azure Res</h4><div class="val">4</div></div>
+                    <div class="tile"><h4>Auth Methods</h4><div class="val">1</div></div>
+                    <div class="tile"><h4>OAuth Flows</h4><div class="val">2</div></div>
+                    <div class="tile"><h4>API Endpoints</h4><div class="val">0</div></div>
+                    <div class="tile"><h4>Certificates</h4><div class="val">0</div></div>
+                    <div class="tile"><h4>GitHub Repos</h4><div class="val">5</div></div>
+                    <div class="tile"><h4>LinkedIn</h4><div class="val">0</div></div>
+                </div>
+
+                <div class="details-grid">
+                    
+
+                    <div class="detail-section">
+                        <div class="detail-header">🌐 Subdomain Discovery</div>
+                        <div class="detail-content">
+                            <div class='data-table'>
+                                    <table class='info-table'>
+                                        <thead>
+                                            <tr><th>Subdomain</th><th>IP Addresses</th><th>Status</th></tr>
+                                        </thead>
+                                        <tbody> <tr><td class='status-info'>www.contoso.com</td><td class='status-success'>20.76.201.171, 20.112.250.133, 20.236.44.162, 20.231.239.246, 20.70.246.20</td><td class='status-success'>✓ Active</td></tr> <tr><td class='status-info'>mail.contoso.com</td><td class='status-success'>38.96.29.10</td><td class='status-success'>✓ Active</td></tr> <tr><td class='status-info'>test.contoso.com</td><td class='status-success'></td><td class='status-success'>✓ Active</td></tr> <tr><td class='status-info'>login.contoso.com</td><td class='status-success'>20.190.147.3, 20.190.147.0, 20.190.177.82, 20.190.177.146, 20.190.177.20, 20.190.177.23, 20.190.177.83, 20.190.147.9</td><td class='status-success'>✓ Active</td></tr> <tr><td class='status-info'>owa.contoso.com</td><td class='status-success'>38.96.29.10</td><td class='status-success'>✓ Active</td></tr> <tr><td class='status-info'>autodiscover.contoso.com</td><td class='status-success'>38.96.29.10</td><td class='status-success'>✓ Active</td></tr> <tr><td class='status-info'>lyncdiscover.contoso.com</td><td class='status-success'>74.117.111.48</td><td class='status-success'>✓ Active</td></tr> <tr><td class='status-info'>sip.contoso.com</td><td class='status-success'>74.117.111.47</td><td class='status-success'>✓ Active</td></tr> </tbody></table>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="info-header">☁️ Azure Resources</div>
+                        <div class="note">Total: 4</div>
+                        <div class="detail-section">
+                            <div class="detail-header">Azure Resource Discovery:</div>
+                            <div class="detail-content">
+                                <div class="resource-breakdown">
+                                    <div class="resource-type">
+                                        <strong>🗄️ Storage Accounts:</strong> 0
+                                        
+                                    </div>
+                                    <div class="resource-type">
+                                        <strong>⚡ Function Apps:</strong> 4
+                                        <ul class='resource-list'> <li class='status-success'>contoso-app</li> </ul>
+                                    </div>
+                                    <div class="resource-type">
+                                        <strong>🔌 API Management:</strong> 0
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="info-header">⚡ API Endpoints</div>
+                        <div class="note">Total: 0</div>
+                        <div class="detail-section">
+                            <div class="detail-header">API Reconnaissance Summary:</div>
+                            <div class="detail-content">
+                                <div class="api-breakdown">
+                                    <div class='api-section'><strong>🛡️ Microsoft Purview</strong><div class='note'>Accounts: 0 · Data-plane: 0 · Control-plane: 0</div><div class="note status-info">No data-plane endpoints</div></div><div class='api-section'><strong>🏭 Microsoft Fabric</strong><div class='note'>Core: 0 · Workload: 0 · OneLake: No · SP Auth: Yes</div><div class="note status-info">No core APIs</div></div><div class='api-section'><strong>📊 Power BI</strong><div class='note'>REST: 0 · Admin: 0 · Embed: 3 · SP Auth: Yes</div><div class="note status-info">No REST APIs</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="info-header">🔐 Auth Methods</div>
+                        <div class="note">Methods: 1 | Flows: 2</div>
+                        <div class="detail-section">
+                            <div class="detail-header">Authentication Analysis:</div>
+                            <div class="detail-content">
+                                <div class="auth-breakdown">
+                                    <div class="auth-section">
+                                        <strong>🔑 Authentication Methods:</strong>
+                                        <ul class="auth-list">
+                                            <li class='status-success'>Password</li>
+                                        </ul>
+                                    </div>
+                                    <div class="auth-section">
+                                        <strong>🔄 OAuth Flows:</strong>
+                                        <ul class="auth-list">
+                                            <li class='status-success'>Authorization Code Flow</li> <li class='status-success'>Device Code Flow</li>
+                                        </ul>
+                                    </div>
+                                    <div class="auth-section">
+                                        <strong>🛰️ Token / Auth Endpoints:</strong>
+                                        <ul class="auth-list">
+                                            <li class="status-info">https://login.microsoftonline.com/6babcaad-604b-40ac-a9d7-9fd97c0b779f/oauth2/v2.0/token</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="info-header">📜 Certificates</div>
+                        <div class="note">Total: 0</div>
+                        <div class="detail-section">
+                            <div class="detail-header">Certificate Transparency Analysis:</div>
+                            <div class='detail-content'><em>No certificates found in transparency logs</em></div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="info-header">📱 Social Media</div>
+                        <div class="note">GitHub: 5 | LinkedIn: 0</div>
+                        <div class="detail-section">
+                            <div class="detail-header">Digital Footprint Analysis:</div>
+                            <div class="detail-content">
+                                <div class="social-breakdown">
+                                    <div class="social-section">
+                                        <strong>🐙 GitHub Repositories:</strong> 5
+                                        <ul class='social-list'><li class='status-success'><a href='https://github.com/byt3bl33d3r/SprayingToolkit' target='_blank'>byt3bl33d3r/SprayingToolkit</a> <span class='note' style='margin-left:8px;'>⭐ 1528</span></li> <li class='status-success'><a href='https://github.com/61106960/adPEAS' target='_blank'>61106960/adPEAS</a> <span class='note' style='margin-left:8px;'>⭐ 1176</span></li> <li class='status-success'><a href='https://github.com/Azure-Samples/contoso-real-estate' target='_blank'>Azure-Samples/contoso-real-estate</a> <span class='note' style='margin-left:8px;'>⭐ 963</span></li> <li class='status-success'><a href='https://github.com/the-useless-one/pywerview' target='_blank'>the-useless-one/pywerview</a> <span class='note' style='margin-left:8px;'>⭐ 1033</span></li> <li class='status-success'><a href='https://github.com/microsoft/ContosoAir' target='_blank'>microsoft/ContosoAir</a> <span class='note' style='margin-left:8px;'>⭐ 55</span></li>
+                                    </div>
+                                    <div class="social-section">
+                                        <strong>💼 LinkedIn Profiles:</strong> 0
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>☁️ Microsoft 365 Services</div>
+                </div>
+                <div class='section-content'>
+                    <div class='grid-2'> <div class='data-row'>
+                    <div class='data-label'>🔐 Entra ID / Azure AD:</div>
+                    <div class='data-value status-success'>✓ Active</div>
+                </div> <div class='data-row'>
+                    <div class='data-label'>📧 Exchange Online:</div>
+                    <div class='data-value status-success'>✓ Active</div>
+                </div> </div>
+                </div>
+            </div>
+
+        
+
+        <div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>🌐 Network Intelligence</div>
+                </div>
+                <div class='section-content'>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subdomain</th>
+                                <th>IP Addresses</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody> <tr>
+                    <td class='status-info'>www.contoso.com</td>
+                    <td class='status-success'>20.76.201.171, 20.112.250.133, 20.236.44.162, 20.231.239.246, 20.70.246.20</td>
+                    <td class='status-success'>✓ Resolved</td>
+                </tr> <tr>
+                    <td class='status-info'>mail.contoso.com</td>
+                    <td class='status-success'>38.96.29.10</td>
+                    <td class='status-success'>✓ Resolved</td>
+                </tr> <tr>
+                    <td class='status-info'>test.contoso.com</td>
+                    <td class='status-success'></td>
+                    <td class='status-success'>✓ Resolved</td>
+                </tr> <tr>
+                    <td class='status-info'>login.contoso.com</td>
+                    <td class='status-success'>20.190.147.3, 20.190.147.0, 20.190.177.82, 20.190.177.146, 20.190.177.20, 20.190.177.23, 20.190.177.83, 20.190.147.9</td>
+                    <td class='status-success'>✓ Resolved</td>
+                </tr> <tr>
+                    <td class='status-info'>owa.contoso.com</td>
+                    <td class='status-success'>38.96.29.10</td>
+                    <td class='status-success'>✓ Resolved</td>
+                </tr> <tr>
+                    <td class='status-info'>autodiscover.contoso.com</td>
+                    <td class='status-success'>38.96.29.10</td>
+                    <td class='status-success'>✓ Resolved</td>
+                </tr> <tr>
+                    <td class='status-info'>lyncdiscover.contoso.com</td>
+                    <td class='status-success'>74.117.111.48</td>
+                    <td class='status-success'>✓ Resolved</td>
+                </tr> <tr>
+                    <td class='status-info'>sip.contoso.com</td>
+                    <td class='status-success'>74.117.111.47</td>
+                    <td class='status-success'>✓ Resolved</td>
+                </tr> </tbody>
+                    </table>
+                </div>
+            </div>
+
+    <div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>🛡️ Security Posture Analysis</div>
+                </div>
+                <div class='section-content'>
+                    <div class='grid-2'> <div>
+                    <h4 style='color: #00ffff; margin-bottom: 10px;'>🔒 Security Defaults</h4> <div class='data-row'>
+                        <div class='data-label'>MFA Required:</div>
+                        <div class='data-value status-success'>✓ Enabled</div>
+                    </div> </div> <div>
+                    <h4 style='color: #00ffff; margin-bottom: 10px;'>👥 Guest Access</h4> </div> </div>
+                </div>
+            </div>
+
+    <div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>⚡ Power BI & Microsoft Fabric</div>
+                </div>
+                <div class='section-content'>
+                    <div class='grid-3'> <div class='data-row'>
+                    <div class='data-label'>Power BI Service:</div>
+                    <div class='data-value status-success'>✓ Available</div>
+                </div> </div>
+                </div>
+            </div>
+
+    <div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>🛡️ Microsoft Purview API Reconnaissance</div>
+                </div>
+                <div class='section-content'> <h4 style='color: #00ffff; margin-bottom: 15px;'>📋 Data Governance & Compliance APIs</h4> <div class='grid-2'> <div class='data-row'>
+                    <div class='data-label'>OAuth2 Authentication:</div>
+                    <div class='data-value status-success'>✅ Entra ID integration available</div>
+                </div> </div>
+                </div>
+            </div>
+
+    <div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>🏭 Microsoft Fabric API Reconnaissance</div>
+                </div>
+                <div class='section-content'> <h4 style='color: #00ffff; margin-bottom: 15px;'>⚡ Data Platform & Workload APIs</h4> <div class='grid-2'> <div class='data-row'>
+                    <div class='data-label'>Service Principal Auth:</div>
+                    <div class='data-value status-success'>✅ Available for automation</div>
+                </div> </div>
+                </div>
+            </div>
+
+        <div class='section'>
+                <div class='section-header'><h2>📧 Email Pattern Analysis</h2></div>
+                <div class='section-content'> </div>
+            </div> <div class='section'>
+                <div class='section-header'>
+                    <div class='section-title'>📊 Power BI API Reconnaissance</div>
+                </div>
+                <div class='section-content'> <h4 style='color: #00ffff; margin-bottom: 15px;'>📈 Business Intelligence & Analytics APIs</h4> <div class='grid-2'> <div class='data-row'>
+                    <div class='data-label'>Embedding APIs:</div>
+                    <div class='data-value status-success'>🎨 3 embedding endpoints available</div>
+                </div> <div class='data-row'>
+                    <div class='data-label'>Service Principal Support:</div>
+                    <div class='data-value status-success'>🤖 Automation ready</div>
+                </div> <div class='data-row'>
+                    <div class='data-label'>Public Content:</div>
+                    <div class='data-value status-info'>🌐 Organization mentioned in community</div>
+                </div> </div>
+                </div>
+            </div>
+
+        
+
+        <div class='section'>
+                <div class='section-header'><h2>🧬 DNS & Mail Posture</h2></div>
+                <div class='section-content'>
+                    <div class='grid-2'>
+                        <div>
+                            <div class='data-row'><div class='data-label'>DNS A Record</div><div class='data-value status-success'>Present</div></div>
+                            <div class='data-row'><div class='data-label'>MX (O365)</div><div class='data-value status-success'>Configured</div></div>
+                            <div class='data-row'><div class='data-label'>SPF Record</div><div class='data-value status-success'>Exchange Online</div></div>
+                            <div class='data-row'><div class='data-label'>DMARC</div><div class='data-value status-success'>Configured</div></div>
+                            <div class='data-row'><div class='data-label'>DKIM</div><div class='data-value status-warning'>Not Detected</div></div>
+                            <div class='data-row'><div class='data-label'>MTA-STS</div><div class='data-value status-warning'>None</div></div>
+                        </div>
+                        <div>
+                            <div class='panel'><h3>SPF Record</h3><div class='note'>v=spf1 include:spf.protection.outlook.com -all</div></div>
+                            <div class='panel'><h3>DMARC Record</h3><div class='note'>v=DMARC1; p=reject; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1</div></div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class='section' id='azure-resource-surface'><div class='section-header'><h2>☁️ Azure Resource Surface</h2></div><div class='section-content'><div class='resource-grid'><div class='res-block'><h4>⚡ Function Apps</h4><div class='res-count'>4</div><div class="note">No examples</div></div><div class='res-block'><h4>🚌 Service Bus</h4><div class='res-count'>3</div><div class="note">No examples</div></div><div class='res-block'><h4>🎯 Event Hubs</h4><div class='res-count'>3</div><div class="note">No examples</div></div></div></div></div>
+
+        <div class='section'><div class='section-header'><h2>🌍 External Identity & Cross-Tenant</h2></div><div class='section-content'><div class='panel'><h3>Device Code Flow</h3><div class='data-row'><div class='data-label'>VerificationUrl</div><div class='data-value status-warning data-wrap data-mono'>https://microsoft.com/devicelogin</div></div><div class='data-row'><div class='data-label'>AuthorityTried</div><div class='data-value status-warning'>System.Collections.Hashtable</div></div><div class='data-row'><div class='data-label'>AuthorityUsed</div><div class='data-value status-warning'>System.Collections.Hashtable</div></div><div class='data-row'><div class='data-label'>Notes</div><div class='data-value status-warning'>Device code issued successfully.</div></div><div class='data-row'><div class='data-label'>Interval</div><div class='data-value status-warning'>5</div></div><div class='data-row'><div class='data-label'>UserCode</div><div class='data-value status-warning data-wrap data-mono'>A66RCJPY7</div></div><div class='data-row'><div class='data-label'>FlowState</div><div class='data-value status-warning'>CodeIssued</div></div><div class='data-row'><div class='data-label'>Supported</div><div class='data-value status-warning'>True</div></div><div class='data-row'><div class='data-label'>ExpiresIn</div><div class='data-value status-warning'>900</div></div><div class='data-row'><div class='data-label'>Confidence</div><div class='data-value status-warning'>High</div></div><div class='data-row'><div class='data-label'>DeviceCode</div><div class='data-value status-warning data-wrap data-mono'>AAQABI...wgAA</div></div></div></div></div>
+        
+
+    
+
+        <!-- COMPLETENESS MAPPING
+        ResultKey -> HTML Section
+        TenantInfo -> Matrix, Executive Summary, DNS & Mail Posture
+        UserEnumeration.ValidUsers -> Valid Users table (existing earlier in report)
+        NetworkIntelligence.Subdomains -> Subdomain table section
+        ExtendedAzureResources.* -> Azure Resource Surface (new)
+        AuthenticationAnalysis -> Auth Methods / OAuth flows section
+        SecurityPosture -> Security Posture Analysis section
+        PowerBIFabric -> Power BI & Fabric Analysis section
+        PurviewRecon -> Purview API Recon section
+        FabricRecon -> Fabric API Recon section
+        PowerBIRecon -> Power BI API Recon section
+        Certificates -> Certificates section (earlier)
+        SocialMedia -> Social Media panel & matrix column
+        EmailPatterns -> Email Pattern Analysis section
+        UserEnumeration.EntraExternalID -> External Identity section
+        UserEnumeration.DeviceCodeResults -> External Identity section
+        -->
+
+        <div class='section'><div class='section-header'><div class='section-title'>🔗 Quick Actions</div></div><div class='section-content'><div class='action-buttons'><a href='https://portal.azure.com/#@6babcaad-604b-40ac-a9d7-9fd97c0b779f' target='_blank' class='cyber-btn'>🌐 Azure Portal</a>
+<a href='https://purview.microsoft.com/?tid=6babcaad-604b-40ac-a9d7-9fd97c0b779f' target='_blank' class='cyber-btn'>🧭 Purview</a>
+<a href='https://login.microsoftonline.com/6babcaad-604b-40ac-a9d7-9fd97c0b779f/.well-known/openid_configuration' target='_blank' class='cyber-btn'>🔍 OIDC Config</a>
+<a href='https://admin.microsoft.com/' target='_blank' class='cyber-btn'>⚙️ M365 Admin</a>
+<a href='https://security.microsoft.com/' target='_blank' class='cyber-btn'>🛡️ Security Center</a>
+<a href='https://contoso-app.azurewebsites.net' target='_blank' class='cyber-btn' title='Web App: contoso-app'>🚀 Web App</a>
+<a href='#azure-resource-surface' class='cyber-btn'>☁️ Azure Resource Surface</a></div></div></div>
+
+        <div class="footer">
+            <p>Generated by Advanced Azure OSINT Tool | 2025-09-26 20.03.52 UTC</p>
+            <p>🔐 Responsible Disclosure | 🛡️ Authorized Testing Only | ⚡ Enhanced Security Analysis</p>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                console.log('Copied to clipboard: ' + text);
+                showNotification('Copied to clipboard!');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+                showNotification('Copy failed', 'error');
+            });
+        }
+
+        // Interactive statistics cards functionality
+        function initializeReport() {
+            console.log('OSINT Report loaded successfully');
+            document.title = 'Azure OSINT Report - ' + new Date().toLocaleDateString();
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification ' + type;
+            notification.textContent = message;
+            notification.style.cssText = 
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: #000;
+                font-weight: bold;
+                z-index: 10000;
+                transition: all 0.3s ease;
+                background: ;
+            ;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add collapsible functionality for other sections
+        document.querySelectorAll('.collapsible').forEach(function(element) {
+            element.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.classList.toggle('active');
+                this.classList.toggle('active');
+            });
+        });
+
+        // Enhanced interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight tenant IDs for easy copying
+            document.querySelectorAll('.status-success').forEach(function(element) {
+                if (element.textContent.length === 36 && element.textContent.includes('-')) {
+                    element.style.cursor = 'pointer';
+                    element.title = 'Click to copy Tenant ID';
+                    element.addEventListener('click', function() {
+                        copyToClipboard(element.textContent);
+                    });
+                }
+            });
+
+
+
+
+        });
+    </script>
+</body>
+</html>
