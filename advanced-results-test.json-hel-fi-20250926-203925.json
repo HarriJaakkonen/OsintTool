@@ -1,0 +1,665 @@
+{
+  "ExtendedAzureResources": {
+    "LogicApps": null,
+    "Databases": null,
+    "ContainerRegistry": null,
+    "TrafficManager": null,
+    "CDNEndpoints": null,
+    "StorageAccounts": null,
+    "CosmosDB": null,
+    "FrontDoor": null,
+    "ServiceBus": null,
+    "KeyVaults": null,
+    "WebApps": null,
+    "APIManagement": [
+      {
+        "Url": "https://hel.azure-api.net",
+        "Name": "hel",
+        "Status": "Active"
+      },
+      {
+        "Url": "https://hel-dev.azure-api.net",
+        "Name": "hel-dev",
+        "Status": "Active"
+      },
+      {
+        "Url": "https://hel-test.azure-api.net",
+        "Name": "hel-test",
+        "Status": "Active"
+      }
+    ],
+    "ARMTemplates": null,
+    "FunctionApps": {
+      "Url": "https://hel.azurewebsites.net",
+      "Headers": {
+        "Last-Modified": "Mon, 01 Feb 2016 21:14:06 GMT",
+        "Server": "Microsoft-IIS/10.0",
+        "Date": "Fri, 26 Sep 2025 17:37:53 GMT",
+        "Vary": "Accept-Encoding",
+        "X-Powered-By": "ASP.NET",
+        "ETag": "\"abca147c355dd11:0\"",
+        "Accept-Ranges": "bytes",
+        "Set-Cookie": [
+          "ARRAffinity=73925c3a7f787b71044c653d259c288f3891bf5c6fdb49471598077bcb9c4981;Path=/;HttpOnly;Secure;Domain=hel.azurewebsites.net",
+          "ARRAffinitySameSite=73925c3a7f787b71044c653d259c288f3891bf5c6fdb49471598077bcb9c4981;Path=/;HttpOnly;SameSite=None;Secure;Domain=hel.azurewebsites.net"
+        ],
+        "Content-Type": "text/html",
+        "Transfer-Encoding": "chunked"
+      },
+      "Name": "hel",
+      "Status": "Active"
+    },
+    "PublicIPs": null,
+    "EventHubs": null,
+    "AzureSQL": null
+  },
+  "NetworkIntelligence": {
+    "SecurityHeaders": {},
+    "IPRanges": null,
+    "DNSRecords": null,
+    "CDNs": null,
+    "Subdomains": [
+      {
+        "Subdomain": "www.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": "20.50.166.83"
+      },
+      {
+        "Subdomain": "mail.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": "137.163.57.131"
+      },
+      {
+        "Subdomain": "ftp.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": null
+      },
+      {
+        "Subdomain": "test.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": "194.86.153.3"
+      },
+      {
+        "Subdomain": "dev.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": "80.69.173.172"
+      },
+      {
+        "Subdomain": "api.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": "20.50.166.83"
+      },
+      {
+        "Subdomain": "owa.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": "137.163.138.56"
+      },
+      {
+        "Subdomain": "autodiscover.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": [
+          "132.245.231.14",
+          "132.245.230.10",
+          "132.245.230.34",
+          "52.98.151.88"
+        ]
+      },
+      {
+        "Subdomain": "enterpriseregistration.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": [
+          "40.126.32.129",
+          "40.126.32.6",
+          "40.126.32.66",
+          "40.126.32.131"
+        ]
+      },
+      {
+        "Subdomain": "enterpriseenrollment.hel.fi",
+        "Type": "A Record",
+        "IPAddresses": "52.236.189.96"
+      }
+    ],
+    "Certificates": null
+  },
+  "TenantId": "",
+  "SocialMedia": {
+    "GitHub": [
+      {
+        "Language": "Python",
+        "Description": "Resource reservation and management app and API",
+        "Platform": "GitHub",
+        "Name": "City-of-Helsinki/respa",
+        "Status": "Found",
+        "Type": "Repository",
+        "Url": "https://github.com/City-of-Helsinki/respa",
+        "Stars": 82
+      },
+      {
+        "Language": "HTML",
+        "Description": "Kerro kantasi participatory democracy UI",
+        "Platform": "GitHub",
+        "Name": "City-of-Helsinki/kerrokantasi-ui",
+        "Status": "Found",
+        "Type": "Repository",
+        "Url": "https://github.com/City-of-Helsinki/kerrokantasi-ui",
+        "Stars": 7
+      },
+      {
+        "Language": "Python",
+        "Description": "API for decision-making documents of City of Helsinki",
+        "Platform": "GitHub",
+        "Name": "City-of-Helsinki/openahjo",
+        "Status": "Found",
+        "Type": "Repository",
+        "Url": "https://github.com/City-of-Helsinki/openahjo",
+        "Stars": 30
+      },
+      {
+        "Language": null,
+        "Description": "Curated list of links to 3D spatial (GIS) data 🌍",
+        "Platform": "GitHub",
+        "Name": "wonder-sk/3d-spatial-data",
+        "Status": "Found",
+        "Type": "Repository",
+        "Url": "https://github.com/wonder-sk/3d-spatial-data",
+        "Stars": 34
+      },
+      {
+        "Language": "Python",
+        "Description": "Kerro kantasi participatory democracy backend",
+        "Platform": "GitHub",
+        "Name": "City-of-Helsinki/kerrokantasi",
+        "Status": "Found",
+        "Type": "Repository",
+        "Url": "https://github.com/City-of-Helsinki/kerrokantasi",
+        "Stars": 8
+      }
+    ],
+    "Instagram": null,
+    "LinkedIn": null,
+    "Twitter": null,
+    "Facebook": null
+  },
+  "FabricRecon": {
+    "PowerBI": {},
+    "WorkloadAPIs": {},
+    "Security": {},
+    "Capacities": {},
+    "OneLake": {},
+    "Workspaces": {},
+    "DataWarehouse": {},
+    "Authentication": {
+      "Scopes": "https://api.fabric.microsoft.com/Workspace.ReadWrite.Allhttps://api.fabric.microsoft.com/Item.ReadWrite.Allhttps://api.fabric.microsoft.com/Capacity.ReadWrite.All",
+      "ServicePrincipal": "Available"
+    },
+    "RealTimeAnalytics": {},
+    "DataScience": {},
+    "Items": {},
+    "DataEngineering": {},
+    "CoreAPIs": {}
+  },
+  "PowerBIRecon": {
+    "Security": {},
+    "Authentication": {
+      "Scopes": "https://analysis.windows.net/powerbi/api/.defaulthttps://analysis.windows.net/powerbi/api/Dataset.ReadWrite.Allhttps://analysis.windows.net/powerbi/api/Report.ReadWrite.Allhttps://analysis.windows.net/powerbi/api/Workspace.ReadWrite.All"
+    },
+    "RestAPIs": {},
+    "Datasets": {},
+    "ServicePrincipal": {
+      "Supported": true
+    },
+    "EmbedAPIs": {
+      "Embed Reports": "Available",
+      "Embed Q&A": "Available",
+      "Embed Dashboards": "Available"
+    },
+    "Reports": {},
+    "AdminAPIs": {},
+    "Workspaces": {},
+    "PublicContent": {
+      "EmbedPatterns": "app.powerbi.com/view?r=app.powerbi.com/reportEmbed?reportId=app.powerbi.com/view?r=app.powerbi.com/reportEmbed?reportId=app.powerbi.com/view?r=app.powerbi.com/reportEmbed?reportId=",
+      "Community": "Found"
+    },
+    "Dashboards": {},
+    "BatchOperations": {}
+  },
+  "SecurityPosture": {
+    "PrivilegedAccess": {},
+    "ExternalIdentities": {},
+    "PasswordPolicy": {},
+    "GuestAccess": {},
+    "IdentityProtection": {},
+    "ConditionalAccess": {
+      "Present": false
+    },
+    "ExternalSharing": {},
+    "DataLossProtection": {
+      "SharePoint": "HSTS security headers"
+    },
+    "ThreatProtection": {
+      "DefenderForCloudApps": true,
+      "M365Defender": true
+    },
+    "SecurityDefaults": {
+      "MFARequired": false
+    },
+    "CrossTenantAccess": {},
+    "SecurityBaseline": {},
+    "ComplianceFeatures": {
+      "Purview": true
+    }
+  },
+  "TenantInfo": {
+    "TenantBrand": "Helsingin kaupunki",
+    "TenantId": "3feb6bc1-d722-4726-966c-5b58b64df752",
+    "AllDomains": null,
+    "FederationMetadata": "<?xml version=\"1.0\" encoding=\"utf-8\"?><EntityDescriptor ID=\"_4e77d006-63ad-44ba-8dfc-f3b90d015c36\" entityID=\"https://sts.windows.net/3feb6bc1-d722-4726-966c-5b58b64df752/\" xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\"><Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><SignedInfo><CanonicalizationMethod Algorithm=\"http://www.w3.org/2001/10/xml-exc-c14n#\" /><SignatureMethod Algorithm=\"http://www.w3.org/2001/04/xmldsig-more#rsa-sha256\" /><Reference URI=\"#_4e77d006-63ad-44ba-8dfc-f3b90d015c36\"><Transforms><Transform Algorithm=\"http://www.w3.org/2000/09/xmldsig#enveloped-signature\" /><Transform Algorithm=\"http://www.w3.org/2001/10/xml-exc-c14n#\" /></Transforms><DigestMethod Algorithm=\"http://www.w3.org/2001/04/xmlenc#sha256\" /><DigestValue>/aTSdgHCIn8hd8J8IxcqUl5S6oLKsXTV+jKnNvJc6uI=</DigestValue></Reference></SignedInfo><SignatureValue>WveSQxQ+Xh+o6DWF0PUg6AdnbHvoC1+wO7OQ3/Ty1DN+hwAS/fWQEur1lRvo+lyGFRZaI6TkOwnhsmf4gL1ywqQkKZKEjR9A62Y12q13qIwIJhjnCA+AcU7Q3YybYbzhad9sEAyOBZyXMUi9RYg48UGnecvXra0JR5CixbHw+1LoEyJ9nwEFOpaA3ql6a3yNAP9gJGCGeaWhDi5X8Rgk6uDto71IxiR5JfYp1MwrMDmmB5Xa7fjAiCwxHVsivN0V+xln+Dm6JWJ/a+l3QtaoS3o+iHdfbN0YTASPyuTbDKXcBrrfDqddEhr8fVvgnLFBYtuPWMwazCy9VLmtOEQcXQ==</SignatureValue><ds:KeyInfo xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\"><ds:X509Data><ds:X509Certificate>MIIC/jCCAeagAwIBAgIJAJ7u12fELmBtMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwOTA0MDU0NjQ1WhcNMzAwOTA0MDU0NjQ1WjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiJziawWRBqrsePVXdinePiauatgEdl0iljqrr72Eu4T1qVbbA8BfDxXGW95ZFaq/roTTrnU2LEGQJ0jof6TSA1VwTsvA5oRb57kW3On520ckieVgP1NFU5kVACk7KWNgAlBoTRCS5LvTYjX+0Ke/L9wG36tL81EBimevhFCs/Ay2QIB07OI0YIhph/Pt94+isXPntLzwEyFQhRZYeRwLJkjQGkkSyduLelMULmLirJ7sY/5ek90JALLt/gNCP+kH4jvFkFKOnB4w/uBR6AEfByy+JoCDI4HJAtpgn3ZrX03XnqHbQ1D8ddQMbdvAHYdWyiQYWttxtvwRduHM6fF1mwIDAQABoyEwHzAdBgNVHQ4EFgQU8xQdrG4/7gpOetVyapzEpL9ajYkwDQYJKoZIhvcNAQELBQADggEBAA/sf1YBm/pfN6w++hgSUoCr1PlAcscPOQGYrkYC6eR5FMSuyBxld0cFQJX+lyf83wxDMWg2hcs6loPgJSg5BU2DOOW0xGUXSsrxy8GaNRSJNheTxhdo+3/g5SZVAHHu5+FPcVeDgHQJnCIcmhYUeN4fMKdx7Qajc6Uz65DoT3EkDWzmjaLwHi2Mo/Kp71tvvOSV7MD8tlhRsV1mIqXObUng6q9kphrXr5tSYI2xPQ5EMN3NXETPWNE/P7u4zK66xJzNTf9SDF6fqtMOpkz7rKbPzpZqcX3o60+TClnpeXT2wUJB8KB8vk7awBsnIni0DeAYYOMBHKs61fHzu/pSRTo=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></Signature><RoleDescriptor xsi:type=\"fed:SecurityTokenServiceType\" protocolSupportEnumeration=\"http://docs.oasis-open.org/wsfed/federation/200706\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:fed=\"http://docs.oasis-open.org/wsfed/federation/200706\"><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC/jCCAeagAwIBAgIJAM52mWWK+FEeMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwMzIwMDAwNTAyWhcNMzAwMzIwMDAwNTAyWjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAruYyUq1ElSb8QCCt0XWWRSFpUq0JkyfEvvlCa4fPDi0GZbSGgJg3qYa0co2RsBIYHczXkc71kHVpktySAgYK1KMK264e+s7Vymeq+ypHEDpRsaWric/kKEIvKZzRsyUBUWf0CUhtuUvAbDTuaFnQ4g5lfoa7u3vtsv1za5Gmn6DUPirrL/+xqijP9IsHGUKaTmB4M/qnAu6vUHCpXZnN0YTJDoK7XrVJFaKj8RrTdJB89GFJeTFHA2OX472ToyLdCDn5UatYwmht62nXGlH7/G1kW1YMpeSSwzpnMEzUUk7A8UXrvFTHXEpfXhsv0LA59dm9Hi1mIXaOe1w+icA/rQIDAQABoyEwHzAdBgNVHQ4EFgQUcZ2MLLOas+d9WbkFSnPdxag09YIwDQYJKoZIhvcNAQELBQADggEBABPXBmwv703IlW8Zc9Kj7W215+vyM5lrJjUubnl+s8vQVXvyN7bh5xP2hzEKWb+u5g/brSIKX/A7qP3m/z6C8R9GvP5WRtF2w1CAxYZ9TWTzTS1La78edME546QejjveC1gX9qcLbEwuLAbYpau2r3vlIqgyXo+8WLXA0neGIRa2JWTNy8FJo0wnUttGJz9LQE4L37nR3HWIxflmOVgbaeyeaj2VbzUE7MIHIkK1bqye2OiKU82w1QWLV/YCny0xdLipE1g2uNL8QVob8fTU2zowd2j54c1YTBDy/hTsxpXfCFutKwtELqWzYxKTqYfrRCc1h0V4DGLKzIjtggTC+CY=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC/jCCAeagAwIBAgIJAM5KoNE1LHYtMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwNzA3MTQzMjA3WhcNMzAwNzA3MTQzMjA3WjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAotxHCrbdDCUhPHT05zemCxen/h3vbWY9BxgH5yL4HPhAfj8xFrn+B5vgySJKUj4yprzwkT+EfcCfpMNDgxvVHyzMzWQWk/XcYCA72Whkt4kZnEzk+oxeasJ2rJ7NIpWMdQbamfw4BT8GYyplE1Pd2oiBGTeW4qxJow5qVmu/xwqpdq0MiViNQMQgLmy1FElDweue2Hsr9PUF+bp1dFPSp1m1kqvpMBsLZd4+2cc+k3gl12PB0O3GbswwFdoKf9iN0mJ/0GdRRQiXm+BXpnOPNiTcYrLiz2wWCpYQrLmxpJhm3oqLPGWrQtyVeO8vUeLI0fW4wpjYCQK/KPEi1x7T2QIDAQABoyEwHzAdBgNVHQ4EFgQUbmZcQgdPC+xHVw/WrRHiajm/FNIwDQYJKoZIhvcNAQELBQADggEBACVhPf9gP/hr7lLx8OCaGaAVEEQ+DGqMuSzHJTSgcGXwKsVbsHO7Ih39ERM+ZoUZoawARETLw7c0UW0iiBZsdBnjVhzaEHha/9tIXOs9THAqwNY6hhN4tYY9MOB4U5gBL7SaQnwelHsY6oQSavK/lA25e/t0Uxz2BOEWYy6/59n3Tu8AMRySz6Q1YnVO6Ww5pNBTjHV+8kFbsj3ln5C4rAoTBJwHSYdh6Yz9OZB7UGhVCzkYQ7FO5xJ1WW5FPezVl4Osnr/JhjwvAidcq4dKO7OGHTIaDa72IcJ9IFsPdCxaCIspz4A1zEX6C+Z8bONccUs5xeAeGwaZypw9XJW341M=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC/jCCAeagAwIBAgIJAJ7u12fELmBtMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwOTA0MDU0NjQ1WhcNMzAwOTA0MDU0NjQ1WjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiJziawWRBqrsePVXdinePiauatgEdl0iljqrr72Eu4T1qVbbA8BfDxXGW95ZFaq/roTTrnU2LEGQJ0jof6TSA1VwTsvA5oRb57kW3On520ckieVgP1NFU5kVACk7KWNgAlBoTRCS5LvTYjX+0Ke/L9wG36tL81EBimevhFCs/Ay2QIB07OI0YIhph/Pt94+isXPntLzwEyFQhRZYeRwLJkjQGkkSyduLelMULmLirJ7sY/5ek90JALLt/gNCP+kH4jvFkFKOnB4w/uBR6AEfByy+JoCDI4HJAtpgn3ZrX03XnqHbQ1D8ddQMbdvAHYdWyiQYWttxtvwRduHM6fF1mwIDAQABoyEwHzAdBgNVHQ4EFgQU8xQdrG4/7gpOetVyapzEpL9ajYkwDQYJKoZIhvcNAQELBQADggEBAA/sf1YBm/pfN6w++hgSUoCr1PlAcscPOQGYrkYC6eR5FMSuyBxld0cFQJX+lyf83wxDMWg2hcs6loPgJSg5BU2DOOW0xGUXSsrxy8GaNRSJNheTxhdo+3/g5SZVAHHu5+FPcVeDgHQJnCIcmhYUeN4fMKdx7Qajc6Uz65DoT3EkDWzmjaLwHi2Mo/Kp71tvvOSV7MD8tlhRsV1mIqXObUng6q9kphrXr5tSYI2xPQ5EMN3NXETPWNE/P7u4zK66xJzNTf9SDF6fqtMOpkz7rKbPzpZqcX3o60+TClnpeXT2wUJB8KB8vk7awBsnIni0DeAYYOMBHKs61fHzu/pSRTo=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC6TCCAdGgAwIBAgIIQL49ub/MfzgwDQYJKoZIhvcNAQELBQAwIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMB4XDTI1MDkwMzIyMzA0NFoXDTMwMDkwMzIyMzA0NFowIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx6KJYGYvir5agd2wNQ34gjtsgsV7VD/l1G36s8GH7HpY+STIP6htTUT8AthFeVsjT1SjNl30QPL9TJjWDoWs5ZwqbF/ZjaPK0po+I+tLD8dHINVER+o9k2krEzeE+qH67AcSWaLm88zwMOcoUEgYY6EhtJLq8T1aTeYSPMfFR3f2+qjwRcNA/ioAZssxdDsBAhIq95DPoUTRz0BFoyLMoDVthCka0CfEqshaav4SBkAFrOWaC/bXPjAPg8EfowZViuiwRjw9mtktMk5nmZ+qMEA0DD2d3WbaTSaECknqI6BmEFi/mSjcE8dvPxeQIt6mIN+0writ4gr7EnveA/TAOwIDAQABoyEwHzAdBgNVHQ4EFgQUwBL7s++AR2ttlOUfBMPW0C5kNTowDQYJKoZIhvcNAQELBQADggEBAGuowY+YU7NxK+5DZlZD2sFhCxevOLqhm/bUBsNu3gpbXdXrGQvZ2tdyP6ElGCTbho74qSkhkAslKwX2bxu+0CKBf4c57u7BFUqAVOhFBPQ2iqiHyCDNuOCbmBbA1SS99+CPchgibN9QLGF9v757uXOAk93/uqJfOH5R6bSnOh4Olw9jSf72BD60ibjaNYzBGrcSZ9A6AwbxSZriflghI+x98+G6EKNMPGsfQ1LxL7sESOHsC5kUrY32rz7rcxYZMyJFvzEXGtgg9uha2uUlxqNTEpzVsVrllZcoICn4jKwN+2tI/X/4g1vAN4iie0VhadgZfnRlDbn9YCt5sDq3+7U=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC6TCCAdGgAwIBAgIIUvy/j5JbMgswDQYJKoZIhvcNAQELBQAwIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMB4XDTI1MDkyMTE2MDExNVoXDTMwMDkyMTE2MDExNVowIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAog4XRcnWg+QfmZ+ruhRKaxJGfpWqguX0a/mWRauMjeiZCWHPAn12f5eW1gvkTK5HXxGETTqczI4ve2z52US+DByU0wHPOrEuP5oS9eJ3RmgJzbmOEasEHna7WzZfAVJZWeNPgT8W/xTJ1yJ1M+bxdtYmyAQb2e/4EfzS2bzN5wDsN/2ZX7ITpRG0amDR6QtivhyCWY5Lswy5BekAllbkhGCNCEXFMRJjbni4+SKiGlNm/NkeWcRCRWRKk9MN3SjSDgYdhOwz60cKVLDypOVMec8iFq/ed1xwMqjxEwmzOsleHK1LOuy6obmRmU3dn8bg/ALFiEsSPvnoi1x0gI77swIDAQABoyEwHzAdBgNVHQ4EFgQU1xYKRS2dJWZokOlqDUz9Ov4F3OEwDQYJKoZIhvcNAQELBQADggEBAB40co8tm4zy6LAvnFPqySuFIO9NBrPQ5hEzVhc2itRn3xxMT/y+DJj1xfX4HFLVWCDx47BMgH88N24HeGOxTYsBB0H7EwvNOq3TViabvx0tBHLIyxtBZGND9g7QaPO24ASRJOiRO/AKgHPmpVG68FwkPfbwcFrCavDsUf4mpeogc/VI5tKVEptEMDHcl9f40MsdxyxcDWrT5kLvZ2ro4Amz9z1B6ToSHdgacEIQv/Z79PB8/5BDt27E1qeQxEpP4HFpQ6S+ENQgi22vazBBfasjWDH7C0pKKkykVIvXiSZKB7VevWUiFO2ZDblayCefKHikDQKnjHrPPrnfE+gGksk=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><fed:ClaimTypesOffered><auth:ClaimType Uri=\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Name</auth:DisplayName><auth:Description>The mutable display name of the user.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Subject</auth:DisplayName><auth:Description>An immutable, globally unique, non-reusable identifier of the user that is unique to the application for which a token is issued.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Given Name</auth:DisplayName><auth:Description>First name of the user.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Surname</auth:DisplayName><auth:Description>Last name of the user.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/identity/claims/displayname\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Display Name</auth:DisplayName><auth:Description>Display name of the user.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/identity/claims/nickname\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Nick Name</auth:DisplayName><auth:Description>Nick name of the user.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationinstant\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Authentication Instant</auth:DisplayName><auth:Description>The time (UTC) when the user is authenticated to Windows Azure Active Directory.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Authentication Method</auth:DisplayName><auth:Description>The method that Windows Azure Active Directory uses to authenticate users.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/identity/claims/objectidentifier\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>ObjectIdentifier</auth:DisplayName><auth:Description>Primary identifier for the user in the directory. Immutable, globally unique, non-reusable.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/identity/claims/tenantid\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>TenantId</auth:DisplayName><auth:Description>Identifier for the user's tenant.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/identity/claims/identityprovider\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>IdentityProvider</auth:DisplayName><auth:Description>Identity provider for the user.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Email</auth:DisplayName><auth:Description>Email address of the user.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/ws/2008/06/identity/claims/groups\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Groups</auth:DisplayName><auth:Description>Groups of the user.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/identity/claims/accesstoken\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>External Access Token</auth:DisplayName><auth:Description>Access token issued by external identity provider.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/ws/2008/06/identity/claims/expiration\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>External Access Token Expiration</auth:DisplayName><auth:Description>UTC expiration time of access token issued by external identity provider.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/identity/claims/openid2_id\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>External OpenID 2.0 Identifier</auth:DisplayName><auth:Description>OpenID 2.0 identifier issued by external identity provider.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/claims/groups.link\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>GroupsOverageClaim</auth:DisplayName><auth:Description>Issued when number of user's group claims exceeds return limit.</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/ws/2008/06/identity/claims/role\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>Role Claim</auth:DisplayName><auth:Description>Roles that the user or Service Principal is attached to</auth:Description></auth:ClaimType><auth:ClaimType Uri=\"http://schemas.microsoft.com/ws/2008/06/identity/claims/wids\" xmlns:auth=\"http://docs.oasis-open.org/wsfed/authorization/200706\"><auth:DisplayName>RoleTemplate Id Claim</auth:DisplayName><auth:Description>Role template id of the Built-in Directory Roles that the user is a member of</auth:Description></auth:ClaimType></fed:ClaimTypesOffered><fed:SecurityTokenServiceEndpoint><wsa:EndpointReference xmlns:wsa=\"http://www.w3.org/2005/08/addressing\"><wsa:Address>https://login.microsoftonline.com/3feb6bc1-d722-4726-966c-5b58b64df752/wsfed</wsa:Address></wsa:EndpointReference></fed:SecurityTokenServiceEndpoint><fed:PassiveRequestorEndpoint><wsa:EndpointReference xmlns:wsa=\"http://www.w3.org/2005/08/addressing\"><wsa:Address>https://login.microsoftonline.com/3feb6bc1-d722-4726-966c-5b58b64df752/wsfed</wsa:Address></wsa:EndpointReference></fed:PassiveRequestorEndpoint></RoleDescriptor><RoleDescriptor xsi:type=\"fed:ApplicationServiceType\" protocolSupportEnumeration=\"http://docs.oasis-open.org/wsfed/federation/200706\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:fed=\"http://docs.oasis-open.org/wsfed/federation/200706\"><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC/jCCAeagAwIBAgIJAM52mWWK+FEeMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwMzIwMDAwNTAyWhcNMzAwMzIwMDAwNTAyWjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAruYyUq1ElSb8QCCt0XWWRSFpUq0JkyfEvvlCa4fPDi0GZbSGgJg3qYa0co2RsBIYHczXkc71kHVpktySAgYK1KMK264e+s7Vymeq+ypHEDpRsaWric/kKEIvKZzRsyUBUWf0CUhtuUvAbDTuaFnQ4g5lfoa7u3vtsv1za5Gmn6DUPirrL/+xqijP9IsHGUKaTmB4M/qnAu6vUHCpXZnN0YTJDoK7XrVJFaKj8RrTdJB89GFJeTFHA2OX472ToyLdCDn5UatYwmht62nXGlH7/G1kW1YMpeSSwzpnMEzUUk7A8UXrvFTHXEpfXhsv0LA59dm9Hi1mIXaOe1w+icA/rQIDAQABoyEwHzAdBgNVHQ4EFgQUcZ2MLLOas+d9WbkFSnPdxag09YIwDQYJKoZIhvcNAQELBQADggEBABPXBmwv703IlW8Zc9Kj7W215+vyM5lrJjUubnl+s8vQVXvyN7bh5xP2hzEKWb+u5g/brSIKX/A7qP3m/z6C8R9GvP5WRtF2w1CAxYZ9TWTzTS1La78edME546QejjveC1gX9qcLbEwuLAbYpau2r3vlIqgyXo+8WLXA0neGIRa2JWTNy8FJo0wnUttGJz9LQE4L37nR3HWIxflmOVgbaeyeaj2VbzUE7MIHIkK1bqye2OiKU82w1QWLV/YCny0xdLipE1g2uNL8QVob8fTU2zowd2j54c1YTBDy/hTsxpXfCFutKwtELqWzYxKTqYfrRCc1h0V4DGLKzIjtggTC+CY=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC/jCCAeagAwIBAgIJAM5KoNE1LHYtMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwNzA3MTQzMjA3WhcNMzAwNzA3MTQzMjA3WjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAotxHCrbdDCUhPHT05zemCxen/h3vbWY9BxgH5yL4HPhAfj8xFrn+B5vgySJKUj4yprzwkT+EfcCfpMNDgxvVHyzMzWQWk/XcYCA72Whkt4kZnEzk+oxeasJ2rJ7NIpWMdQbamfw4BT8GYyplE1Pd2oiBGTeW4qxJow5qVmu/xwqpdq0MiViNQMQgLmy1FElDweue2Hsr9PUF+bp1dFPSp1m1kqvpMBsLZd4+2cc+k3gl12PB0O3GbswwFdoKf9iN0mJ/0GdRRQiXm+BXpnOPNiTcYrLiz2wWCpYQrLmxpJhm3oqLPGWrQtyVeO8vUeLI0fW4wpjYCQK/KPEi1x7T2QIDAQABoyEwHzAdBgNVHQ4EFgQUbmZcQgdPC+xHVw/WrRHiajm/FNIwDQYJKoZIhvcNAQELBQADggEBACVhPf9gP/hr7lLx8OCaGaAVEEQ+DGqMuSzHJTSgcGXwKsVbsHO7Ih39ERM+ZoUZoawARETLw7c0UW0iiBZsdBnjVhzaEHha/9tIXOs9THAqwNY6hhN4tYY9MOB4U5gBL7SaQnwelHsY6oQSavK/lA25e/t0Uxz2BOEWYy6/59n3Tu8AMRySz6Q1YnVO6Ww5pNBTjHV+8kFbsj3ln5C4rAoTBJwHSYdh6Yz9OZB7UGhVCzkYQ7FO5xJ1WW5FPezVl4Osnr/JhjwvAidcq4dKO7OGHTIaDa72IcJ9IFsPdCxaCIspz4A1zEX6C+Z8bONccUs5xeAeGwaZypw9XJW341M=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC/jCCAeagAwIBAgIJAJ7u12fELmBtMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwOTA0MDU0NjQ1WhcNMzAwOTA0MDU0NjQ1WjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiJziawWRBqrsePVXdinePiauatgEdl0iljqrr72Eu4T1qVbbA8BfDxXGW95ZFaq/roTTrnU2LEGQJ0jof6TSA1VwTsvA5oRb57kW3On520ckieVgP1NFU5kVACk7KWNgAlBoTRCS5LvTYjX+0Ke/L9wG36tL81EBimevhFCs/Ay2QIB07OI0YIhph/Pt94+isXPntLzwEyFQhRZYeRwLJkjQGkkSyduLelMULmLirJ7sY/5ek90JALLt/gNCP+kH4jvFkFKOnB4w/uBR6AEfByy+JoCDI4HJAtpgn3ZrX03XnqHbQ1D8ddQMbdvAHYdWyiQYWttxtvwRduHM6fF1mwIDAQABoyEwHzAdBgNVHQ4EFgQU8xQdrG4/7gpOetVyapzEpL9ajYkwDQYJKoZIhvcNAQELBQADggEBAA/sf1YBm/pfN6w++hgSUoCr1PlAcscPOQGYrkYC6eR5FMSuyBxld0cFQJX+lyf83wxDMWg2hcs6loPgJSg5BU2DOOW0xGUXSsrxy8GaNRSJNheTxhdo+3/g5SZVAHHu5+FPcVeDgHQJnCIcmhYUeN4fMKdx7Qajc6Uz65DoT3EkDWzmjaLwHi2Mo/Kp71tvvOSV7MD8tlhRsV1mIqXObUng6q9kphrXr5tSYI2xPQ5EMN3NXETPWNE/P7u4zK66xJzNTf9SDF6fqtMOpkz7rKbPzpZqcX3o60+TClnpeXT2wUJB8KB8vk7awBsnIni0DeAYYOMBHKs61fHzu/pSRTo=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC6TCCAdGgAwIBAgIIQL49ub/MfzgwDQYJKoZIhvcNAQELBQAwIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMB4XDTI1MDkwMzIyMzA0NFoXDTMwMDkwMzIyMzA0NFowIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx6KJYGYvir5agd2wNQ34gjtsgsV7VD/l1G36s8GH7HpY+STIP6htTUT8AthFeVsjT1SjNl30QPL9TJjWDoWs5ZwqbF/ZjaPK0po+I+tLD8dHINVER+o9k2krEzeE+qH67AcSWaLm88zwMOcoUEgYY6EhtJLq8T1aTeYSPMfFR3f2+qjwRcNA/ioAZssxdDsBAhIq95DPoUTRz0BFoyLMoDVthCka0CfEqshaav4SBkAFrOWaC/bXPjAPg8EfowZViuiwRjw9mtktMk5nmZ+qMEA0DD2d3WbaTSaECknqI6BmEFi/mSjcE8dvPxeQIt6mIN+0writ4gr7EnveA/TAOwIDAQABoyEwHzAdBgNVHQ4EFgQUwBL7s++AR2ttlOUfBMPW0C5kNTowDQYJKoZIhvcNAQELBQADggEBAGuowY+YU7NxK+5DZlZD2sFhCxevOLqhm/bUBsNu3gpbXdXrGQvZ2tdyP6ElGCTbho74qSkhkAslKwX2bxu+0CKBf4c57u7BFUqAVOhFBPQ2iqiHyCDNuOCbmBbA1SS99+CPchgibN9QLGF9v757uXOAk93/uqJfOH5R6bSnOh4Olw9jSf72BD60ibjaNYzBGrcSZ9A6AwbxSZriflghI+x98+G6EKNMPGsfQ1LxL7sESOHsC5kUrY32rz7rcxYZMyJFvzEXGtgg9uha2uUlxqNTEpzVsVrllZcoICn4jKwN+2tI/X/4g1vAN4iie0VhadgZfnRlDbn9YCt5sDq3+7U=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC6TCCAdGgAwIBAgIIUvy/j5JbMgswDQYJKoZIhvcNAQELBQAwIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMB4XDTI1MDkyMTE2MDExNVoXDTMwMDkyMTE2MDExNVowIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAog4XRcnWg+QfmZ+ruhRKaxJGfpWqguX0a/mWRauMjeiZCWHPAn12f5eW1gvkTK5HXxGETTqczI4ve2z52US+DByU0wHPOrEuP5oS9eJ3RmgJzbmOEasEHna7WzZfAVJZWeNPgT8W/xTJ1yJ1M+bxdtYmyAQb2e/4EfzS2bzN5wDsN/2ZX7ITpRG0amDR6QtivhyCWY5Lswy5BekAllbkhGCNCEXFMRJjbni4+SKiGlNm/NkeWcRCRWRKk9MN3SjSDgYdhOwz60cKVLDypOVMec8iFq/ed1xwMqjxEwmzOsleHK1LOuy6obmRmU3dn8bg/ALFiEsSPvnoi1x0gI77swIDAQABoyEwHzAdBgNVHQ4EFgQU1xYKRS2dJWZokOlqDUz9Ov4F3OEwDQYJKoZIhvcNAQELBQADggEBAB40co8tm4zy6LAvnFPqySuFIO9NBrPQ5hEzVhc2itRn3xxMT/y+DJj1xfX4HFLVWCDx47BMgH88N24HeGOxTYsBB0H7EwvNOq3TViabvx0tBHLIyxtBZGND9g7QaPO24ASRJOiRO/AKgHPmpVG68FwkPfbwcFrCavDsUf4mpeogc/VI5tKVEptEMDHcl9f40MsdxyxcDWrT5kLvZ2ro4Amz9z1B6ToSHdgacEIQv/Z79PB8/5BDt27E1qeQxEpP4HFpQ6S+ENQgi22vazBBfasjWDH7C0pKKkykVIvXiSZKB7VevWUiFO2ZDblayCefKHikDQKnjHrPPrnfE+gGksk=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><fed:TargetScopes><wsa:EndpointReference xmlns:wsa=\"http://www.w3.org/2005/08/addressing\"><wsa:Address>https://sts.windows.net/3feb6bc1-d722-4726-966c-5b58b64df752/</wsa:Address></wsa:EndpointReference></fed:TargetScopes><fed:ApplicationServiceEndpoint><wsa:EndpointReference xmlns:wsa=\"http://www.w3.org/2005/08/addressing\"><wsa:Address>https://login.microsoftonline.com/3feb6bc1-d722-4726-966c-5b58b64df752/wsfed</wsa:Address></wsa:EndpointReference></fed:ApplicationServiceEndpoint><fed:PassiveRequestorEndpoint><wsa:EndpointReference xmlns:wsa=\"http://www.w3.org/2005/08/addressing\"><wsa:Address>https://login.microsoftonline.com/3feb6bc1-d722-4726-966c-5b58b64df752/wsfed</wsa:Address></wsa:EndpointReference></fed:PassiveRequestorEndpoint></RoleDescriptor><IDPSSODescriptor protocolSupportEnumeration=\"urn:oasis:names:tc:SAML:2.0:protocol\"><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC/jCCAeagAwIBAgIJAM52mWWK+FEeMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwMzIwMDAwNTAyWhcNMzAwMzIwMDAwNTAyWjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAruYyUq1ElSb8QCCt0XWWRSFpUq0JkyfEvvlCa4fPDi0GZbSGgJg3qYa0co2RsBIYHczXkc71kHVpktySAgYK1KMK264e+s7Vymeq+ypHEDpRsaWric/kKEIvKZzRsyUBUWf0CUhtuUvAbDTuaFnQ4g5lfoa7u3vtsv1za5Gmn6DUPirrL/+xqijP9IsHGUKaTmB4M/qnAu6vUHCpXZnN0YTJDoK7XrVJFaKj8RrTdJB89GFJeTFHA2OX472ToyLdCDn5UatYwmht62nXGlH7/G1kW1YMpeSSwzpnMEzUUk7A8UXrvFTHXEpfXhsv0LA59dm9Hi1mIXaOe1w+icA/rQIDAQABoyEwHzAdBgNVHQ4EFgQUcZ2MLLOas+d9WbkFSnPdxag09YIwDQYJKoZIhvcNAQELBQADggEBABPXBmwv703IlW8Zc9Kj7W215+vyM5lrJjUubnl+s8vQVXvyN7bh5xP2hzEKWb+u5g/brSIKX/A7qP3m/z6C8R9GvP5WRtF2w1CAxYZ9TWTzTS1La78edME546QejjveC1gX9qcLbEwuLAbYpau2r3vlIqgyXo+8WLXA0neGIRa2JWTNy8FJo0wnUttGJz9LQE4L37nR3HWIxflmOVgbaeyeaj2VbzUE7MIHIkK1bqye2OiKU82w1QWLV/YCny0xdLipE1g2uNL8QVob8fTU2zowd2j54c1YTBDy/hTsxpXfCFutKwtELqWzYxKTqYfrRCc1h0V4DGLKzIjtggTC+CY=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC/jCCAeagAwIBAgIJAM5KoNE1LHYtMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwNzA3MTQzMjA3WhcNMzAwNzA3MTQzMjA3WjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAotxHCrbdDCUhPHT05zemCxen/h3vbWY9BxgH5yL4HPhAfj8xFrn+B5vgySJKUj4yprzwkT+EfcCfpMNDgxvVHyzMzWQWk/XcYCA72Whkt4kZnEzk+oxeasJ2rJ7NIpWMdQbamfw4BT8GYyplE1Pd2oiBGTeW4qxJow5qVmu/xwqpdq0MiViNQMQgLmy1FElDweue2Hsr9PUF+bp1dFPSp1m1kqvpMBsLZd4+2cc+k3gl12PB0O3GbswwFdoKf9iN0mJ/0GdRRQiXm+BXpnOPNiTcYrLiz2wWCpYQrLmxpJhm3oqLPGWrQtyVeO8vUeLI0fW4wpjYCQK/KPEi1x7T2QIDAQABoyEwHzAdBgNVHQ4EFgQUbmZcQgdPC+xHVw/WrRHiajm/FNIwDQYJKoZIhvcNAQELBQADggEBACVhPf9gP/hr7lLx8OCaGaAVEEQ+DGqMuSzHJTSgcGXwKsVbsHO7Ih39ERM+ZoUZoawARETLw7c0UW0iiBZsdBnjVhzaEHha/9tIXOs9THAqwNY6hhN4tYY9MOB4U5gBL7SaQnwelHsY6oQSavK/lA25e/t0Uxz2BOEWYy6/59n3Tu8AMRySz6Q1YnVO6Ww5pNBTjHV+8kFbsj3ln5C4rAoTBJwHSYdh6Yz9OZB7UGhVCzkYQ7FO5xJ1WW5FPezVl4Osnr/JhjwvAidcq4dKO7OGHTIaDa72IcJ9IFsPdCxaCIspz4A1zEX6C+Z8bONccUs5xeAeGwaZypw9XJW341M=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC/jCCAeagAwIBAgIJAJ7u12fELmBtMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjUwOTA0MDU0NjQ1WhcNMzAwOTA0MDU0NjQ1WjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiJziawWRBqrsePVXdinePiauatgEdl0iljqrr72Eu4T1qVbbA8BfDxXGW95ZFaq/roTTrnU2LEGQJ0jof6TSA1VwTsvA5oRb57kW3On520ckieVgP1NFU5kVACk7KWNgAlBoTRCS5LvTYjX+0Ke/L9wG36tL81EBimevhFCs/Ay2QIB07OI0YIhph/Pt94+isXPntLzwEyFQhRZYeRwLJkjQGkkSyduLelMULmLirJ7sY/5ek90JALLt/gNCP+kH4jvFkFKOnB4w/uBR6AEfByy+JoCDI4HJAtpgn3ZrX03XnqHbQ1D8ddQMbdvAHYdWyiQYWttxtvwRduHM6fF1mwIDAQABoyEwHzAdBgNVHQ4EFgQU8xQdrG4/7gpOetVyapzEpL9ajYkwDQYJKoZIhvcNAQELBQADggEBAA/sf1YBm/pfN6w++hgSUoCr1PlAcscPOQGYrkYC6eR5FMSuyBxld0cFQJX+lyf83wxDMWg2hcs6loPgJSg5BU2DOOW0xGUXSsrxy8GaNRSJNheTxhdo+3/g5SZVAHHu5+FPcVeDgHQJnCIcmhYUeN4fMKdx7Qajc6Uz65DoT3EkDWzmjaLwHi2Mo/Kp71tvvOSV7MD8tlhRsV1mIqXObUng6q9kphrXr5tSYI2xPQ5EMN3NXETPWNE/P7u4zK66xJzNTf9SDF6fqtMOpkz7rKbPzpZqcX3o60+TClnpeXT2wUJB8KB8vk7awBsnIni0DeAYYOMBHKs61fHzu/pSRTo=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC6TCCAdGgAwIBAgIIQL49ub/MfzgwDQYJKoZIhvcNAQELBQAwIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMB4XDTI1MDkwMzIyMzA0NFoXDTMwMDkwMzIyMzA0NFowIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx6KJYGYvir5agd2wNQ34gjtsgsV7VD/l1G36s8GH7HpY+STIP6htTUT8AthFeVsjT1SjNl30QPL9TJjWDoWs5ZwqbF/ZjaPK0po+I+tLD8dHINVER+o9k2krEzeE+qH67AcSWaLm88zwMOcoUEgYY6EhtJLq8T1aTeYSPMfFR3f2+qjwRcNA/ioAZssxdDsBAhIq95DPoUTRz0BFoyLMoDVthCka0CfEqshaav4SBkAFrOWaC/bXPjAPg8EfowZViuiwRjw9mtktMk5nmZ+qMEA0DD2d3WbaTSaECknqI6BmEFi/mSjcE8dvPxeQIt6mIN+0writ4gr7EnveA/TAOwIDAQABoyEwHzAdBgNVHQ4EFgQUwBL7s++AR2ttlOUfBMPW0C5kNTowDQYJKoZIhvcNAQELBQADggEBAGuowY+YU7NxK+5DZlZD2sFhCxevOLqhm/bUBsNu3gpbXdXrGQvZ2tdyP6ElGCTbho74qSkhkAslKwX2bxu+0CKBf4c57u7BFUqAVOhFBPQ2iqiHyCDNuOCbmBbA1SS99+CPchgibN9QLGF9v757uXOAk93/uqJfOH5R6bSnOh4Olw9jSf72BD60ibjaNYzBGrcSZ9A6AwbxSZriflghI+x98+G6EKNMPGsfQ1LxL7sESOHsC5kUrY32rz7rcxYZMyJFvzEXGtgg9uha2uUlxqNTEpzVsVrllZcoICn4jKwN+2tI/X/4g1vAN4iie0VhadgZfnRlDbn9YCt5sDq3+7U=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><KeyDescriptor use=\"signing\"><KeyInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509Data><X509Certificate>MIIC6TCCAdGgAwIBAgIIUvy/j5JbMgswDQYJKoZIhvcNAQELBQAwIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMB4XDTI1MDkyMTE2MDExNVoXDTMwMDkyMTE2MDExNVowIzEhMB8GA1UEAxMYbG9naW4ubWljcm9zb2Z0b25saW5lLnVzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAog4XRcnWg+QfmZ+ruhRKaxJGfpWqguX0a/mWRauMjeiZCWHPAn12f5eW1gvkTK5HXxGETTqczI4ve2z52US+DByU0wHPOrEuP5oS9eJ3RmgJzbmOEasEHna7WzZfAVJZWeNPgT8W/xTJ1yJ1M+bxdtYmyAQb2e/4EfzS2bzN5wDsN/2ZX7ITpRG0amDR6QtivhyCWY5Lswy5BekAllbkhGCNCEXFMRJjbni4+SKiGlNm/NkeWcRCRWRKk9MN3SjSDgYdhOwz60cKVLDypOVMec8iFq/ed1xwMqjxEwmzOsleHK1LOuy6obmRmU3dn8bg/ALFiEsSPvnoi1x0gI77swIDAQABoyEwHzAdBgNVHQ4EFgQU1xYKRS2dJWZokOlqDUz9Ov4F3OEwDQYJKoZIhvcNAQELBQADggEBAB40co8tm4zy6LAvnFPqySuFIO9NBrPQ5hEzVhc2itRn3xxMT/y+DJj1xfX4HFLVWCDx47BMgH88N24HeGOxTYsBB0H7EwvNOq3TViabvx0tBHLIyxtBZGND9g7QaPO24ASRJOiRO/AKgHPmpVG68FwkPfbwcFrCavDsUf4mpeogc/VI5tKVEptEMDHcl9f40MsdxyxcDWrT5kLvZ2ro4Amz9z1B6ToSHdgacEIQv/Z79PB8/5BDt27E1qeQxEpP4HFpQ6S+ENQgi22vazBBfasjWDH7C0pKKkykVIvXiSZKB7VevWUiFO2ZDblayCefKHikDQKnjHrPPrnfE+gGksk=</X509Certificate></X509Data></KeyInfo></KeyDescriptor><SingleLogoutService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect\" Location=\"https://login.microsoftonline.com/3feb6bc1-d722-4726-966c-5b58b64df752/saml2\" /><SingleSignOnService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect\" Location=\"https://login.microsoftonline.com/3feb6bc1-d722-4726-966c-5b58b64df752/saml2\" /><SingleSignOnService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST\" Location=\"https://login.microsoftonline.com/3feb6bc1-d722-4726-966c-5b58b64df752/saml2\" /></IDPSSODescriptor></EntityDescriptor>",
+    "ManagedDomains": null,
+    "MDIInstance": "hel.atp.azure.com",
+    "Federation": null,
+    "TenantType": "Entra ID (Workforce)",
+    "TenantTypeSignals": [
+      "Entra ID public endpoints",
+      "Microsoft Teams",
+      "OneDrive for Business",
+      "SharePoint Online",
+      "SPF includes spf.protection.outlook.com"
+    ],
+    "PreferredUserName": null,
+    "Domain": "hel.fi",
+    "TenantRegion": null,
+    "TenantBrandingUrls": null,
+    "TenantSubRegion": null,
+    "FederatedDomains": null,
+    "TenantName": "Helsingin kaupunki",
+    "OIDCIssuer": null,
+    "DNSAnalysis": {
+      "MTASTSRecord": null,
+      "SPF": true,
+      "MX": false,
+      "MTASTS": false,
+      "MXRecords": [
+        "smtp2.edelkey.net",
+        "smtp1.edelkey.net"
+      ],
+      "DKIM": true,
+      "DKIMRecords": [
+        "selector1 : v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDjrLzsnF0v1P+QAAX5EckLd5yzj55o6So9ByKosAxbFCi8NWQPUhhx+abY7EdfVjIeUQFhobOaM5mwEA9Zsp+uGXvCIRmlIEoyue3H5U0WQIsjx2YhImsOQIwO++7lHhV0OaOMGSr1WOp9tTA2FiSY8elxlmZhUa8szyh45CO6PwIDAQAB; n=1024,1461004938,1",
+        "s1 : k=rsa; t=s; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2RrJItLbYRvItoTJUI9fiFutxOx9ndGGm+Gx5HMiAFlBd1RvbZKc6uN+lO2yfyzcO9jolRuNjGhusKEFiZiyK0cQGz39HlgVSuV7YRmIg20Jz4WniVZ+A2znZN+0fMbOGAXGOEP75V8cKY9XRiQ0aONdQWExaRjCBz1dowtWcv83dQVO5XsT373t+MVYJWkOTg60bs26mtrU6sYN7Tvx7UQVuGWanfwmWM+FeL3vuC68WPq4+qgt7D2cuXVy7RNHORgvmnwMdQ5snG7ASiIMHnfLU/xO49GWmLHYgnOikxdlNjVC3J5is5jhOmpQVjOKiijF3ZOdUgrixRA+yztzVQIDAQAB",
+        "s2 : k=rsa; t=s; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDAm58iQvl56Q1DhMYHlWVnKsWcnymIWkmWIFPyV12zGjBeSCDbFAweTL+g4L+RXz2Y45TQoibL6H3hp9bZZVTO3MSpkbL5K9fdf4o1scfbo5aumo6CwyuFOOJskBD10zkyTBBO7YqBWKNHxYlFQJj8HTuGaWgBmO4vq8WfUzjk5wIDAQAB"
+      ],
+      "DMARCRecord": "v=DMARC1; p=none;",
+      "DNS": true,
+      "DMARC": true,
+      "SPFRecord": "v=spf1 ip4:217.64.35.166 ip4:81.22.243.153 ip4:167.89.6.190 ip4:95.216.177.54 ip4:95.216.157.198 ip4:95.216.158.16 ip4:138.201.59.47 ip4:213.138.147.128/27 ip4:213.138.142.160/27 ip4:192.49.185.74 ip4:131.207.84.81 ip4:83.145.199.35 ip4:137.163.56.2 ip4:77.72.56.0/24 ip4:192.49.232.5 ip4:192.49.232.7 ip4:192.49.232.12 ip4:137.163.21.39 ip4:137.163.21.40 ip4:144.76.111.36 ip4:131.207.84.81 ip4:81.93.173.201 ip4:81.93.164.103 ip4:188.117.37.109 ip4:81.22.169.238 ip4:81.22.169.239 ip4:109.70.166.82 ip4:109.70.160.96/27 ip4:109.70.166.158 ip4:94.237.24.114 ip4:77.86.249.36 ip4:89.250.48.136 ip4:77.72.56.50 ip4:131.207.55.52 ip4:131.207.55.53 ip4:137.163.145.32/29 ip4:137.163.56.12 ip4:137.163.56.7 ip4:137.163.56.8 ip4:213.139.172.158 ip4:167.89.72.167 ip4:168.245.94.35 ip4:168.245.15.153 ip4:91.237.151.27 ip4:194.100.11.21 ip4:194.48.223.72 ip4:137.163.31.100 ip4:137.163.30.3 ip4:31.217.192.66 ip4:31.217.192.174 ip4:31.217.192.38 ip4:31.217.196.100 ip4:213.214.134.217 ip4:213.214.134.219 ip4:137.163.57.144/28 ip4:81.236.60.200 ip4:81.236.60.201 ip4:148.139.0.2 ip4:148.139.1.2 ip4:27.126.146.0/24 ip4:103.28.42.0/24 ip4:146.88.28.0/24 ip4:203.55.21.0/24 ip4:204.75.142.0/24 ip4:185.121.204.4 ip4:185.121.204.138 ip4:185.6.180.156 ip4:104.45.82.9 include:_spf.etaika.fi include:spf.lianamailer.com include:eu.mailgun.org include:spf.protection.outlook.com include:_spf.netigate.se ip4:194.14.67.124/31 -all"
+    },
+    "CloudEnvironment": "Azure Cloud (microsoftonline.com)",
+    "STSServer": "fs.hel.fi",
+    "CloudInstance": "microsoftonline.com",
+    "Capabilities": null,
+    "IdentitySurface": "Unknown",
+    "CBAEnabled": false,
+    "TenantTypeConfidence": "High",
+    "DesktopSSOEnabled": false,
+    "NameSpaceType": "Federated",
+    "OpenIdConfiguration": null,
+    "AuthenticationUrl": null,
+    "OIDCSource": null,
+    "Endpoints": {}
+  },
+  "PurviewRecon": {
+    "DataPlaneAPIs": {},
+    "Authentication": {
+      "OAuth2": "Available"
+    },
+    "ControlPlaneAPIs": {},
+    "Glossary": {},
+    "DataGovernance": {},
+    "Assets": {},
+    "Cataloging": {},
+    "ComplianceAPIs": {},
+    "Collections": {},
+    "Integration": {},
+    "Security": {},
+    "PurviewAccounts": {}
+  },
+  "ScanDuration": "00:02:37",
+  "Domain": "hel.fi",
+  "AzureResources": {},
+  "PreReconContext": {
+    "Environment": null,
+    "Source": "AzureCLI",
+    "TenantId": "01b1d965-11a1-47e0-9e26-9b8fe7c1918a",
+    "IsAuthenticated": true,
+    "Account": "harri.jaakkonen@cloudpartner.fi",
+    "Errors": null,
+    "SubscriptionId": "3f725276-4941-46e0-8a2e-f6b168b1ba62"
+  },
+  "Timestamp": "2025-09-26 20.36.48 UTC",
+  "Documents": null,
+  "AuthenticationAnalysis": {
+    "TokenEndpoints": "https://login.microsoftonline.com/3feb6bc1-d722-4726-966c-5b58b64df752/oauth2/v2.0/token",
+    "SupportedFlows": [
+      "Authorization Code Flow",
+      "Device Code Flow"
+    ],
+    "AuthMethods": "Password",
+    "MFAConfiguration": {
+      "DesktopSsoEnabled": false,
+      "DomainType": 4
+    },
+    "FederationConfig": {},
+    "SSOConfiguration": {},
+    "ConditionalAccess": {},
+    "DeviceRegistration": {
+      "VerificationUrl": null,
+      "UserCode": "GCVLN24AS",
+      "Supported": true,
+      "DeviceCode": "GAQABIQEAAA",
+      "ExpiresIn": 900
+    }
+  },
+  "InsiderReason": "Recon mode: OUTSIDER (Azure CLI tenant 01b1d965-11a1-47e0-9e26-9b8fe7c1918a does not match target tenant 3feb6bc1-d722-4726-966c-5b58b64df752).",
+  "ReconMode": "Outsider",
+  "UserEnumeration": {
+    "EntraExternalID": {},
+    "TeamsUsers": null,
+    "Methods": null,
+    "OneDriveUsers": null,
+    "DeviceCodeResults": {
+      "MaskedDeviceCode": "DAQABI...cgAA",
+      "Interval": 5,
+      "Notes": "Device code issued successfully.",
+      "AuthorityTried": [
+        "System.Collections.Hashtable"
+      ],
+      "AuthorityUsed": "System.Collections.Hashtable",
+      "DeviceCode": "DAQABI...cgAA",
+      "VerificationUrl": "https://microsoft.com/devicelogin",
+      "RawDeviceCode": "DAQABIQEAAABVrSpeuWamRam2jAF1XRQENDMrR5J-n-eQfPx2x8zYPJCiSoMOZY7IJm4nHQIsZxUb1DVgUNTCDIg_L-PVgtxBj-GBX6k30umd_XKoJpgX_Vv-4OOrnM5o9zTW_xQtVVdn8FpXtu8gprCP4oy-KLdng0dguwdbaGIXZdR1sbcveqYALS9oUGA0vDRMH55q1bcgAA",
+      "Supported": true,
+      "Confidence": "High",
+      "UserCode": "DT9ZU7CXR",
+      "FlowState": "CodeIssued",
+      "ExpiresIn": 900
+    },
+    "ValidUsers": null,
+    "SuppressedReason": null,
+    "TimingAttackResults": null,
+    "InvalidUsers": null,
+    "GetCredentialResults": null
+  },
+  "ExternalIdentities": {
+    "PartnerTenants": null,
+    "B2BCollaboration": {
+      "RedemptionFlow": "Supported"
+    },
+    "FederationTrusts": null,
+    "B2CIdentities": {},
+    "GuestUserPatterns": null,
+    "CrossTenantAccess": {},
+    "ExternalUserTypes": null,
+    "DomainFederation": {},
+    "B2BDirectConnect": {},
+    "ExternalDomains": null
+  },
+  "EmailPatterns": [
+    {
+      "Pattern": "{first}.{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "john.doe@hel.fi"
+    },
+    {
+      "Pattern": "{first}.{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "jane.smith@hel.fi"
+    },
+    {
+      "Pattern": "{first}.{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "admin.user@hel.fi"
+    },
+    {
+      "Pattern": "{first}.{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "test.account@hel.fi"
+    },
+    {
+      "Pattern": "{first}{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "johndoe@hel.fi"
+    },
+    {
+      "Pattern": "{first}{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "janesmith@hel.fi"
+    },
+    {
+      "Pattern": "{first}{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "adminuser@hel.fi"
+    },
+    {
+      "Pattern": "{first}{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "testaccount@hel.fi"
+    },
+    {
+      "Pattern": "{f}{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "jdoe@hel.fi"
+    },
+    {
+      "Pattern": "{f}{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "jsmith@hel.fi"
+    },
+    {
+      "Pattern": "{f}{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "auser@hel.fi"
+    },
+    {
+      "Pattern": "{f}{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "taccount@hel.fi"
+    },
+    {
+      "Pattern": "{first}{l}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "johnd@hel.fi"
+    },
+    {
+      "Pattern": "{first}{l}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "janes@hel.fi"
+    },
+    {
+      "Pattern": "{first}{l}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "adminu@hel.fi"
+    },
+    {
+      "Pattern": "{first}{l}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "testa@hel.fi"
+    },
+    {
+      "Pattern": "{first}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "john@hel.fi"
+    },
+    {
+      "Pattern": "{first}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "jane@hel.fi"
+    },
+    {
+      "Pattern": "{first}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "admin@hel.fi"
+    },
+    {
+      "Pattern": "{first}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "test@hel.fi"
+    },
+    {
+      "Pattern": "{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "doe@hel.fi"
+    },
+    {
+      "Pattern": "{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "smith@hel.fi"
+    },
+    {
+      "Pattern": "{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "user@hel.fi"
+    },
+    {
+      "Pattern": "{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "account@hel.fi"
+    },
+    {
+      "Pattern": "{first}_{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "john_doe@hel.fi"
+    },
+    {
+      "Pattern": "{first}_{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "jane_smith@hel.fi"
+    },
+    {
+      "Pattern": "{first}_{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "admin_user@hel.fi"
+    },
+    {
+      "Pattern": "{first}_{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "test_account@hel.fi"
+    },
+    {
+      "Pattern": "{first}-{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "john-doe@hel.fi"
+    },
+    {
+      "Pattern": "{first}-{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "jane-smith@hel.fi"
+    },
+    {
+      "Pattern": "{first}-{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "admin-user@hel.fi"
+    },
+    {
+      "Pattern": "{first}-{last}@{domain}",
+      "Confidence": "Unknown",
+      "Example": "test-account@hel.fi"
+    }
+  ],
+  "InsiderRecon": {},
+  "ServiceDiscovery": {
+    "Dynamics": null,
+    "Exchange": null,
+    "Compliance": null,
+    "SharePoint": {
+      "Evidence": "SharePoint tenant accessible",
+      "Status": "Active",
+      "TenantUrl": "https://hel.sharepoint.com"
+    },
+    "OneDrive": {
+      "Evidence": "OneDrive tenant accessible",
+      "Status": "Active",
+      "TenantUrl": "https://hel-my.sharepoint.com"
+    },
+    "AzureAD": null,
+    "EntraID": {
+      "Status": "Active",
+      "Evidence": "Tenant ID discovered: 3feb6bc1-d722-4726-966c-5b58b64df752"
+    },
+    "PowerBI": null,
+    "Intune": null,
+    "Teams": {
+      "Status": "Active",
+      "Evidence": "Teams implied by M365 infrastructure"
+    },
+    "DefenderXDR": null,
+    "Office365": null
+  },
+  "DomainInfo": {
+    "DomainValidation": {},
+    "ManagedDomains": [
+      {
+        "IPAddresses": null,
+        "Type": "Microsoft Managed",
+        "Domain": "hel.onmicrosoft.com"
+      },
+      {
+        "IPAddresses": [
+          "13.107.136.10",
+          "13.107.138.10"
+        ],
+        "Type": "Microsoft Managed",
+        "Domain": "hel.sharepoint.com"
+      },
+      {
+        "IPAddresses": [
+          "13.107.136.10",
+          "13.107.138.10"
+        ],
+        "Type": "Microsoft Managed",
+        "Domain": "hel-my.sharepoint.com"
+      }
+    ],
+    "CustomDomains": null,
+    "PrimaryDomain": "hel.fi",
+    "RelatedDomains": null,
+    "SubDomains": null,
+    "FederatedDomains": null,
+    "InitialDomain": null
+  },
+  "Office365Discovery": {
+    "AdvancedThreatProtection": null,
+    "SecurityCompliance": null,
+    "PowerPlatform": null,
+    "ExchangeOnline": null,
+    "AzureRightsManagement": null,
+    "TeamsPhoneSystem": null
+  },
+  "OrganizationName": "",
+  "Certificates": [],
+  "PowerBIFabric": {
+    "AdminPortal": {},
+    "CapacitySettings": {},
+    "FabricWorkspaces": {
+      "Portal": "Accessible",
+      "Synapse": "Accessible"
+    },
+    "DataGateways": {},
+    "CrossTenantAccess": {
+      "B2BAccess": "Supported"
+    },
+    "ExternalSharing": {},
+    "EmbeddedContent": {
+      "Infrastructure": "Available"
+    },
+    "PublicContent": {
+      "BlogMentions": "Found"
+    },
+    "PowerBIService": {
+      "OrgContent": "Accessible",
+      "Embedding": "Accessible",
+      "Public": "Accessible",
+      "Service": "Accessible"
+    }
+  }
+}

@@ -67,7 +67,7 @@ param(
     [switch]$PassThru
 )
 
-$modulePath = Join-Path -Path $PSScriptRoot -ChildPath 'module/AzureOsintAdvanced.psd1'
+$modulePath = Join-Path -Path $PSScriptRoot -ChildPath 'AzureOsintAdvanced/AzureOsintAdvanced.psd1'
 if (-not (Test-Path -Path $modulePath)) {
     throw "Azure OSINT module not found at $modulePath. Ensure the repository structure is intact."
 }

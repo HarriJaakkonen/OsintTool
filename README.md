@@ -94,7 +94,7 @@ Status lines in the console explicitly call out which mode is active so you can 
 The script exposes rich helper functions (e.g., `Start-AdvancedReconnaissance`, `Export-AdvancedResults`) that can be dot-sourced in your own automation:
 
 ```pwsh
-Import-Module "$PSScriptRoot/module/AzureOsintAdvanced.psd1" -Force
+Import-Module "$PSScriptRoot/AzureOsintAdvanced/AzureOsintAdvanced.psd1" -Force
 
 $results = Invoke-AzureOsintAdvanced -Domain "contoso.com" -OrganizationName "Contoso" -NoAutoOpen -PassThru
 Export-AdvancedResults -Results $results.Results -OutputPath "contoso-results.json"
